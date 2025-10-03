@@ -1,0 +1,580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		7B90E1992E908B3000F0A42D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B90E17F2E908B2E00F0A42D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B90E1862E908B2E00F0A42D;
+			remoteInfo = "Huellas de Papa";
+		};
+		7B90E1A32E908B3000F0A42D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B90E17F2E908B2E00F0A42D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B90E1862E908B2E00F0A42D;
+			remoteInfo = "Huellas de Papa";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7B90E1872E908B2E00F0A42D /* Huellas de Papa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Huellas de Papa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B90E1982E908B3000F0A42D /* Huellas de PapaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Huellas de PapaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B90E1A22E908B3000F0A42D /* Huellas de PapaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Huellas de PapaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7B90E1AA2E908B3000F0A42D /* Exceptions for "Huellas de Papa" folder in "Huellas de Papa" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7B90E1862E908B2E00F0A42D /* Huellas de Papa */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7B90E1892E908B2E00F0A42D /* Huellas de Papa */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7B90E1AA2E908B3000F0A42D /* Exceptions for "Huellas de Papa" folder in "Huellas de Papa" target */,
+			);
+			path = "Huellas de Papa";
+			sourceTree = "<group>";
+		};
+		7B90E19B2E908B3000F0A42D /* Huellas de PapaTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Huellas de PapaTests";
+			sourceTree = "<group>";
+		};
+		7B90E1A52E908B3000F0A42D /* Huellas de PapaUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Huellas de PapaUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7B90E1842E908B2E00F0A42D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B90E1952E908B3000F0A42D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B90E19F2E908B3000F0A42D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7B90E17E2E908B2E00F0A42D = {
+			isa = PBXGroup;
+			children = (
+				7B90E1892E908B2E00F0A42D /* Huellas de Papa */,
+				7B90E19B2E908B3000F0A42D /* Huellas de PapaTests */,
+				7B90E1A52E908B3000F0A42D /* Huellas de PapaUITests */,
+				7B90E1882E908B2E00F0A42D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7B90E1882E908B2E00F0A42D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7B90E1872E908B2E00F0A42D /* Huellas de Papa.app */,
+				7B90E1982E908B3000F0A42D /* Huellas de PapaTests.xctest */,
+				7B90E1A22E908B3000F0A42D /* Huellas de PapaUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7B90E1862E908B2E00F0A42D /* Huellas de Papa */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B90E1AB2E908B3000F0A42D /* Build configuration list for PBXNativeTarget "Huellas de Papa" */;
+			buildPhases = (
+				7B90E1832E908B2E00F0A42D /* Sources */,
+				7B90E1842E908B2E00F0A42D /* Frameworks */,
+				7B90E1852E908B2E00F0A42D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7B90E1892E908B2E00F0A42D /* Huellas de Papa */,
+			);
+			name = "Huellas de Papa";
+			packageProductDependencies = (
+			);
+			productName = "Huellas de Papa";
+			productReference = 7B90E1872E908B2E00F0A42D /* Huellas de Papa.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7B90E1972E908B3000F0A42D /* Huellas de PapaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B90E1B02E908B3000F0A42D /* Build configuration list for PBXNativeTarget "Huellas de PapaTests" */;
+			buildPhases = (
+				7B90E1942E908B3000F0A42D /* Sources */,
+				7B90E1952E908B3000F0A42D /* Frameworks */,
+				7B90E1962E908B3000F0A42D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B90E19A2E908B3000F0A42D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7B90E19B2E908B3000F0A42D /* Huellas de PapaTests */,
+			);
+			name = "Huellas de PapaTests";
+			packageProductDependencies = (
+			);
+			productName = "Huellas de PapaTests";
+			productReference = 7B90E1982E908B3000F0A42D /* Huellas de PapaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7B90E1A12E908B3000F0A42D /* Huellas de PapaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B90E1B32E908B3000F0A42D /* Build configuration list for PBXNativeTarget "Huellas de PapaUITests" */;
+			buildPhases = (
+				7B90E19E2E908B3000F0A42D /* Sources */,
+				7B90E19F2E908B3000F0A42D /* Frameworks */,
+				7B90E1A02E908B3000F0A42D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B90E1A42E908B3000F0A42D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7B90E1A52E908B3000F0A42D /* Huellas de PapaUITests */,
+			);
+			name = "Huellas de PapaUITests";
+			packageProductDependencies = (
+			);
+			productName = "Huellas de PapaUITests";
+			productReference = 7B90E1A22E908B3000F0A42D /* Huellas de PapaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7B90E17F2E908B2E00F0A42D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					7B90E1862E908B2E00F0A42D = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					7B90E1972E908B3000F0A42D = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 7B90E1862E908B2E00F0A42D;
+					};
+					7B90E1A12E908B3000F0A42D = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 7B90E1862E908B2E00F0A42D;
+					};
+				};
+			};
+			buildConfigurationList = 7B90E1822E908B2E00F0A42D /* Build configuration list for PBXProject "Huellas de Papa" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7B90E17E2E908B2E00F0A42D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7B90E1882E908B2E00F0A42D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7B90E1862E908B2E00F0A42D /* Huellas de Papa */,
+				7B90E1972E908B3000F0A42D /* Huellas de PapaTests */,
+				7B90E1A12E908B3000F0A42D /* Huellas de PapaUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7B90E1852E908B2E00F0A42D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B90E1962E908B3000F0A42D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B90E1A02E908B3000F0A42D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7B90E1832E908B2E00F0A42D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B90E1942E908B3000F0A42D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B90E19E2E908B3000F0A42D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7B90E19A2E908B3000F0A42D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B90E1862E908B2E00F0A42D /* Huellas de Papa */;
+			targetProxy = 7B90E1992E908B3000F0A42D /* PBXContainerItemProxy */;
+		};
+		7B90E1A42E908B3000F0A42D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B90E1862E908B2E00F0A42D /* Huellas de Papa */;
+			targetProxy = 7B90E1A32E908B3000F0A42D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		7B90E1AC2E908B3000F0A42D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Huellas de Papa/Huellas_de_Papa.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YU8L44V647;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Huellas de Papa/Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dr-Jorge-Vasquez.Huellas-de-Papa";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7B90E1AD2E908B3000F0A42D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Huellas de Papa/Huellas_de_Papa.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YU8L44V647;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Huellas de Papa/Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dr-Jorge-Vasquez.Huellas-de-Papa";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7B90E1AE2E908B3000F0A42D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YU8L44V647;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7B90E1AF2E908B3000F0A42D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YU8L44V647;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7B90E1B12E908B3000F0A42D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YU8L44V647;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dr-Jorge-Vasquez.Huellas-de-PapaTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Huellas de Papa.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Huellas de Papa";
+			};
+			name = Debug;
+		};
+		7B90E1B22E908B3000F0A42D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YU8L44V647;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dr-Jorge-Vasquez.Huellas-de-PapaTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Huellas de Papa.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Huellas de Papa";
+			};
+			name = Release;
+		};
+		7B90E1B42E908B3000F0A42D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YU8L44V647;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dr-Jorge-Vasquez.Huellas-de-PapaUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Huellas de Papa";
+			};
+			name = Debug;
+		};
+		7B90E1B52E908B3000F0A42D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YU8L44V647;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dr-Jorge-Vasquez.Huellas-de-PapaUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Huellas de Papa";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7B90E1822E908B2E00F0A42D /* Build configuration list for PBXProject "Huellas de Papa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B90E1AE2E908B3000F0A42D /* Debug */,
+				7B90E1AF2E908B3000F0A42D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B90E1AB2E908B3000F0A42D /* Build configuration list for PBXNativeTarget "Huellas de Papa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B90E1AC2E908B3000F0A42D /* Debug */,
+				7B90E1AD2E908B3000F0A42D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B90E1B02E908B3000F0A42D /* Build configuration list for PBXNativeTarget "Huellas de PapaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B90E1B12E908B3000F0A42D /* Debug */,
+				7B90E1B22E908B3000F0A42D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B90E1B32E908B3000F0A42D /* Build configuration list for PBXNativeTarget "Huellas de PapaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B90E1B42E908B3000F0A42D /* Debug */,
+				7B90E1B52E908B3000F0A42D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7B90E17F2E908B2E00F0A42D /* Project object */;
+}
