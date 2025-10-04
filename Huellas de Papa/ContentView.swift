@@ -6,56 +6,47 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    @StateObject private var progresoManager = ProgresoManager()
+    @State private var moduloSeleccionado: ModuloDisponible? = nil
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+        NavigationView {
+            if let modulo = moduloSeleccionado {
+                // Vista del módulo seleccionado
+                ModuloView(modulo: modulo)
+                    .environmentObject(progresoManager)
+                    .navigationBarBackButtonHidden(false)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Volver") {
+                                moduloSeleccionado = nil
+                            }
+                        }
                     }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+            } else {
+                // HOME VIEW - Lista de módulos disponibles
+                HomeView()
+                    .environmentObject(progresoManager)
+                    .onReceive(NotificationCenter.default.publisher(for: .moduloSeleccionado)) { notification in
+                        if let modulo = notification.object as? ModuloDisponible {
+                            moduloSeleccionado = modulo
+                        }
                     }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
             }
         }
+        .environmentObject(progresoManager)
     }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+// MARK: - Extensión para notificaciones
+extension Notification.Name {
+    static let moduloSeleccionado = Notification.Name("moduloSeleccionado")
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
