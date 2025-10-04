@@ -150,24 +150,6 @@ struct Capa1FundamentosView: View {
 
 // MARK: - Componentes de Vista
 
-struct CircularProgressView: View {
-    let progress: Double
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(Color.gray.opacity(0.3), lineWidth: 4)
-            
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(Color.blue, style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-                .animation(.easeInOut(duration: 1), value: progress)
-        }
-        .frame(width: 40, height: 40)
-    }
-}
-
 struct IdeaClaveCard: View {
     let idea: IdeaClave
     let index: Int
@@ -291,13 +273,7 @@ struct IdeaClaveCard: View {
 }
 
 // MARK: - Estilo de Botón Personalizado
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
-    }
-}
+// ScaleButtonStyle está definido en ModuloBase.swift
 
 struct FrasePoderosaCard: View {
     let frase: FrasePoderosa

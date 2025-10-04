@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 // MARK: - Estructura Base del Módulo
 struct ModuloBase {
@@ -33,7 +34,7 @@ protocol CapaBase {
 }
 
 // MARK: - Enums para Tipos de Capas
-enum TipoCapa: String, CaseIterable {
+enum TipoCapa: String, CaseIterable, Codable {
     case fundamentos = "fundamentos"
     case principios = "principios"
     case herramientas = "herramientas"
@@ -101,5 +102,44 @@ class ProgresoManager: ObservableObject {
     
     func obtenerMedalla(_ medallaId: String) {
         medallasObtenidas.insert(medallaId)
+    }
+    
+    func progreso(for moduloId: String, capa: TipoCapa) -> Double {
+        // Por ahora retornamos un progreso simulado
+        // En el futuro esto se conectará con el sistema de persistencia
+        return 0.0
+    }
+}
+
+// MARK: - Componente de Progreso Circular
+struct CircularProgressView: View {
+    let progress: Double
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(Color.gray.opacity(0.3), lineWidth: 4)
+                .frame(width: 40, height: 40)
+            
+            Circle()
+                .trim(from: 0, to: progress)
+                .stroke(Color.blue, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .frame(width: 40, height: 40)
+                .animation(.easeInOut(duration: 0.3), value: progress)
+            
+            Text("\(Int(progress * 100))%")
+                .font(.caption2)
+                .fontWeight(.bold)
+        }
+    }
+}
+
+// MARK: - Estilo de Botón Personalizado
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }

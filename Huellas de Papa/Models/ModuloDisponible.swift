@@ -43,7 +43,7 @@ enum NivelDificultad: String, CaseIterable {
     }
 }
 
-enum CategoriaModulo: String, CaseIterable {
+enum CategoriaModulo: String, CaseIterable, Codable {
     case neurociencia = "neurociencia"
     case gestionEmocional = "gestion-emocional"
     case imaginacion = "imaginacion"

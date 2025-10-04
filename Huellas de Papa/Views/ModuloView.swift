@@ -17,7 +17,7 @@ struct ModuloView: View {
                         CapaSelectorButton(
                             capa: capa,
                             isSelected: capaSeleccionada == capa,
-                            progreso: 0.0 // TODO: Implementar progreso real por capa
+                            progreso: progresoManager.progreso(for: modulo.id, capa: capa)
                         ) {
                             capaSeleccionada = capa
                         }
@@ -28,29 +28,10 @@ struct ModuloView: View {
             .padding(.vertical, 8)
             .background(Color(.systemGray6))
             
-            // Contenido de la capa seleccionada
+            // Contenido de la capa seleccionada usando Factory
             ScrollView {
                 VStack {
-                    switch capaSeleccionada {
-                    case .fundamentos:
-                        Capa1FundamentosView()
-                    case .principios:
-                        Capa2PrincipiosView()
-                    case .herramientas:
-                        Capa3HerramientasView()
-                    case .simulaciones:
-                        Capa4SimulacionesView()
-                    case .aplicacionCasa:
-                        Capa5AplicacionCasaView()
-                    case .planEntrenamiento:
-                        Capa6PlanEntrenamientoView()
-                    case .reflexion:
-                        Capa7ReflexionView()
-                    case .modoNino:
-                        Capa8ModoNinoView()
-                    case .gamificacion:
-                        Capa9GamificacionView()
-                    }
+                    FactoryModulos.crearVistaCapa(paraModulo: modulo.id, capa: capaSeleccionada)
                 }
                 .padding()
             }
@@ -105,139 +86,7 @@ struct ModuloHeaderView: View {
 }
 
 // MARK: - Vistas Placeholder para las Capas Restantes
-
-struct Capa3HerramientasView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "wrench.and.screwdriver")
-                .font(.system(size: 60))
-                .foregroundColor(.orange)
-            
-            Text("CAPA 3: HERRAMIENTAS PRÁCTICAS")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct Capa4SimulacionesView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "theatermasks")
-                .font(.system(size: 60))
-                .foregroundColor(.purple)
-            
-            Text("CAPA 4: SIMULACIONES AVANZADAS")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct Capa5AplicacionCasaView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "house")
-                .font(.system(size: 60))
-                .foregroundColor(.green)
-            
-            Text("CAPA 5: APLICACIÓN EN CASA")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct Capa6PlanEntrenamientoView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "calendar")
-                .font(.system(size: 60))
-                .foregroundColor(.red)
-            
-            Text("CAPA 6: PLAN DE ENTRENAMIENTO")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct Capa7ReflexionView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "book.pages")
-                .font(.system(size: 60))
-                .foregroundColor(.teal)
-            
-            Text("CAPA 7: REFLEXIÓN PROFUNDA")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct Capa8ModoNinoView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "figure.child")
-                .font(.system(size: 60))
-                .foregroundColor(.pink)
-            
-            Text("CAPA 8: MODO NIÑO")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct Capa9GamificacionView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "trophy")
-                .font(.system(size: 60))
-                .foregroundColor(.yellow)
-            
-            Text("CAPA 9: GAMIFICACIÓN")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
+// Estas vistas ahora están en sus respectivas carpetas de módulos
 
 // MARK: - Botón Selector de Capa
 struct CapaSelectorButton: View {
