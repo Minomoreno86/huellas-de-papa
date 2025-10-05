@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct Capa1FundamentosView: View {
-    @StateObject private var progresoManager = ProgresoManager()
-    @State private var capa1 = Capa1Fundamentos()
+    @EnvironmentObject private var progresoManager: ProgresoManager
+    @State private var capa1: Capa1Fundamentos?
     @State private var ideaSeleccionada: IdeaClave?
     @State private var fraseSeleccionada: FrasePoderosa?
     @State private var mostrarDetalle = false
@@ -10,7 +10,8 @@ struct Capa1FundamentosView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                if let capa1 = capa1 {
+                    VStack(alignment: .leading, spacing: 20) {
                     
                     // Header
                     VStack(alignment: .leading, spacing: 10) {
@@ -134,9 +135,23 @@ struct Capa1FundamentosView: View {
                     
                 }
                 .padding()
+                } else {
+                    VStack {
+                        ProgressView("Cargando contenido...")
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                }
             }
             .navigationTitle("Capa 1")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                print("🔍 DEBUG: Capa1FundamentosView onAppear")
+                if capa1 == nil {
+                    print("🔍 DEBUG: Cargando contenido de Capa1Fundamentos...")
+                    capa1 = Capa1Fundamentos.contenidoCerebroDelNino()
+                    print("🔍 DEBUG: Contenido cargado exitosamente")
+                }
+            }
         }
         .sheet(isPresented: $mostrarDetalle) {
             if let idea = ideaSeleccionada {

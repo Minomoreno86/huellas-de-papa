@@ -1,0 +1,16 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ProtocoloModulo.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Módulo no encontrado: %@",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 46
+        }
+      }
+    ]
+  },
+  "version": 1
+}

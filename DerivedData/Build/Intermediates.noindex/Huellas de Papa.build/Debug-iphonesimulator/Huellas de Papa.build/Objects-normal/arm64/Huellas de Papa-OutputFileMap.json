@@ -1,0 +1,218 @@
+{
+  "" : {
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas de Papa-master.dia",
+    "emit-module-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas de Papa-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas de Papa-master-emit-module.dia",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas de Papa-master.swiftdeps"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/ContentView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Huellas_de_PapaApp.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Huellas_de_PapaApp~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Item.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Item~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ElCerebroDelNinoExplicadoAPadres/Capa1Fundamentos.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1Fundamentos~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ElCerebroDelNinoExplicadoAPadres/Capa2Principios.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2Principios~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ElCerebroDelNinoExplicadoAPadres/Capa3Herramientas.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3Herramientas~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ModuloBase.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloBase~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ModuloDisponible.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloDisponible~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ProtocoloModulo.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ProtocoloModulo~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa1FundamentosView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa1FundamentosView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa2PrincipiosView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa2PrincipiosView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa3HerramientasView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa3HerramientasView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa4SimulacionesView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa4SimulacionesView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa5AplicacionCasaView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa5AplicacionCasaView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa6PlanEntrenamientoView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa6PlanEntrenamientoView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa7ReflexionView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa7ReflexionView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa8ModoNinoView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa8ModoNinoView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa9GamificacionView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/Capa9GamificacionView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/HomeView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/HomeView~partial.swiftmodule"
+  },
+  "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ModuloView.swift" : {
+    "const-values" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView.swiftconstvalues",
+    "dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView.d",
+    "diagnostics" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView.dia",
+    "index-unit-output-path" : "/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView.o",
+    "llvm-bc" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView.bc",
+    "object" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView.o",
+    "swift-dependencies" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView.swiftdeps",
+    "swiftmodule" : "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/DerivedData/Build/Intermediates.noindex/Huellas de Papa.build/Debug-iphonesimulator/Huellas de Papa.build/Objects-normal/arm64/ModuloView~partial.swiftmodule"
+  }
+}

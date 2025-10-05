@@ -1,0 +1,16 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Models/ModuloBase.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld%%",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 131
+        }
+      }
+    ]
+  },
+  "version": 1
+}

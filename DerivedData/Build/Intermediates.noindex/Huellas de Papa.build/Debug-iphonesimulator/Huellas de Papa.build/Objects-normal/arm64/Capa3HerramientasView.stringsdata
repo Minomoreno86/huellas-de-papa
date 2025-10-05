@@ -1,0 +1,144 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa3HerramientasView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Herramientas",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 98
+        }
+      },
+      {
+        "comment": "",
+        "key": "CAPA 3: HERRAMIENTAS PRÁCTICAS",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 23
+        }
+      },
+      {
+        "comment": "",
+        "key": "Filtrar por categoría:",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 40
+        }
+      },
+      {
+        "comment": "",
+        "key": "Todas",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 49
+        }
+      },
+      {
+        "comment": "",
+        "key": "Herramientas disponibles:",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 80
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 131
+        }
+      },
+      {
+        "comment": "",
+        "key": "Explorar",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 164
+        }
+      },
+      {
+        "comment": "",
+        "key": "Toca para ver más",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 204
+        }
+      },
+      {
+        "comment": "",
+        "key": "Herramienta",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 471
+        }
+      },
+      {
+        "comment": "",
+        "key": "Herramienta Práctica",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 251
+        }
+      },
+      {
+        "comment": "",
+        "key": "Descripción",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 282
+        }
+      },
+      {
+        "comment": "",
+        "key": "Información Básica",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 297
+        }
+      },
+      {
+        "comment": "",
+        "key": "Instrucciones Paso a Paso",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 322
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld.",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 340
+        }
+      },
+      {
+        "comment": "",
+        "key": "Beneficios",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 375
+        }
+      },
+      {
+        "comment": "",
+        "key": "Variaciones",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 427
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cerrar",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 475
+        }
+      }
+    ]
+  },
+  "version": 1
+}

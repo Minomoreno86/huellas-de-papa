@@ -1,0 +1,16 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Volver",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 23
+        }
+      }
+    ]
+  },
+  "version": 1
+}

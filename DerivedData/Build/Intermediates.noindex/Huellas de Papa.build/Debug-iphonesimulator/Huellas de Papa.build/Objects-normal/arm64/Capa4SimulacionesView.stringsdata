@@ -1,0 +1,24 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa4SimulacionesView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "CAPA 4: SIMULACIONES AVANZADAS",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 10
+        }
+      },
+      {
+        "comment": "",
+        "key": "Próximamente...",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 14
+        }
+      }
+    ]
+  },
+  "version": 1
+}

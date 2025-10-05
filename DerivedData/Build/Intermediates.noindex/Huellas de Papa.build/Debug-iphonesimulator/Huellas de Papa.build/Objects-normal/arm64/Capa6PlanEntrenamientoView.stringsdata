@@ -1,0 +1,24 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa6PlanEntrenamientoView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "CAPA 6: PLAN DE ENTRENAMIENTO",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 10
+        }
+      },
+      {
+        "comment": "",
+        "key": "Próximamente...",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 14
+        }
+      }
+    ]
+  },
+  "version": 1
+}

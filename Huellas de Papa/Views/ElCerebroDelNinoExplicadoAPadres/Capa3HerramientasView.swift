@@ -1,13 +1,14 @@
 import SwiftUI
 
 struct Capa3HerramientasView: View {
-    @StateObject private var progresoManager = ProgresoManager()
-    @State private var capa3 = Capa3Herramientas.contenidoCerebroDelNino()
+    @EnvironmentObject private var progresoManager: ProgresoManager
+    @State private var capa3: Capa3Herramientas?
     @State private var herramientaSeleccionada: HerramientaPractica?
     @State private var mostrarDetalle = false
     @State private var categoriaFiltro: CategoriaHerramienta?
     
     var herramientasFiltradas: [HerramientaPractica] {
+        guard let capa3 = capa3 else { return [] }
         if let categoria = categoriaFiltro {
             return capa3.herramientas.filter { $0.categoria == categoria }
         }
@@ -17,7 +18,8 @@ struct Capa3HerramientasView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                if let capa3 = capa3 {
+                    VStack(alignment: .leading, spacing: 20) {
                     // Header
                     VStack(alignment: .leading, spacing: 12) {
                         Text("CAPA 3: HERRAMIENTAS PRÁCTICAS")
@@ -94,9 +96,20 @@ struct Capa3HerramientasView: View {
                     }
                 }
                 .padding()
+                } else {
+                    VStack {
+                        ProgressView("Cargando herramientas...")
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                }
             }
             .navigationTitle("Herramientas")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                if capa3 == nil {
+                    capa3 = Capa3Herramientas.contenidoCerebroDelNino()
+                }
+            }
         }
         .sheet(isPresented: $mostrarDetalle) {
             if let herramienta = herramientaSeleccionada {

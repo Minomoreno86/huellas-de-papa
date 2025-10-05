@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ModuloView: View {
     let modulo: ModuloDisponible
-    @StateObject private var progresoManager = ProgresoManager()
+    @EnvironmentObject private var progresoManager: ProgresoManager
     @State private var capaSeleccionada: TipoCapa = .fundamentos
     
     var body: some View {
@@ -31,7 +31,10 @@ struct ModuloView: View {
             // Contenido de la capa seleccionada usando Factory
             ScrollView {
                 VStack {
-                    FactoryModulos.crearVistaCapa(paraModulo: modulo.id, capa: capaSeleccionada)
+                    Group {
+                        FactoryModulos.crearVistaCapa(paraModulo: modulo.id, capa: capaSeleccionada)
+                            .environmentObject(progresoManager)
+                    }
                 }
                 .padding()
             }

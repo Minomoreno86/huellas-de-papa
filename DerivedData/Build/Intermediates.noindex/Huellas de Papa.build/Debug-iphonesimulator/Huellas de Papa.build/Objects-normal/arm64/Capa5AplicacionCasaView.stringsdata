@@ -1,0 +1,24 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa5AplicacionCasaView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "CAPA 5: APLICACIÓN EN CASA",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 10
+        }
+      },
+      {
+        "comment": "",
+        "key": "Próximamente...",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 14
+        }
+      }
+    ]
+  },
+  "version": 1
+}

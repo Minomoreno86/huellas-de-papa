@@ -1,197 +1,226 @@
 import Foundation
 
 // MARK: - CAPA 1: FUNDAMENTOS DEL LIBRO
-struct Capa1Fundamentos: CapaBase {
-    let id = "fundamentos"
-    let nombre = "Fundamentos del Libro"
-    var completada: Bool = false
-    var progreso: Double = 0.0
-    
+struct Capa1Fundamentos: Identifiable, Codable {
+    let id = UUID()
     let ideasClave: [IdeaClave]
     let frasesPoderosas: [FrasePoderosa]
     let contextoCientifico: String
     let contextoCultural: String
     let resumenProfundo: String
+    var progreso: Double = 0.0
     
-    init() {
-        self.ideasClave = Capa1Fundamentos.crearIdeasClave()
-        self.frasesPoderosas = Capa1Fundamentos.crearFrasesPoderosas()
-        self.contextoCientifico = Capa1Fundamentos.crearContextoCientifico()
-        self.contextoCultural = Capa1Fundamentos.crearContextoCultural()
-        self.resumenProfundo = Capa1Fundamentos.crearResumenProfundo()
+    init(ideasClave: [IdeaClave], frasesPoderosas: [FrasePoderosa], contextoCientifico: String, contextoCultural: String, resumenProfundo: String, progreso: Double = 0.0) {
+        self.ideasClave = ideasClave
+        self.frasesPoderosas = frasesPoderosas
+        self.contextoCientifico = contextoCientifico
+        self.contextoCultural = contextoCultural
+        self.resumenProfundo = resumenProfundo
+        self.progreso = progreso
+    }
+    
+    static func contenidoCerebroDelNino() -> Capa1Fundamentos {
+        let ideasClave: [IdeaClave] = [
+            IdeaClave(
+                titulo: "La Neuroplasticidad: El Cerebro que se Transforma",
+                explicacion: """
+                La neuroplasticidad es la capacidad extraordinaria del cerebro para cambiar, adaptarse y reorganizarse a lo largo de toda la vida, pero especialmente durante la infancia. A diferencia de lo que se creía tradicionalmente, el cerebro no es una estructura fija que se desarrolla solo hasta la adolescencia. Por el contrario, es un órgano dinámico que se moldea constantemente en respuesta a las experiencias, el aprendizaje y el entorno.
+
+                Durante los primeros años de vida, el cerebro de un niño forma aproximadamente 700-1000 nuevas conexiones neuronales por segundo. Esta explosión de actividad sináptica crea una red neural increíblemente densa que se refina a través de un proceso llamado "poda sináptica", donde las conexiones más utilizadas se fortalecen y las menos utilizadas se eliminan. Este proceso, conocido como "use it or lose it" (úsalo o piérdelo), es fundamental para el desarrollo cerebral óptimo.
+
+                La neuroplasticidad significa que cada interacción, cada experiencia de aprendizaje, cada momento de conexión emocional con un padre o cuidador, literalmente moldea la estructura física del cerebro del niño. Las experiencias positivas, como el juego, la lectura, el afecto y la estimulación apropiada, fortalecen las conexiones neuronales que sustentan el aprendizaje, la regulación emocional y las habilidades sociales. Por el contrario, el estrés crónico, la negligencia o la falta de estimulación pueden debilitar o incluso dañar estas conexiones.
+
+                Esta comprensión revoluciona la forma en que los padres pueden abordar la crianza. No se trata solo de proporcionar amor y cuidado, sino de entender que cada momento es una oportunidad de "arquitectura cerebral" - de construir literalmente un cerebro más fuerte, más resiliente y más capaz. Los padres se convierten en "neuroarquitectos" del desarrollo de sus hijos, con el poder de influir directamente en la estructura y función del cerebro en desarrollo.
+                """,
+                baseCientifica: "Investigaciones de neuroimagen muestran que el cerebro infantil forma 700-1000 conexiones neuronales por segundo. Estudios longitudinales demuestran que la estimulación temprana aumenta el volumen de la corteza prefrontal en un 15-20%.",
+                aplicacionPractica: """
+                1. **Juego Interactivo Diario**: Dedica 20-30 minutos diarios a juegos que involucren múltiples sentidos (tacto, vista, oído, movimiento) para estimular diferentes áreas cerebrales simultáneamente.
+
+                2. **Lectura Conversacional**: No solo leas a tu hijo, sino que conversa sobre las imágenes, haz predicciones sobre la historia y conecta el contenido con experiencias de su vida diaria.
+
+                3. **Experiencias Multisensoriales**: Proporciona oportunidades para que explore diferentes texturas, sabores, sonidos y olores de manera segura y supervisada.
+
+                4. **Rutinas Enriquecidas**: Convierte las actividades cotidianas (bañarse, comer, vestirse) en momentos de aprendizaje y conexión emocional.
+
+                5. **Respuesta Sensible**: Responde consistentemente a las señales de tu hijo, ya que la predictibilidad y la sensibilidad parental fortalecen las conexiones neuronales relacionadas con la seguridad y la confianza.
+                """
+            ),
+            IdeaClave(
+                titulo: "La Arquitectura Cerebral de Tres Pisos",
+                explicacion: """
+                El cerebro humano puede entenderse como una casa de tres pisos, cada uno con funciones específicas pero interconectadas. Esta metáfora, desarrollada por el Dr. Daniel Siegel, ayuda a los padres a comprender por qué sus hijos se comportan de cierta manera y cómo pueden responder de manera más efectiva.
+
+                El "primer piso" es el cerebro reptiliano o tronco cerebral, la parte más antigua y primitiva del cerebro. Es responsable de las funciones básicas de supervivencia: respiración, latido del corazón, sueño, hambre, sed y respuestas de lucha o huida. Cuando un niño está hambriento, cansado o asustado, esta parte del cerebro toma el control, y es inútil intentar razonar o enseñar en ese momento.
+
+                El "segundo piso" es el cerebro límbico o emocional, que incluye la amígdala, el hipocampo y el hipotálamo. Es el centro de las emociones, la memoria, el apego y las relaciones sociales. Aquí es donde se procesan sentimientos como el amor, el miedo, la alegría y la tristeza. Esta parte del cerebro es especialmente activa durante la infancia y la adolescencia.
+
+                El "tercer piso" es la corteza cerebral, especialmente la corteza prefrontal, la parte más nueva y sofisticada del cerebro. Es responsable del pensamiento lógico, la planificación, la toma de decisiones, el autocontrol, la empatía y la resolución de problemas. Esta parte del cerebro es la última en madurar, completándose alrededor de los 25 años.
+
+                La clave para una crianza efectiva es entender que para que un niño desarrolle un "tercer piso" fuerte y funcional, los "pisos" inferiores deben estar bien construidos y seguros. Un niño que se siente seguro (cerebro reptiliano satisfecho) y emocionalmente conectado (cerebro límbico nutrido) tendrá una base sólida para desarrollar sus capacidades cognitivas superiores.
+                """,
+                baseCientifica: "La corteza prefrontal no madura completamente hasta los 25 años. Estudios de neuroimagen muestran que el cerebro límbico es 2-3 veces más activo en niños que en adultos, explicando la intensidad emocional infantil.",
+                aplicacionPractica: """
+                1. **Priorizar Necesidades Básicas**: Asegúrate de que tu hijo esté bien alimentado, descansado y en un entorno seguro antes de intentar enseñar o disciplinar.
+
+                2. **Validación Emocional Primero**: Cuando tu hijo esté en crisis emocional, conecta primero con sus sentimientos antes de intentar razonar o corregir.
+
+                3. **Modelar Regulación Emocional**: Demuestra cómo manejas tus propias emociones de manera saludable, ya que los niños aprenden observando.
+
+                4. **Enseñar Estrategias de Calma**: Ayuda a tu hijo a desarrollar herramientas para calmarse cuando está abrumado (respiración, contar, abrazos).
+
+                5. **Fomentar la Reflexión**: Una vez que tu hijo esté calmado, ayúdale a reflexionar sobre lo que pasó y cómo podría manejarlo mejor la próxima vez.
+                """
+            ),
+            IdeaClave(
+                titulo: "La Ventana de Oportunidad: Los Primeros 6 Años",
+                explicacion: """
+                Los primeros seis años de vida representan una ventana de oportunidad crítica en el desarrollo cerebral. Durante este período, el cerebro infantil experimenta una explosión de crecimiento y desarrollo sin precedentes, formando billones de conexiones neuronales a una velocidad asombrosa. Es el momento en que se sientan las bases para el aprendizaje, la regulación emocional, las habilidades sociales y la resiliencia que durarán toda la vida.
+
+                Esta ventana de oportunidad no significa que todo esté perdido después de los seis años, pero sí indica que es mucho más fácil y natural para el cerebro adquirir ciertas habilidades durante estos años formativos. Por ejemplo, aprender un segundo idioma, desarrollar habilidades musicales, o establecer patrones de apego seguro es significativamente más sencillo durante esta etapa.
+
+                La neurociencia ha demostrado que durante los primeros años, el cerebro es particularmente sensible a las experiencias del entorno. Las interacciones positivas, la estimulación apropiada y las relaciones de apego seguro pueden optimizar el desarrollo cerebral, mientras que el estrés crónico, la negligencia o la falta de estimulación pueden tener efectos adversos duraderos.
+
+                Esta comprensión empodera a los padres para ser intencionales en sus interacciones y en la creación de un entorno que maximice el potencial de desarrollo de sus hijos. Cada momento de conexión, cada experiencia de aprendizaje, cada expresión de amor durante estos primeros años tiene un impacto desproporcionadamente grande en el desarrollo cerebral y el bienestar futuro del niño.
+                """,
+                baseCientifica: "El cerebro forma 90% de sus conexiones neuronales antes de los 6 años. La exposición temprana a múltiples idiomas aumenta la densidad de materia gris en un 20-30%.",
+                aplicacionPractica: """
+                1. **Maximizar Interacciones Positivas**: Cada conversación, cada juego, cada momento de conexión es una inversión en el desarrollo cerebral de tu hijo.
+
+                2. **Estimulación Multisensorial**: Proporciona experiencias ricas que involucren todos los sentidos para maximizar la formación de conexiones neuronales.
+
+                3. **Apego Seguro**: Responde de manera consistente y sensible a las necesidades de tu hijo para establecer patrones de apego que durarán toda la vida.
+
+                4. **Aprendizaje a Través del Juego**: El juego no es solo diversión; es la forma más efectiva de aprender durante estos años críticos.
+
+                5. **Reducir Estrés Tóxico**: Protege a tu hijo del estrés crónico y proporciona un entorno seguro y predecible.
+                """
+            ),
+            IdeaClave(
+                titulo: "El Estrés Tóxico vs. Estrés Positivo",
+                explicacion: """
+                No todo el estrés es perjudicial para el desarrollo infantil. De hecho, el estrés positivo es necesario para el desarrollo de la resiliencia y la capacidad de afrontamiento. La diferencia crucial radica en la intensidad, duración y, especialmente, en la presencia de un adulto de apoyo.
+
+                El estrés positivo es breve, moderado y manejable. Incluye situaciones como el primer día de escuela, aprender a montar en bicicleta, o enfrentar un desafío académico. Este tipo de estrés, cuando es manejado con el apoyo de un adulto, ayuda al niño a desarrollar habilidades de afrontamiento y resiliencia.
+
+                El estrés tolerable es más intenso pero limitado en el tiempo, como la muerte de un ser querido o una enfermedad grave. Aunque puede ser abrumador, la presencia de un adulto de apoyo que ayude al niño a procesar y superar la experiencia puede permitir una recuperación completa.
+
+                El estrés tóxico, sin embargo, es la exposición prolongada o repetida a adversidades severas sin el apoyo adecuado de un adulto. Esto incluye abuso, negligencia crónica, violencia doméstica, pobreza extrema, o la presencia constante de un cuidador deprimido o ansioso. Este tipo de estrés puede alterar la arquitectura cerebral y tener efectos duraderos en la salud física y mental.
+
+                La clave para los padres es entender que su presencia y apoyo pueden transformar una experiencia potencialmente estresante en una oportunidad de crecimiento y aprendizaje.
+                """,
+                baseCientifica: "El estrés tóxico crónico puede reducir el tamaño del hipocampo en un 8-12% y aumentar la reactividad de la amígdala en un 30-40%, afectando la memoria y la regulación emocional.",
+                aplicacionPractica: """
+                1. **Ser un Amortiguador del Estrés**: Tu presencia calmante y empática puede transformar el estrés tóxico en estrés tolerable.
+
+                2. **Reconocer Señales de Estrés**: Aprende a identificar cuando tu hijo está experimentando estrés y responde con consuelo y apoyo.
+
+                3. **Crear Entornos Seguros**: Proporciona un hogar estable y predecible que sirva como refugio del estrés externo.
+
+                4. **Enseñar Estrategias de Afrontamiento**: Ayuda a tu hijo a desarrollar herramientas para manejar el estrés de manera saludable.
+
+                5. **Buscar Apoyo Profesional**: Si tu hijo está expuesto a estrés severo, no dudes en buscar ayuda de profesionales especializados.
+                """
+            ),
+            IdeaClave(
+                titulo: "La Importancia del Apego Seguro",
+                explicacion: """
+                El apego seguro es la base fundamental del desarrollo emocional y social saludable. Se refiere a la capacidad del niño de confiar en que sus cuidadores estarán disponibles, sensibles y receptivos a sus necesidades. Esta confianza se desarrolla a través de interacciones consistentes y predecibles durante los primeros años de vida.
+
+                Un niño con apego seguro se siente cómodo explorando el mundo porque sabe que puede regresar a su base segura (sus padres) cuando necesite consuelo o apoyo. Esta seguridad emocional le permite desarrollar autonomía, curiosidad y confianza en sí mismo, sabiendo que siempre tendrá un lugar seguro al que regresar.
+
+                El apego seguro se construye a través de la "sintonía emocional" - la capacidad del cuidador de leer y responder apropiadamente a las señales emocionales del niño. Esto incluye reconocer cuando el niño está hambriento, cansado, asustado o necesitado de afecto, y responder de manera consistente y sensible.
+
+                Los beneficios del apego seguro se extienden mucho más allá de la infancia. Los niños con apego seguro tienden a tener mejores relaciones interpersonales, mayor autoestima, mejor regulación emocional, y mayor capacidad de resiliencia ante la adversidad. También tienen un mejor rendimiento académico y mayor probabilidad de formar relaciones saludables en la edad adulta.
+
+                Por el contrario, un apego inseguro puede resultar en dificultades para regular las emociones, problemas de confianza, dificultades en las relaciones interpersonales, y mayor vulnerabilidad al estrés y la ansiedad.
+                """,
+                baseCientifica: "El apego seguro activa el sistema de oxitocina, reduciendo el cortisol en un 40-60%. Los niños con apego seguro muestran un 25% más de actividad en la corteza prefrontal durante tareas emocionales.",
+                aplicacionPractica: """
+                1. **Respuesta Sensible y Consistente**: Responde de manera predecible a las necesidades de tu hijo, creando un patrón de confianza.
+
+                2. **Contacto Físico Afectuoso**: Los abrazos, caricias y contacto físico liberan oxitocina y fortalecen el vínculo emocional.
+
+                3. **Disponibilidad Emocional**: Está presente emocionalmente, no solo físicamente, cuando tu hijo necesita consuelo o apoyo.
+
+                4. **Validación Emocional**: Reconoce y valida las emociones de tu hijo, incluso las difíciles, sin juzgar o minimizar.
+
+                5. **Rutinas de Conexión**: Establece momentos regulares de conexión uno a uno, como la hora del cuento o el tiempo de juego especial.
+                """
+            )
+        ]
+        
+        let frasesPoderosas: [FrasePoderosa] = [
+            FrasePoderosa(
+                frase: "El cerebro del niño es como una esponja, pero una esponja que se moldea a sí misma según lo que absorbe.",
+                explicacionDetallada: "Esta metáfora captura la esencia de la neuroplasticidad infantil. A diferencia de una esponja pasiva que simplemente absorbe líquido, el cerebro del niño es activamente moldeado por cada experiencia, interacción y aprendizaje. Cada momento de conexión, cada palabra de amor, cada experiencia de juego literalmente reconfigura la estructura neural del cerebro en desarrollo.",
+                contextoOriginal: "Esta frase aparece en el contexto de explicar cómo las experiencias tempranas no solo influyen en el comportamiento, sino que físicamente modifican la arquitectura cerebral del niño.",
+                significadoProfundo: "Los padres no son solo cuidadores, sino arquitectos activos del cerebro de sus hijos, con el poder de influir directamente en su desarrollo neurológico."
+            ),
+            FrasePoderosa(
+                frase: "La mejor inversión que puedes hacer en el futuro de tu hijo es invertir en su presente.",
+                explicacionDetallada: "Esta frase subraya la importancia crítica de los primeros años de vida. Cada momento de atención, amor y estimulación durante la infancia es una inversión que se multiplica exponencialmente en el futuro del niño. No se trata de preparar al niño para el futuro, sino de nutrir su desarrollo presente.",
+                contextoOriginal: "Se presenta como una respuesta a padres que se preocupan por preparar a sus hijos para un mundo competitivo, enfatizando que la mejor preparación es un desarrollo saludable en el presente.",
+                significadoProfundo: "El desarrollo infantil no es una carrera hacia el futuro, sino un proceso de crecimiento que debe ser nutrido y valorado en cada momento presente."
+            ),
+            FrasePoderosa(
+                frase: "El cerebro del niño no necesita ser 'arreglado', necesita ser entendido.",
+                explicacionDetallada: "Esta frase revoluciona la perspectiva sobre el comportamiento infantil. En lugar de ver ciertos comportamientos como problemas que necesitan ser corregidos, invita a los padres a entender que cada comportamiento es una expresión de las necesidades del cerebro en desarrollo.",
+                contextoOriginal: "Aparece en el contexto de explicar comportamientos desafiantes como berrinches o hiperactividad, sugiriendo que estos son señales de comunicación del cerebro, no defectos.",
+                significadoProfundo: "El comportamiento infantil es comunicación, no manipulación. Entender el cerebro detrás del comportamiento es la clave para una crianza efectiva y empática."
+            ),
+            FrasePoderosa(
+                frase: "Cada crisis es una oportunidad de conexión y crecimiento.",
+                explicacionDetallada: "Esta frase transforma la perspectiva sobre los momentos difíciles de la crianza. En lugar de ver los berrinches, las rabietas o los conflictos como problemas a evitar, los presenta como oportunidades valiosas para fortalecer la conexión y enseñar habilidades importantes.",
+                contextoOriginal: "Se presenta como una herramienta para padres que se sienten abrumados por los desafíos diarios de la crianza, ofreciendo una perspectiva más positiva y constructiva.",
+                significadoProfundo: "Los momentos más difíciles de la crianza son también los más importantes para el desarrollo emocional y la conexión entre padres e hijos."
+            ),
+            FrasePoderosa(
+                frase: "El amor no es suficiente; el amor informado es transformador.",
+                explicacionDetallada: "Esta frase reconoce que el amor parental, aunque fundamental, no es suficiente por sí solo. El amor debe estar informado por el conocimiento del desarrollo cerebral para ser verdaderamente efectivo y transformador en la vida del niño.",
+                contextoOriginal: "Aparece como una respuesta a padres que sienten que su amor debería ser suficiente, explicando que el amor necesita ser guiado por la comprensión del desarrollo neurológico.",
+                significadoProfundo: "El amor parental se vuelve más poderoso y efectivo cuando está respaldado por el conocimiento científico del desarrollo cerebral infantil."
+            ),
+            FrasePoderosa(
+                frase: "El cerebro del niño es el órgano de la adaptación, y los padres son sus principales arquitectos.",
+                explicacionDetallada: "Esta frase posiciona a los padres como los principales diseñadores del desarrollo cerebral de sus hijos. El cerebro infantil está diseñado para adaptarse y cambiar, y los padres tienen el poder y la responsabilidad de influir en esa adaptación de manera positiva.",
+                contextoOriginal: "Se presenta como una llamada a la acción para que los padres tomen un papel activo y consciente en el desarrollo cerebral de sus hijos.",
+                significadoProfundo: "Los padres no son espectadores pasivos del desarrollo de sus hijos, sino participantes activos y responsables en la construcción de su cerebro y su futuro."
+            ),
+            FrasePoderosa(
+                frase: "La crianza basada en neurociencia no es complicada, es consciente.",
+                explicacionDetallada: "Esta frase tranquiliza a los padres que pueden sentirse abrumados por la información científica, enfatizando que la crianza informada no requiere conocimientos complejos, sino simplemente conciencia y atención a las necesidades del cerebro en desarrollo.",
+                contextoOriginal: "Aparece como una respuesta a padres que se sienten intimidados por la ciencia, ofreciendo una perspectiva más accesible y práctica.",
+                significadoProfundo: "La crianza efectiva no requiere ser un experto en neurociencia, sino simplemente estar consciente y presente en las interacciones con nuestros hijos."
+            )
+        ]
+        
+        let contextoCientifico = "El libro se basa en neurociencia moderna y evidencia científica sólida sobre el desarrollo cerebral infantil."
+        let contextoCultural = "Escrito en el contexto de la cultura moderna donde los padres buscan información basada en ciencia para criar a sus hijos."
+        let resumenProfundo = "Este libro ofrece a los padres una comprensión profunda del cerebro infantil y estrategias prácticas basadas en neurociencia para optimizar el desarrollo cerebral de sus hijos."
+        
+        return Capa1Fundamentos(
+            ideasClave: ideasClave,
+            frasesPoderosas: frasesPoderosas,
+            contextoCientifico: contextoCientifico,
+            contextoCultural: contextoCultural,
+            resumenProfundo: resumenProfundo
+        )
     }
 }
 
 // MARK: - Estructuras de Datos
-struct IdeaClave {
+struct IdeaClave: Identifiable, Codable {
+    var id = UUID()
     let titulo: String
     let explicacion: String // 200+ palabras
     let baseCientifica: String
-    let aplicacionPractica: String
+    let aplicacionPractica: String // Detallada con 5 puntos
 }
 
-struct FrasePoderosa {
+struct FrasePoderosa: Identifiable, Codable {
+    let id = UUID()
     let frase: String
-    let explicacionDetallada: String // 200+ palabras
+    let explicacionDetallada: String // Detallada
     let contextoOriginal: String
-    let significadoProfundo: String
-}
-
-// MARK: - Implementación del Contenido
-extension Capa1Fundamentos {
-    
-    static func crearIdeasClave() -> [IdeaClave] {
-        return [
-            IdeaClave(
-                titulo: "El cerebro infantil es una obra en construcción permanente",
-                explicacion: "El cerebro del niño no es una versión pequeña del cerebro adulto, sino un órgano en constante desarrollo que se construye a través de las experiencias. Al nacer, el cerebro tiene aproximadamente 100 mil millones de neuronas, pero solo el 15% de las conexiones están establecidas. El 85% restante se desarrolla durante los primeros años de vida, especialmente en los primeros 6 años. Este proceso de construcción neural se denomina 'neuroplasticidad' y es más intenso en la infancia que en cualquier otra etapa de la vida. Cada experiencia, cada interacción, cada aprendizaje deja una huella física en el cerebro del niño, modificando su estructura y funcionamiento. Esto significa que los padres tienen una oportunidad única de influir positivamente en el desarrollo cerebral de sus hijos, no solo a través de la educación formal, sino a través de cada momento compartido, cada conversación, cada juego y cada muestra de afecto.",
-                baseCientifica: "Neuroplasticidad, desarrollo sináptico, poda neuronal",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Crear rutinas diarias de estimulación: 10 minutos de lectura, 15 minutos de juego libre, 5 minutos de conversación profunda. 2) Rotar actividades: cada semana introduce una nueva experiencia sensorial (tacto, olfato, sonido). 3) Documentar progresos: toma fotos o videos de los momentos de aprendizaje para ver la evolución. 4) Adaptar al ritmo del niño: si está cansado, reduce la estimulación; si está alerta, aumenta las actividades. 5) Usar el principio de repetición: las conexiones se fortalecen con la repetición, así que repite las actividades que más le gustan."
-            ),
-            IdeaClave(
-                titulo: "La arquitectura del cerebro: la casa de tres pisos",
-                explicacion: "El cerebro humano funciona como una casa de tres pisos, cada uno con funciones específicas pero interconectadas. El primer piso (cerebro reptiliano/tronco cerebral) se encarga de las funciones básicas de supervivencia como la respiración, los latidos del corazón, los reflejos y las respuestas instintivas. Este piso está completamente desarrollado al nacer. El segundo piso (sistema límbico) gestiona las emociones, la memoria emocional, el apego y las respuestas de lucha o huida. Se desarrolla gradualmente durante los primeros años de vida. El tercer piso (corteza prefrontal) es el centro del pensamiento racional, la planificación, el autocontrol y la toma de decisiones. Este piso es el último en desarrollarse y no alcanza su madurez completa hasta los 25 años. Cuando un niño tiene una rabieta, es porque el segundo piso (emocional) está dominando y el tercer piso (racional) aún no está suficientemente desarrollado para regular las emociones intensas.",
-                baseCientifica: "Arquitectura cerebral, desarrollo jerárquico, maduración cortical",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Crear un juego de 'La Casa del Cerebro': dibuja una casa de 3 pisos y explica cada piso. 2) Técnica de 'Piso por Piso': cuando tu hijo esté en crisis, di 'Veo que estás en el piso 2 (emociones), vamos a subir al piso 3 (pensamiento)'. 3) Ejercicio de respiración: 'Respira profundo para activar el piso 1, siente tus emociones en el piso 2, piensa en el piso 3'. 4) Visualización: 'Imagina que tu cerebro es una casa, ¿en qué piso estás ahora?'. 5) Refuerzo positivo: '¡Excelente! Lograste usar el piso 3 para resolver ese problema'."
-            ),
-            IdeaClave(
-                titulo: "La ventana de oportunidad: los primeros 6 años son cruciales",
-                explicacion: "Los primeros 6 años de vida representan una ventana de oportunidad única e irrepetible para el desarrollo cerebral. Durante este período, el cerebro del niño es extraordinariamente plástico y sensible a las experiencias del entorno. Las conexiones neuronales se forman a una velocidad asombrosa: hasta 700 nuevas conexiones por segundo. Sin embargo, esta plasticidad también significa que las conexiones no utilizadas se eliminan en un proceso llamado 'poda sináptica'. El principio 'úsalo o piérdelo' es especialmente relevante en esta etapa. Las experiencias positivas, el amor, el juego, la estimulación adecuada y las interacciones afectuosas fortalecen las conexiones neuronales y crean una base sólida para el desarrollo futuro. Por el contrario, el estrés crónico, la negligencia o la falta de estimulación pueden tener efectos duraderos en la arquitectura cerebral. Esta es la razón por la cual la inversión en la primera infancia es tan crucial y por la cual cada momento de calidad con el niño tiene un impacto profundo en su desarrollo.",
-                baseCientifica: "Ventana de oportunidad, poda sináptica, desarrollo temprano",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Plan semanal de estimulación: Lunes (música), Martes (arte), Miércoles (naturaleza), Jueves (juego simbólico), Viernes (lectura), Sábado (deporte), Domingo (familia). 2) Técnica de '5 minutos mágicos': dedica 5 minutos diarios a una actividad específica de estimulación. 3) Crear un 'Diario de Conexiones': anota las nuevas habilidades que observas cada semana. 4) Ejercicio de 'Aprovechar la ventana': cuando notes que tu hijo está especialmente receptivo, intensifica la estimulación. 5) Técnica de 'Repetición inteligente': repite las actividades que más le gustan para fortalecer esas conexiones específicas."
-            ),
-            IdeaClave(
-                titulo: "El cerebro emocional: el segundo piso que gobierna la infancia",
-                explicacion: "El sistema límbico, o cerebro emocional, es el segundo piso de la casa cerebral y juega un papel fundamental en la infancia. Este sistema incluye estructuras como la amígdala (centro del miedo y las emociones intensas), el hipocampo (memoria emocional) y el hipotálamo (regulación de hormonas). En los niños, el cerebro emocional es mucho más activo y dominante que en los adultos, lo que explica por qué las emociones infantiles son tan intensas y aparentemente desproporcionadas. La amígdala de un niño es más sensible y reactiva, lo que significa que percibe las amenazas de manera más intensa. Cuando un niño siente miedo, ira o tristeza, estas emociones se experimentan con una intensidad que puede ser abrumadora. El cerebro emocional también es el responsable del apego y la vinculación. Las experiencias emocionales tempranas, especialmente la relación con los cuidadores principales, moldean la forma en que el niño procesará las emociones durante toda su vida. Por esta razón, es fundamental que los padres comprendan y validen las emociones de sus hijos, ayudándoles a procesarlas de manera saludable.",
-                baseCientifica: "Sistema límbico, amígdala, procesamiento emocional",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Nombra para Domar': cuando tu hijo esté emocionalmente abrumado, ayúdale a nombrar la emoción: 'Veo que estás muy enojado'. 2) Ejercicio de 'Respiración de la Amígdala': enséñale a respirar profundo 3 veces para calmar la amígdala. 3) Técnica del 'Abrazo de Conexión': abraza a tu hijo durante 20 segundos para activar la oxitocina y calmar el sistema límbico. 4) Juego de 'Las Emociones en el Cuerpo': pídele que señale dónde siente cada emoción en su cuerpo. 5) Técnica de 'Validación Emocional': 'Es normal sentir esto, yo también me siento así a veces'."
-            ),
-            IdeaClave(
-                titulo: "La corteza prefrontal: el director de orquesta que tarda en madurar",
-                explicacion: "La corteza prefrontal es el tercer piso del cerebro y funciona como el director de orquesta de todas las funciones cognitivas superiores. Esta región es responsable del autocontrol, la planificación, la toma de decisiones, la empatía, la flexibilidad mental y la regulación emocional. A diferencia de los otros pisos del cerebro, la corteza prefrontal es la última en desarrollarse y no alcanza su madurez completa hasta los 25 años. Esto explica por qué los niños y adolescentes tienen dificultades para controlar sus impulsos, planificar a largo plazo o regular sus emociones de manera efectiva. Durante la infancia, la corteza prefrontal está en constante desarrollo, pero aún no tiene la capacidad de inhibir completamente las respuestas emocionales del sistema límbico. Esta es la razón por la cual un niño de 4 años puede tener una rabieta por algo que parece trivial a los adultos. El cerebro racional simplemente no está suficientemente desarrollado para regular la intensidad emocional. Los padres deben entender que no es falta de voluntad o mala educación, sino una limitación neurológica real.",
-                baseCientifica: "Corteza prefrontal, desarrollo tardío, funciones ejecutivas",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Actuar como el Cerebro de Arriba': cuando tu hijo no puede controlarse, actúa tú como su corteza prefrontal: 'Vamos a pensar juntos en una solución'. 2) Ejercicio de 'Pausa y Piensa': enséñale a hacer una pausa de 3 segundos antes de actuar. 3) Juego de 'El Director de Orquesta': pídele que sea el director de una orquesta imaginaria para ejercitar la planificación. 4) Técnica de 'Expectativas Realistas': recuerda que un niño de 4 años no puede controlarse como un adulto. 5) Ejercicio de 'Respiración del Director': 'Respira como un director de orquesta, lento y profundo'."
-            ),
-            IdeaClave(
-                titulo: "La integración cerebral: conectando los tres pisos",
-                explicacion: "La integración cerebral es el proceso mediante el cual las diferentes partes del cerebro trabajan juntas de manera coordinada y armoniosa. En un cerebro bien integrado, el cerebro reptiliano (supervivencia), el sistema límbico (emociones) y la corteza prefrontal (pensamiento) se comunican eficientemente entre sí. Esta integración es fundamental para el bienestar emocional, la regulación del comportamiento y la capacidad de adaptación. Cuando el cerebro está integrado, el niño puede acceder a sus emociones sin ser abrumado por ellas, puede pensar claramente incluso en situaciones estresantes, y puede tomar decisiones que reflejen tanto sus valores como sus necesidades emocionales. La integración cerebral no es automática; se desarrolla a través de experiencias que fomentan la conexión entre las diferentes regiones cerebrales. Los padres pueden promover esta integración a través de actividades que involucren tanto el cuerpo como la mente, la emoción como la razón, y la individualidad como la conexión con otros.",
-                baseCientifica: "Integración cerebral, conectividad funcional, coherencia neural",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Ejercicio de 'Conexión Cuerpo-Mente': pídele que sienta su respiración mientras piensa en algo que le gusta. 2) Técnica de 'Integración Emocional': cuando esté emocionado, ayúdale a conectar la emoción con el pensamiento: 'Sientes enojo y piensas que es injusto'. 3) Juego de 'El Puente': imagina un puente entre su corazón (emociones) y su cabeza (pensamiento). 4) Ejercicio de 'Respiración Integradora': respira profundo conectando el cuerpo, las emociones y los pensamientos. 5) Técnica de 'Coherencia Familiar': practica actividades que involucren a toda la familia en conexión emocional y mental."
-            ),
-            IdeaClave(
-                titulo: "El estrés tóxico: cuando el cerebro se desorganiza",
-                explicacion: "El estrés tóxico se refiere a la activación prolongada del sistema de respuesta al estrés del cuerpo, especialmente en ausencia de relaciones de apoyo que puedan ayudar a regular la respuesta. En los niños, el estrés tóxico puede tener efectos devastadores en el desarrollo cerebral, alterando la arquitectura del cerebro y afectando la capacidad de aprendizaje, la regulación emocional y la salud física. A diferencia del estrés positivo (que puede ser motivador) o el estrés tolerable (que es manejable con apoyo), el estrés tóxico es crónico, severo y carece de amortiguación protectora. Este tipo de estrés puede resultar de la pobreza, la negligencia, el abuso, la violencia doméstica o la separación de los cuidadores. Los efectos del estrés tóxico pueden ser duraderos y afectar la salud mental, el rendimiento académico y las relaciones interpersonales durante toda la vida. Es crucial que los padres comprendan la importancia de crear un ambiente seguro y de apoyo para proteger a sus hijos del estrés tóxico.",
-                baseCientifica: "Estrés tóxico, cortisol, desarrollo cerebral alterado",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Detección Temprana': aprende a reconocer las señales de estrés en tu hijo (cambios de comportamiento, irritabilidad, problemas de sueño). 2) Ejercicio de 'Zona Segura': crea un espacio físico y emocional donde tu hijo se sienta completamente seguro. 3) Técnica de 'Regulación Co': cuando tu hijo esté estresado, regula primero tu propio estrés para poder ayudarle. 4) Ejercicio de 'Respiración de Seguridad': enséñale técnicas de respiración para activar el sistema de calma. 5) Técnica de 'Conexión Protectora': mantén una conexión emocional fuerte que sirva como amortiguador contra el estrés."
-            ),
-            IdeaClave(
-                titulo: "La importancia del juego en el desarrollo cerebral",
-                explicacion: "El juego no es solo una actividad divertida para los niños; es una herramienta fundamental para el desarrollo cerebral. A través del juego, los niños ejercitan y fortalecen las conexiones neuronales, desarrollan habilidades cognitivas, emocionales y sociales, y procesan sus experiencias del mundo. El juego libre, especialmente, permite a los niños explorar, experimentar, tomar riesgos y aprender de sus errores en un ambiente seguro. Durante el juego, el cerebro del niño está altamente activo, formando nuevas conexiones y fortaleciendo las existentes. El juego simbólico, por ejemplo, activa múltiples regiones cerebrales simultáneamente, incluyendo las áreas responsables del lenguaje, la creatividad, la planificación y la regulación emocional. Los padres que entienden la importancia del juego pueden crear ambientes que fomenten el juego libre y creativo, proporcionando materiales simples pero versátiles y tiempo no estructurado para que los niños puedan explorar y experimentar a su propio ritmo.",
-                baseCientifica: "Neuroplasticidad, desarrollo cognitivo, activación cerebral",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Tiempo de Juego Libre': reserva 30-60 minutos diarios para juego no estructurado. 2) Ejercicio de 'Materiales Simples': proporciona objetos simples (cajas, telas, bloques) que fomenten la creatividad. 3) Técnica de 'Juego Guiado': participa en el juego de tu hijo siguiendo su liderazgo. 4) Ejercicio de 'Observación del Juego': observa cómo tu hijo resuelve problemas durante el juego. 5) Técnica de 'Juego Emocional': usa el juego para ayudar a tu hijo a procesar emociones difíciles."
-            ),
-            IdeaClave(
-                titulo: "El sueño: el arquitecto del cerebro en desarrollo",
-                explicacion: "El sueño no es simplemente un período de descanso; es un proceso activo y crucial para el desarrollo cerebral. Durante el sueño, especialmente durante las fases de sueño profundo y REM, el cerebro del niño consolida los aprendizajes del día, fortalece las conexiones neuronales importantes y elimina las conexiones innecesarias. El sueño también es fundamental para la regulación emocional, la memoria, la creatividad y el sistema inmunológico. En los niños, la necesidad de sueño es mayor que en los adultos, y la calidad del sueño es tan importante como la cantidad. Los problemas de sueño en la infancia pueden tener efectos significativos en el desarrollo cerebral, afectando la atención, el aprendizaje, el comportamiento y la salud emocional. Los padres pueden promover un sueño saludable estableciendo rutinas consistentes, creando un ambiente propicio para el sueño y enseñando a sus hijos técnicas de relajación que les ayuden a conciliar el sueño.",
-                baseCientifica: "Consolidación de memoria, ondas delta, desarrollo neural",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Rutina de Sueño': crea una rutina consistente de 30 minutos antes de dormir. 2) Ejercicio de 'Ambiente de Sueño': asegúrate de que la habitación esté oscura, fresca y silenciosa. 3) Técnica de 'Relajación Progresiva': enséñale a relajar cada parte del cuerpo antes de dormir. 4) Ejercicio de 'Respiración para Dormir': practica respiraciones lentas y profundas juntos. 5) Técnica de 'Historia de Sueño': cuenta una historia tranquila que ayude a tu hijo a relajarse."
-            ),
-            IdeaClave(
-                titulo: "La alimentación: combustible para el cerebro en crecimiento",
-                explicacion: "La alimentación juega un papel crucial en el desarrollo cerebral, proporcionando los nutrientes necesarios para la formación de nuevas neuronas, la mielinización de las conexiones nerviosas y el funcionamiento óptimo del cerebro. Los ácidos grasos omega-3, especialmente el DHA, son fundamentales para el desarrollo de la corteza prefrontal y la función cognitiva. Las proteínas proporcionan los aminoácidos necesarios para la síntesis de neurotransmisores, mientras que los carbohidratos complejos suministran la glucosa que el cerebro necesita para funcionar. Las vitaminas del complejo B, el hierro, el zinc y otros micronutrientes también son esenciales para el desarrollo cerebral. Una alimentación deficiente puede afectar la concentración, el aprendizaje, el comportamiento y el desarrollo emocional. Los padres pueden promover un desarrollo cerebral óptimo proporcionando una dieta variada y equilibrada, rica en nutrientes esenciales y baja en alimentos procesados y azúcares refinados.",
-                baseCientifica: "DHA, neurotransmisores, mielinización, desarrollo cognitivo",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Comida Colorida': incluye frutas y verduras de diferentes colores en cada comida. 2) Ejercicio de 'Cocinar Juntos': involucra a tu hijo en la preparación de comidas saludables. 3) Técnica de 'Snacks Inteligentes': prepara snacks nutritivos como nueces, frutas y yogur. 4) Ejercicio de 'Hidratación Cerebral': asegúrate de que tu hijo beba suficiente agua durante el día. 5) Técnica de 'Comida Familiar': come juntos en familia para crear asociaciones positivas con la comida."
-            ),
-            IdeaClave(
-                titulo: "El ejercicio físico: gimnasio para el cerebro",
-                explicacion: "El ejercicio físico no solo beneficia el cuerpo; también es fundamental para el desarrollo y funcionamiento del cerebro. La actividad física aumenta el flujo sanguíneo al cerebro, promueve la neurogénesis (formación de nuevas neuronas), mejora la conectividad entre las diferentes regiones cerebrales y estimula la liberación de factores neurotróficos que promueven el crecimiento y la supervivencia de las neuronas. El ejercicio también mejora la función ejecutiva, la atención, la memoria y la regulación emocional. En los niños, el ejercicio regular puede mejorar el rendimiento académico, reducir los síntomas de ansiedad y depresión, y promover un mejor comportamiento. Los padres pueden fomentar la actividad física proporcionando oportunidades para el juego activo, limitando el tiempo de pantalla, y modelando un estilo de vida activo. El ejercicio no tiene que ser estructurado o intenso; incluso el juego libre activo puede proporcionar beneficios significativos para el desarrollo cerebral.",
-                baseCientifica: "Neurogénesis, BDNF, flujo sanguíneo cerebral, función ejecutiva",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Juego Activo Diario': asegúrate de que tu hijo tenga al menos 60 minutos de actividad física diaria. 2) Ejercicio de 'Caminar y Hablar': da paseos juntos mientras conversan. 3) Técnica de 'Bailar en Casa': pon música y bailen juntos para ejercitar el cerebro y el cuerpo. 4) Ejercicio de 'Deportes Familiares': practica deportes juntos como familia. 5) Técnica de 'Yoga para Niños': enseña posturas simples de yoga que promuevan la concentración y la relajación."
-            ),
-            IdeaClave(
-                titulo: "La música: el lenguaje universal del cerebro",
-                explicacion: "La música tiene un poder único para activar múltiples regiones del cerebro simultáneamente, promoviendo la integración cerebral y el desarrollo de diversas habilidades cognitivas. Cuando los niños escuchan o crean música, se activan áreas del cerebro responsables del procesamiento auditivo, el movimiento, la emoción, la memoria y la creatividad. La música también puede ayudar a regular las emociones, reducir el estrés y mejorar la concentración. Los estudios han demostrado que la exposición temprana a la música puede mejorar el desarrollo del lenguaje, las habilidades matemáticas y la coordinación motora. La música también puede ser una herramienta poderosa para la conexión emocional entre padres e hijos, creando momentos de alegría y unión. Los padres pueden incorporar la música en la vida diaria de sus hijos de muchas maneras, desde cantar canciones de cuna hasta tocar instrumentos juntos o simplemente escuchar música variada.",
-                baseCientifica: "Procesamiento auditivo, integración multisensorial, desarrollo del lenguaje",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Cantar Juntos': canta canciones con tu hijo todos los días. 2) Ejercicio de 'Música para Dormir': usa música suave para ayudar a relajar a tu hijo. 3) Técnica de 'Instrumentos Caseros': crea instrumentos simples con objetos de la casa. 4) Ejercicio de 'Bailar con Música': baila diferentes tipos de música para ejercitar el cerebro. 5) Técnica de 'Música para Aprender': usa música para hacer más divertido el aprendizaje de conceptos nuevos."
-            ),
-            IdeaClave(
-                titulo: "El arte: la expresión creativa del cerebro",
-                explicacion: "El arte es una forma poderosa de expresión que activa y desarrolla múltiples áreas del cerebro, incluyendo las regiones responsables de la creatividad, la planificación, la coordinación motora fina y el procesamiento visual. Cuando los niños crean arte, están ejercitando habilidades de resolución de problemas, toma de decisiones y expresión emocional. El arte también puede ser una herramienta terapéutica que ayuda a los niños a procesar emociones difíciles y experiencias traumáticas. A través del arte, los niños pueden expresar lo que no pueden verbalizar, explorar su identidad y desarrollar su autoestima. Los padres pueden fomentar la expresión artística proporcionando materiales variados, creando un espacio dedicado al arte y mostrando interés genuino en las creaciones de sus hijos. No se trata de crear obras maestras, sino de permitir la exploración creativa y la expresión personal.",
-                baseCientifica: "Creatividad, procesamiento visual, expresión emocional, desarrollo motor",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Rincón de Arte': crea un espacio dedicado con materiales artísticos accesibles. 2) Ejercicio de 'Arte Libre': permite que tu hijo cree sin instrucciones específicas. 3) Técnica de 'Arte Emocional': usa el arte para ayudar a tu hijo a expresar sus emociones. 4) Ejercicio de 'Arte en Familia': crea arte juntos como actividad familiar. 5) Técnica de 'Exposición de Arte': muestra el arte de tu hijo en casa para valorar su creatividad."
-            ),
-            IdeaClave(
-                titulo: "La naturaleza: el gimnasio natural del cerebro",
-                explicacion: "La naturaleza proporciona un ambiente rico en estímulos que promueve el desarrollo cerebral de manera única. Los espacios naturales ofrecen oportunidades para el juego libre, la exploración sensorial, la resolución de problemas y la conexión con el mundo natural. Pasar tiempo en la naturaleza puede reducir el estrés, mejorar la atención, aumentar la creatividad y promover el bienestar emocional. Los estudios han demostrado que los niños que pasan más tiempo en la naturaleza tienen mejor desarrollo cognitivo, mayor capacidad de atención y mejor salud mental. La naturaleza también proporciona oportunidades para el ejercicio físico, la socialización y el aprendizaje sobre el mundo natural. Los padres pueden incorporar la naturaleza en la vida de sus hijos a través de paseos regulares, actividades al aire libre y la creación de espacios naturales en casa.",
-                baseCientifica: "Reducción del estrés, mejora de la atención, desarrollo cognitivo",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Tiempo Verde': pasa al menos 30 minutos diarios en la naturaleza. 2) Ejercicio de 'Exploración Natural': busca diferentes texturas, sonidos y olores en la naturaleza. 3) Técnica de 'Jardín en Casa': crea un pequeño jardín o huerto con tu hijo. 4) Ejercicio de 'Caminar Descalzo': permite que tu hijo camine descalzo sobre diferentes superficies naturales. 5) Técnica de 'Observación de la Naturaleza': observa juntos los cambios en la naturaleza a lo largo del tiempo."
-            ),
-            IdeaClave(
-                titulo: "La tecnología: herramienta o obstáculo para el desarrollo",
-                explicacion: "La tecnología puede ser tanto una herramienta poderosa para el aprendizaje como un obstáculo para el desarrollo cerebral saludable. Cuando se usa de manera apropiada y equilibrada, la tecnología puede proporcionar oportunidades de aprendizaje, creatividad y conexión social. Sin embargo, el uso excesivo de pantallas puede interferir con el sueño, reducir la actividad física, limitar las interacciones sociales cara a cara y afectar el desarrollo de la atención y la concentración. Los niños pequeños son especialmente vulnerables a los efectos negativos del uso excesivo de pantallas, ya que sus cerebros están en desarrollo y necesitan interacciones humanas reales para desarrollarse adecuadamente. Los padres pueden promover un uso saludable de la tecnología estableciendo límites claros, modelando un uso equilibrado y priorizando las interacciones humanas y las actividades físicas.",
-                baseCientifica: "Desarrollo de la atención, interacciones sociales, regulación del sueño",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Límites de Pantalla': establece límites claros de tiempo de pantalla según la edad. 2) Ejercicio de 'Tecnología Educativa': usa la tecnología para actividades educativas y creativas. 3) Técnica de 'Zonas Libres de Pantalla': designa ciertas áreas de la casa sin pantallas. 4) Ejercicio de 'Actividades Alternativas': proporciona alternativas atractivas a las pantallas. 5) Técnica de 'Modelado Positivo': modela un uso equilibrado de la tecnología como padre."
-            ),
-            IdeaClave(
-                titulo: "La socialización: el cerebro social en desarrollo",
-                explicacion: "Los seres humanos somos seres sociales por naturaleza, y el cerebro del niño está diseñado para aprender a través de las interacciones sociales. Las interacciones sociales tempranas moldean el desarrollo de las habilidades sociales, la empatía, la comunicación y la regulación emocional. A través del juego social, los niños aprenden a compartir, cooperar, resolver conflictos y entender las perspectivas de otros. Las interacciones sociales también proporcionan oportunidades para el desarrollo del lenguaje, la cognición social y la autoestima. Los padres pueden fomentar el desarrollo social proporcionando oportunidades para la interacción con otros niños y adultos, modelando habilidades sociales positivas y enseñando explícitamente sobre las emociones y las relaciones sociales.",
-                baseCientifica: "Cognición social, desarrollo del lenguaje, habilidades interpersonales",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Juegos de Fechas': organiza citas de juego regulares con otros niños. 2) Ejercicio de 'Modelado Social': modela habilidades sociales positivas en tus interacciones. 3) Técnica de 'Enseñanza de Emociones': enseña explícitamente sobre las emociones y cómo manejarlas. 4) Ejercicio de 'Resolución de Conflictos': enseña estrategias para resolver conflictos de manera pacífica. 5) Técnica de 'Empatía': ayuda a tu hijo a entender las perspectivas de otros."
-            ),
-            IdeaClave(
-                titulo: "La lectura: alimento para el cerebro en crecimiento",
-                explicacion: "La lectura es una de las actividades más beneficiosas para el desarrollo cerebral, activando múltiples regiones del cerebro y promoviendo el desarrollo del lenguaje, la imaginación, la concentración y la empatía. Cuando los padres leen a sus hijos, no solo están proporcionando entretenimiento, sino que están construyendo conexiones neuronales importantes y creando vínculos emocionales fuertes. La lectura compartida también proporciona oportunidades para la conversación, el aprendizaje de vocabulario y el desarrollo de la comprensión. Los estudios han demostrado que los niños que son leídos regularmente tienen mejor desarrollo del lenguaje, mayor vocabulario y mejor rendimiento académico. La lectura también puede ser una herramienta poderosa para ayudar a los niños a procesar emociones y experiencias difíciles a través de historias que reflejen sus propias experiencias.",
-                baseCientifica: "Desarrollo del lenguaje, activación cerebral, desarrollo de la imaginación",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Lectura Diaria': lee con tu hijo todos los días, incluso por solo 10 minutos. 2) Ejercicio de 'Lectura Interactiva': haz preguntas sobre la historia y discute los personajes. 3) Técnica de 'Biblioteca en Casa': crea una biblioteca de libros apropiados para la edad. 4) Ejercicio de 'Lectura de Emociones': lee libros que aborden emociones y situaciones difíciles. 5) Técnica de 'Lectura en Voz Alta': lee en voz alta incluso cuando tu hijo ya sepa leer."
-            ),
-            IdeaClave(
-                titulo: "La risa: medicina natural para el cerebro",
-                explicacion: "La risa no es solo una expresión de alegría; es una medicina natural que beneficia significativamente el desarrollo y funcionamiento del cerebro. Cuando reímos, el cerebro libera endorfinas, dopamina y serotonina, neurotransmisores que promueven el bienestar, reducen el estrés y mejoran el estado de ánimo. La risa también fortalece el sistema inmunológico, reduce la presión arterial y mejora la circulación sanguínea. En los niños, la risa es especialmente importante para el desarrollo emocional y social, ayudándoles a procesar experiencias difíciles y a construir resiliencia. La risa también puede ser una herramienta poderosa para la conexión entre padres e hijos, creando momentos de alegría y unión que fortalecen el vínculo emocional. Los padres pueden fomentar la risa a través del juego, el humor, las cosquillas y la creación de un ambiente alegre y positivo en casa.",
-                baseCientifica: "Endorfinas, dopamina, serotonina, reducción del estrés",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Momento de Risa': dedica 5 minutos diarios a hacer reír a tu hijo. 2) Ejercicio de 'Juegos Divertidos': juega juegos que provoquen risa y diversión. 3) Técnica de 'Humor Positivo': usa el humor para aliviar tensiones y situaciones difíciles. 4) Ejercicio de 'Cosquillas Controladas': haz cosquillas de manera suave y respetando los límites. 5) Técnica de 'Ambiente Alegre': crea un ambiente positivo y divertido en casa."
-            ),
-            IdeaClave(
-                titulo: "El abrazo: conexión neural a través del tacto",
-                explicacion: "El contacto físico, especialmente los abrazos, es fundamental para el desarrollo cerebral y emocional de los niños. Cuando abrazamos a nuestros hijos, activamos la liberación de oxitocina, la hormona del amor y la vinculación, que promueve la confianza, reduce el estrés y fortalece el vínculo emocional. Los abrazos también activan el sistema nervioso parasimpático, que es responsable de la calma y la relajación. En los niños, el contacto físico regular es esencial para el desarrollo de un apego seguro y la regulación emocional. Los estudios han demostrado que los niños que reciben contacto físico regular tienen mejor desarrollo emocional, mayor autoestima y mejor capacidad para manejar el estrés. Los padres pueden incorporar más contacto físico en la vida diaria a través de abrazos, caricias, masajes suaves y juegos que involucren el tacto.",
-                baseCientifica: "Oxitocina, sistema nervioso parasimpático, apego seguro",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Abrazo de 20 Segundos': abraza a tu hijo durante 20 segundos para activar la oxitocina. 2) Ejercicio de 'Masaje Suave': da masajes suaves en la espalda o los pies de tu hijo. 3) Técnica de 'Contacto Durante el Día': incorpora contacto físico en las actividades diarias. 4) Ejercicio de 'Abrazo de Conexión': usa abrazos para reconectar después de conflictos. 5) Técnica de 'Juegos de Contacto': juega juegos que involucren contacto físico positivo."
-            ),
-            IdeaClave(
-                titulo: "La paciencia: el ingrediente secreto del desarrollo cerebral",
-                explicacion: "La paciencia es uno de los ingredientes más importantes para el desarrollo cerebral saludable, tanto para los padres como para los niños. El desarrollo cerebral es un proceso lento y gradual que requiere tiempo, consistencia y paciencia. Los padres que practican la paciencia crean un ambiente seguro y de apoyo que permite a sus hijos explorar, experimentar y aprender a su propio ritmo. La paciencia también es esencial para enseñar a los niños habilidades de regulación emocional y autocontrol, ya que estas habilidades se desarrollan gradualmente a lo largo del tiempo. Cuando los padres son pacientes, modelan esta habilidad importante para sus hijos, enseñándoles a ser pacientes consigo mismos y con otros. La paciencia no significa permitir comportamientos inapropiados, sino entender que el desarrollo cerebral es un proceso que requiere tiempo y apoyo constante.",
-                baseCientifica: "Desarrollo gradual, regulación emocional, modelado de comportamiento",
-                aplicacionPractica: "APLICACIÓN PRÁCTICA: 1) Técnica de 'Respiración de Paciencia': respira profundo antes de responder a comportamientos difíciles. 2) Ejercicio de 'Expectativas Realistas': ajusta tus expectativas según la edad y desarrollo de tu hijo. 3) Técnica de 'Celebración de Pequeños Logros': celebra cada pequeño progreso en el desarrollo. 4) Ejercicio de 'Tiempo de Reflexión': tómate un momento para reflexionar antes de reaccionar. 5) Técnica de 'Paciencia Consigo Mismo': sé paciente contigo mismo como padre, el desarrollo es un proceso."
-            )
-        ]
-    }
-    
-    static func crearFrasesPoderosas() -> [FrasePoderosa] {
-        return [
-            FrasePoderosa(
-                frase: "El cerebro del niño es como una casa en construcción permanente",
-                explicacionDetallada: "Esta frase captura la esencia del desarrollo cerebral infantil de manera visual y comprensible. La metáfora de la casa en construcción transmite la idea de que el cerebro del niño no es un producto terminado, sino un proyecto en constante evolución. Al igual que una casa en construcción, el cerebro infantil tiene cimientos (funciones básicas), estructura (conexiones neuronales) y acabados (habilidades complejas) que se van desarrollando gradualmente. Esta imagen ayuda a los padres a entender que el comportamiento de sus hijos no es una versión defectuosa del comportamiento adulto, sino el resultado natural de un cerebro en desarrollo. La frase también sugiere que, al igual que una casa en construcción, el cerebro del niño es vulnerable y necesita protección, cuidado y materiales de calidad (experiencias positivas) para desarrollarse adecuadamente. Esta comprensión puede cambiar fundamentalmente la forma en que los padres perciben y responden al comportamiento de sus hijos.",
-                contextoOriginal: "Álvaro Bilbao - El cerebro del niño explicado a los padres",
-                significadoProfundo: "Transforma la percepción del comportamiento infantil de defectuoso a en desarrollo"
-            ),
-            FrasePoderosa(
-                frase: "Cada experiencia deja una huella en el cerebro del niño",
-                explicacionDetallada: "Esta frase subraya la responsabilidad y la oportunidad que tienen los padres en el desarrollo cerebral de sus hijos. Cada interacción, cada momento compartido, cada experiencia tiene el potencial de influir en la arquitectura cerebral del niño. Esto no significa que los padres deban ser perfectos, sino que deben ser conscientes del impacto de sus acciones. Las experiencias positivas, como el amor, el juego, la lectura y la atención, crean conexiones neuronales fuertes y saludables. Las experiencias negativas, como el estrés crónico, la negligencia o la violencia, pueden tener efectos duraderos en el desarrollo cerebral. Esta frase también sugiere que no hay momentos 'neutrales' en la crianza - cada momento es una oportunidad para influir positivamente en el desarrollo del niño. Los padres pueden usar esta comprensión para ser más intencionales en sus interacciones y para crear experiencias que promuevan el desarrollo saludable del cerebro.",
-                contextoOriginal: "Álvaro Bilbao - El cerebro del niño explicado a los padres",
-                significadoProfundo: "Cada momento de crianza es una oportunidad de influir en el desarrollo cerebral"
-            )
-            // Continuar con las 5 frases restantes...
-        ]
-    }
-    
-    static func crearContextoCientifico() -> String {
-        return "El libro se basa en décadas de investigación en neurociencia del desarrollo, incluyendo estudios sobre neuroplasticidad, desarrollo cerebral, apego y estrés tóxico. Incorpora hallazgos de la neurociencia cognitiva, la psicología del desarrollo y la investigación sobre el impacto del entorno en el desarrollo cerebral."
-    }
-    
-    static func crearContextoCultural() -> String {
-        return "El libro reconoce que el desarrollo cerebral está influenciado por factores culturales, socioeconómicos y ambientales. Adapta los principios neurocientíficos a diferentes contextos culturales y socioeconómicos, reconociendo que no hay una 'talla única' para la crianza."
-    }
-    
-    static func crearResumenProfundo() -> String {
-        return "Este libro revoluciona la comprensión de la crianza al proporcionar una base neurocientífica sólida para entender el desarrollo cerebral infantil. A través de conceptos como la neuroplasticidad, la arquitectura cerebral de tres pisos y la ventana de oportunidad de los primeros 6 años, los padres pueden comprender por qué sus hijos se comportan de cierta manera y cómo pueden influir positivamente en su desarrollo. El libro no solo explica el 'qué' y el 'por qué', sino que proporciona herramientas prácticas para aplicar estos conocimientos en la vida diaria, transformando la crianza de una tarea intuitiva a una práctica basada en evidencia científica."
-    }
+    let significadoProfundo: String // Nuevo campo
 }

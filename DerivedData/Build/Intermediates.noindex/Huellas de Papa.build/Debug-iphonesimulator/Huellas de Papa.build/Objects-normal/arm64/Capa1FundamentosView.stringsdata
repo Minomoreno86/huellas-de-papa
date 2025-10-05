@@ -1,0 +1,320 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/ElCerebroDelNinoExplicadoAPadres/Capa1FundamentosView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Capa 1",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 138
+        }
+      },
+      {
+        "comment": "",
+        "key": "20 ideas clave + 7 frases poderosas",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 43
+        }
+      },
+      {
+        "comment": "",
+        "key": "Fundamentos del Libro",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 23
+        }
+      },
+      {
+        "comment": "",
+        "key": "El cerebro del niño explicado a los padres",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 27
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld%%",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "🧠 Ideas Clave",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld ideas",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 60
+        }
+      },
+      {
+        "comment": "",
+        "key": "💬 Frases Poderosas",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 78
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld frases",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 84
+        }
+      },
+      {
+        "comment": "",
+        "key": "🔬 Contexto Científico",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 101
+        }
+      },
+      {
+        "comment": "",
+        "key": "🌍 Contexto Cultural",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 109
+        }
+      },
+      {
+        "comment": "",
+        "key": "📖 Resumen Profundo",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 123
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 174
+        }
+      },
+      {
+        "comment": "",
+        "key": "Explorar",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 207
+        }
+      },
+      {
+        "comment": "",
+        "key": "Incluye aplicación práctica",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 228
+        }
+      },
+      {
+        "comment": "",
+        "key": "Toca para ver más",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 248
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 299
+        }
+      },
+      {
+        "comment": "",
+        "key": "Frase Poderosa",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 319
+        }
+      },
+      {
+        "comment": "",
+        "key": "Explorar",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 333
+        }
+      },
+      {
+        "comment": "",
+        "key": "Incluye contexto original",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 354
+        }
+      },
+      {
+        "comment": "",
+        "key": "Toca para ver más",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 374
+        }
+      },
+      {
+        "comment": "",
+        "key": "Idea Clave",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 574
+        }
+      },
+      {
+        "comment": "",
+        "key": "Idea Clave",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 420
+        }
+      },
+      {
+        "comment": "",
+        "key": "Neurociencia Práctica",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 425
+        }
+      },
+      {
+        "comment": "",
+        "key": "Explicación Detallada",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 454
+        }
+      },
+      {
+        "comment": "",
+        "key": "Base Científica",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 473
+        }
+      },
+      {
+        "comment": "",
+        "key": "Aplicación Práctica",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 501
+        }
+      },
+      {
+        "comment": "",
+        "key": "Marcar como Completado",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 529
+        }
+      },
+      {
+        "comment": "",
+        "key": "Compartir",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 544
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cerrar",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 578
+        }
+      },
+      {
+        "comment": "",
+        "key": "Frase Poderosa",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 761
+        }
+      },
+      {
+        "comment": "",
+        "key": "Frase Poderosa",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 605
+        }
+      },
+      {
+        "comment": "",
+        "key": "Sabiduría Práctica",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 610
+        }
+      },
+      {
+        "comment": "",
+        "key": "Explicación Detallada",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 641
+        }
+      },
+      {
+        "comment": "",
+        "key": "Contexto Original",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 660
+        }
+      },
+      {
+        "comment": "",
+        "key": "Significado Profundo",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 688
+        }
+      },
+      {
+        "comment": "",
+        "key": "Marcar como Favorita",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 716
+        }
+      },
+      {
+        "comment": "",
+        "key": "Compartir",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 731
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cerrar",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 765
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,128 @@
+{
+  "source": "/Users/jorgevasquez/Desktop/MisProyectos/Huellas de Papa/Huellas de Papa/Views/HomeView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Huellas de Papa",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 59
+        }
+      },
+      {
+        "comment": "",
+        "key": "¡Bienvenido!",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 73
+        }
+      },
+      {
+        "comment": "",
+        "key": "22 módulos de crianza basados en neurociencia",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 77
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld%%",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 87
+        }
+      },
+      {
+        "comment": "",
+        "key": "Buscar módulos...",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 135
+        }
+      },
+      {
+        "comment": "",
+        "key": "Limpiar",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 139
+        }
+      },
+      {
+        "comment": "",
+        "key": "Ocultar Filtros",
+        "location": {
+          "startingColumn": 43,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mostrar Filtros",
+        "location": {
+          "startingColumn": 63,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "por %@",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 216
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld%%",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 227
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enfoque: %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 240
+        }
+      },
+      {
+        "comment": "",
+        "key": "Completado",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 282
+        }
+      },
+      {
+        "comment": "",
+        "key": "En Progreso",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 286
+        }
+      },
+      {
+        "comment": "",
+        "key": "Nuevo",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 290
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 273
+        }
+      }
+    ]
+  },
+  "version": 1
+}
