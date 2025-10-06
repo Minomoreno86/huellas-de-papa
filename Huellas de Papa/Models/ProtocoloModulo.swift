@@ -38,28 +38,12 @@ class FactoryModulos {
     }
     
     static func crearVistaCapa(paraModulo moduloId: String, capa: TipoCapa) -> AnyView {
-        do {
-            switch moduloId {
-            case "cerebro-nino-explicado-padres":
-                return crearVistaCapaCerebroDelNino(capa: capa)
-            // Aquí se agregarán las vistas de los otros módulos
-            default:
-                return AnyView(Text("Módulo no encontrado: \(moduloId)"))
-            }
-        } catch {
-            return AnyView(
-                VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.largeTitle)
-                        .foregroundColor(.red)
-                    Text("Error al cargar la capa")
-                        .font(.headline)
-                    Text("Por favor, intenta de nuevo")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                .padding()
-            )
+        switch moduloId {
+        case "cerebro-nino-explicado-padres":
+            return crearVistaCapaCerebroDelNino(capa: capa)
+        // Aquí se agregarán las vistas de los otros módulos
+        default:
+            return AnyView(Text("Módulo no encontrado: \(moduloId)"))
         }
     }
     
@@ -77,8 +61,8 @@ class FactoryModulos {
             print("🔍 DEBUG: Creando Capa3HerramientasView...")
             return AnyView(Capa3HerramientasView())
         case .simulaciones:
-            print("🔍 DEBUG: Creando Capa4SimulacionesView...")
-            return AnyView(Capa4SimulacionesView())
+            print("🔍 DEBUG: Creando Capa4SimulacionesAvanzadasView...")
+            return AnyView(Capa4SimulacionesAvanzadasView())
         case .aplicacionCasa:
             print("🔍 DEBUG: Creando Capa5AplicacionCasaView...")
             return AnyView(Capa5AplicacionCasaView())
@@ -86,8 +70,8 @@ class FactoryModulos {
             print("🔍 DEBUG: Creando Capa6PlanEntrenamientoView...")
             return AnyView(Capa6PlanEntrenamientoView())
         case .reflexion:
-            print("🔍 DEBUG: Creando Capa7ReflexionView...")
-            return AnyView(Capa7ReflexionView())
+            print("🔍 DEBUG: Creando Capa7EvaluacionView...")
+            return AnyView(Capa7EvaluacionView())
         case .modoNino:
             print("🔍 DEBUG: Creando Capa8ModoNinoView...")
             return AnyView(Capa8ModoNinoView())
@@ -100,14 +84,27 @@ class FactoryModulos {
 
 // MARK: - Módulo Específico: El Cerebro del Niño
 struct ModuloCerebroDelNino: ProtocoloModulo {
-    let id = "cerebro-nino-explicado-padres"
-    let titulo = "El Cerebro del Niño explicado a los padres"
-    let descripcion = "Comprende el desarrollo cerebral de tu hijo y aprende estrategias basadas en neurociencia para una crianza más efectiva."
-    let autor = "Dr. Álvaro Bilbao"
-    let icono = "brain.head.profile"
-    let color = "007AFF"
-    let categoria = CategoriaModulo.neurociencia
-    let enfoque = "Científico"
-    let publico = "Padres"
-    let capas: [TipoCapa] = TipoCapa.allCases
+    let id: String
+    let titulo: String
+    let descripcion: String
+    let autor: String
+    let icono: String
+    let color: String
+    let categoria: CategoriaModulo
+    let enfoque: String
+    let publico: String
+    let capas: [TipoCapa]
+    
+    init() {
+        self.id = "cerebro-nino-explicado-padres"
+        self.titulo = "El Cerebro del Niño explicado a los padres"
+        self.descripcion = "Comprende el desarrollo cerebral de tu hijo y aprende estrategias basadas en neurociencia para una crianza más efectiva."
+        self.autor = "Dr. Álvaro Bilbao"
+        self.icono = "brain.head.profile"
+        self.color = "007AFF"
+        self.categoria = .neurociencia
+        self.enfoque = "Científico"
+        self.publico = "Padres"
+        self.capas = TipoCapa.allCases
+    }
 }

@@ -3,7 +3,7 @@ import SwiftUI
 
 // MARK: - Capa 3: Herramientas Prácticas
 struct HerramientaPractica: Identifiable, Codable {
-    let id = UUID()
+    let id: UUID
     let titulo: String
     let descripcion: String
     let icono: String
@@ -17,6 +17,23 @@ struct HerramientaPractica: Identifiable, Codable {
     let beneficios: [String]
     let variaciones: [String]
     let consejosPracticos: [String]
+    
+    init(titulo: String, descripcion: String, icono: String, color: String, categoria: CategoriaHerramienta, instrucciones: [String], materialesNecesarios: [String], tiempoEstimado: String, dificultad: NivelDificultadHerramienta, edadRecomendada: String, beneficios: [String], variaciones: [String], consejosPracticos: [String]) {
+        self.id = UUID()
+        self.titulo = titulo
+        self.descripcion = descripcion
+        self.icono = icono
+        self.color = color
+        self.categoria = categoria
+        self.instrucciones = instrucciones
+        self.materialesNecesarios = materialesNecesarios
+        self.tiempoEstimado = tiempoEstimado
+        self.dificultad = dificultad
+        self.edadRecomendada = edadRecomendada
+        self.beneficios = beneficios
+        self.variaciones = variaciones
+        self.consejosPracticos = consejosPracticos
+    }
 }
 
 enum CategoriaHerramienta: String, CaseIterable, Codable {
@@ -37,9 +54,15 @@ enum NivelDificultadHerramienta: String, CaseIterable, Codable {
 }
 
 struct Capa3Herramientas: Identifiable, Codable {
-    let id = UUID()
+    let id: UUID
     let herramientas: [HerramientaPractica]
     let resumenIntroduccion: String
+    
+    init(herramientas: [HerramientaPractica], resumenIntroduccion: String) {
+        self.id = UUID()
+        self.herramientas = herramientas
+        self.resumenIntroduccion = resumenIntroduccion
+    }
     
     static func contenidoCerebroDelNino() -> Capa3Herramientas {
         let herramientas: [HerramientaPractica] = [

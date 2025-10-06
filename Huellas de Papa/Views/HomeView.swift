@@ -67,9 +67,9 @@ struct HeaderView: View {
     @ObservedObject var progresoManager: ProgresoManager
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text("¡Bienvenido!")
                         .font(.title2)
                         .fontWeight(.bold)
@@ -89,33 +89,10 @@ struct HeaderView: View {
                         .fontWeight(.medium)
                 }
             }
-            
-            // Estadísticas rápidas
-            HStack(spacing: 20) {
-                StatCardView(
-                    titulo: "Módulos Completados",
-                    valor: "\(progresoManager.capasCompletadas.count)",
-                    icono: "checkmark.circle.fill",
-                    color: .green
-                )
-                
-                StatCardView(
-                    titulo: "Medallas Obtenidas",
-                    valor: "\(progresoManager.medallasObtenidas.count)",
-                    icono: "trophy.fill",
-                    color: .yellow
-                )
-                
-                StatCardView(
-                    titulo: "Puntos Totales",
-                    valor: "\(progresoManager.puntosTotales)",
-                    icono: "star.fill",
-                    color: .blue
-                )
-            }
         }
-        .padding()
-        .background(Color(.systemGray6))
+        .padding(.horizontal)
+        .padding(.top, 8)
+        .padding(.bottom, 4)
     }
 }
 
@@ -264,20 +241,10 @@ struct ModuloCardView: View {
                         .foregroundColor(.secondary)
                 }
                 
-                // Medallas y progreso
+                // Estado
                 HStack {
-                    // Medallas
-                    HStack(spacing: 4) {
-                        Image(systemName: "trophy.fill")
-                            .foregroundColor(.yellow)
-                        Text("\(modulo.medallasObtenidas)/\(modulo.medallasTotales)")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                    }
-                    
                     Spacer()
                     
-                    // Estado
                     if modulo.estaCompletado {
                         Label("Completado", systemImage: "checkmark.circle.fill")
                             .font(.caption)

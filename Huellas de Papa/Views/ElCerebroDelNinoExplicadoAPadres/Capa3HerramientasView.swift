@@ -20,19 +20,31 @@ struct Capa3HerramientasView: View {
             ScrollView {
                 if let capa3 = capa3 {
                     VStack(alignment: .leading, spacing: 20) {
-                    // Header
+                    // Header con gradiente
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("CAPA 3: HERRAMIENTAS PRÁCTICAS")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
+                        HStack {
+                            Image(systemName: "wrench.and.screwdriver.fill")
+                                .font(.title2)
+                                .foregroundColor(.green)
+                            Text("Herramientas Prácticas")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.green)
+                        }
                         
                         Text(capa3.resumenIntroduccion)
-                            .font(.body)
+                            .font(.subheadline)
                             .foregroundColor(.secondary)
-                            .lineSpacing(5)
                     }
-                    .padding(.bottom, 10)
+                    .padding()
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.green.opacity(0.1), Color.mint.opacity(0.1)]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .cornerRadius(12)
                     
                     Divider()
                         .padding(.vertical, 10)

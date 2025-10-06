@@ -8,14 +8,14 @@ struct Capa2PrincipiosView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 25) {
-                // Header con gradiente
-                VStack(alignment: .leading, spacing: 15) {
+                // Header simplificado
+                VStack(alignment: .leading, spacing: 12) {
                     HStack {
                         Image(systemName: "lightbulb.fill")
-                            .font(.largeTitle)
+                            .font(.title2)
                             .foregroundColor(.orange)
-                        Text("CAPA 2: PRINCIPIOS CLAVE")
-                            .font(.largeTitle)
+                        Text("Principios Clave")
+                            .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(.orange)
                     }
@@ -23,7 +23,6 @@ struct Capa2PrincipiosView: View {
                     Text("Los pilares fundamentales de la crianza basada en neurociencia")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                        .padding(.leading, 40)
                 }
                 .padding()
                 .background(
@@ -33,7 +32,7 @@ struct Capa2PrincipiosView: View {
                         endPoint: .bottomTrailing
                     )
                 )
-                .cornerRadius(15)
+                .cornerRadius(12)
                 
                 // Introducción
                 VStack(alignment: .leading, spacing: 15) {
@@ -58,7 +57,7 @@ struct Capa2PrincipiosView: View {
                     HStack {
                         Image(systemName: "star.fill")
                             .foregroundColor(.orange)
-                        Text("6 Principios Clave")
+                        Text("9 Principios Clave")
                             .font(.title2)
                             .fontWeight(.semibold)
                         Spacer()
@@ -74,7 +73,8 @@ struct Capa2PrincipiosView: View {
                                 index: index + 1
                             ) {
                                 withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                    principioSeleccionado = principioSeleccionado?.id == principio.id ? nil : principio
+                                    principioSeleccionado = principio
+                                    mostrarEstrategias = true
                                 }
                             }
                         }
