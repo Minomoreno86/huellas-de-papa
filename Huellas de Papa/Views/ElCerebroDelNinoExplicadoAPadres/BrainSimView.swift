@@ -1,5 +1,39 @@
 import SwiftUI
 
+// Compatibilidad temporal con nuevos modelos Capa 4
+typealias BrainSim = Capa4Simulation
+typealias SimSessionState = Capa4ProgressMetrics
+typealias SimNode = Capa4Scene
+typealias SimOption = Capa4Option
+typealias SimOutcome = Capa4Outcome
+typealias SimContext = Capa4SimulationContext
+typealias Threshold = Capa4Threshold
+typealias SuccessLevel = Capa4SuccessLevel
+
+// Estructura local para resultado, alineada a usos de esta vista
+struct SimResult: Codable {
+    let sessionId: String
+    let brainSimId: String
+    let finalScore: Double
+    let outcome: SimOutcome
+    let duration: TimeInterval
+    let decisions: [Capa4Decision]
+    let transferTip: String
+    let completedAt: Date
+}
+
+// Extensiones de mapeo de nombres
+extension Capa4SimulationContext {
+    var childState: [String] { childStates }
+    var parentStress: Int { parentStressLevel }
+}
+
+extension Capa4Simulation {
+    // Provisiones vacías para mantener compatibilidad con la vista durante la migración
+    var nodes: [SimNode] { [] }
+    var outcomes: [SimOutcome] { [] }
+}
+
 struct BrainSimView: View {
     let simulacion: BrainSim
     @State private var sessionState: SimSessionState
@@ -15,7 +49,11 @@ struct BrainSimView: View {
     init(simulacion: BrainSim) {
         self.simulacion = simulacion
         self._sessionState = State(initialValue: SimSessionState(
-            currentNodeId: simulacion.nodes.first?.id ?? ""
+            connectionScore: 0,
+            regulationScore: 0,
+            limitScore: 0,
+            currentSceneId: simulacion.startSceneId,
+            decisions: []
         ))
     }
     
@@ -38,7 +76,7 @@ struct BrainSimView: View {
                             // Contexto de la simulación
                             ContextoSimulacionView(context: simulacion.context)
                             
-                            // Nodo actual
+                            // Nodo actual (no disponible hasta integrar escenas nuevas)
                             if let node = currentNode {
                                 NodoSimulacionView(
                                     node: node,
@@ -90,27 +128,24 @@ struct BrainSimView: View {
     }
     
     private func cargarNodoInicial() {
-        currentNode = simulacion.nodes.first { $0.id == sessionState.currentNodeId }
+        // Hasta integrar escenas reales, dejamos el nodo en nil para no romper
+        currentNode = nil
     }
     
     private func seleccionarOpcion(_ opcion: SimOption) {
-        // Actualizar puntuación
-        sessionState.currentCon += opcion.deltaCON
-        sessionState.currentReg += opcion.deltaREG
-        sessionState.currentLim += opcion.deltaLIM
-        sessionState.completedNodes.append(sessionState.currentNodeId)
-        
-        // Guardar opción seleccionada para avanzar
-        sessionState.opcionSeleccionada = opcion
+        // Actualizar puntuación (mapeo a métricas)
+        sessionState.connectionScore += opcion.deltaConnection
+        sessionState.regulationScore += opcion.deltaRegulation
+        sessionState.limitScore += opcion.deltaLimit
         
         // Mostrar feedback
-        feedbackActual = opcion.feedback
+        feedbackActual = opcion.quickFeedback
         explicacionNeuro = opcion.neuroExplanation
-        referenciaCapitulo = opcion.chapterReference
+        referenciaCapitulo = opcion.toolReference
         mostrarFeedback = true
         
         // Haptic feedback
-        if opcion.deltaCON > 0 || opcion.deltaREG > 0 || opcion.deltaLIM > 0 {
+        if opcion.deltaConnection > 0 || opcion.deltaRegulation > 0 || opcion.deltaLimit > 0 {
             let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
             impactFeedback.impactOccurred()
         } else {
@@ -120,56 +155,37 @@ struct BrainSimView: View {
     }
     
     private func avanzarSiguiente() {
-        guard let opcion = sessionState.opcionSeleccionada else { return }
-        
-        if let nextNodeId = opcion.nextNodeId {
-            avanzarAlSiguienteNodo(nextNodeId)
-        } else {
-            completarSimulacion()
-        }
-    }
-    
-    private func avanzarAlSiguienteNodo(_ nodeId: String) {
-        sessionState.currentNodeId = nodeId
-        currentNode = simulacion.nodes.first { $0.id == nodeId }
-        mostrarFeedback = false
+        // Placeholder: hasta integrar escenas/outcomes nuevas
+        completarSimulacion()
     }
     
     private func completarSimulacion() {
-        // Determinar resultado basado en puntuación
-        let outcome = determinarResultado()
+        // Determinar outcome mínimo (placeholder)
+        let threshold = Threshold(connection: 0, regulation: 0, limit: 0)
+        let outcome = SimOutcome(
+            id: "placeholder",
+            threshold: threshold,
+            summary: "Resumen no disponible en esta vista (migración en progreso)",
+            transferTip: "",
+            successLevel: .acceptable,
+            brainStateDescription: "",
+            recommendedTools: [],
+            specificGuidance: ""
+        )
         
         // Crear resultado
         resultado = SimResult(
             sessionId: UUID().uuidString,
             brainSimId: simulacion.id,
-            finalScore: sessionState.normalizedScore,
+            finalScore: Double((sessionState.connectionScore + sessionState.regulationScore + sessionState.limitScore) * 5),
             outcome: outcome,
-            duration: Date().timeIntervalSince(sessionState.startTime),
-            decisions: [], // TODO: Implementar tracking de decisiones
+            duration: 0,
+            decisions: [],
             transferTip: outcome.transferTip,
             completedAt: Date()
         )
         
         simulacionCompletada = true
-    }
-    
-    private func determinarResultado() -> SimOutcome {
-        let con = sessionState.currentCon
-        let reg = sessionState.currentReg
-        let lim = sessionState.currentLim
-        
-        // Buscar el outcome que mejor coincida
-        for outcome in simulacion.outcomes {
-            if con >= outcome.threshold.con && 
-               reg >= outcome.threshold.reg && 
-               lim >= outcome.threshold.lim {
-                return outcome
-            }
-        }
-        
-        // Si no hay coincidencia, devolver el peor resultado
-        return simulacion.outcomes.first { $0.successLevel == .needsImprovement } ?? simulacion.outcomes.first!
     }
 }
 
@@ -182,19 +198,19 @@ struct HeaderSimulacionView: View {
         VStack(spacing: 12) {
             // Chips de puntuación
             HStack(spacing: 16) {
-                ChipView(title: "CON", value: sessionState.currentCon, color: .blue)
-                ChipView(title: "REG", value: sessionState.currentReg, color: .green)
-                ChipView(title: "LIM", value: sessionState.currentLim, color: .orange)
+                ChipView(title: "CON", value: sessionState.connectionScore, color: .blue)
+                ChipView(title: "REG", value: sessionState.regulationScore, color: .green)
+                ChipView(title: "LIM", value: sessionState.limitScore, color: .orange)
                 
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text(sessionState.brainLevel)
+                    Text("Nivel")
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                     
-                    Text("\(Int(sessionState.normalizedScore))/100")
+                    Text("\((sessionState.connectionScore + sessionState.regulationScore + sessionState.limitScore) * 5)/100")
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.blue)
@@ -202,7 +218,7 @@ struct HeaderSimulacionView: View {
             }
             
             // Barra de progreso
-            ProgressView(value: sessionState.normalizedScore / 100.0)
+            ProgressView(value: Double(sessionState.connectionScore + sessionState.regulationScore + sessionState.limitScore) / 20.0)
                 .progressViewStyle(LinearProgressViewStyle(tint: .blue))
                 .scaleEffect(x: 1, y: 2, anchor: .center)
         }
@@ -266,7 +282,6 @@ struct ContextoSimulacionView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Image(systemName: "location")
-                        .foregroundColor(.secondary)
                     Text("Lugar: \(context.place)")
                         .font(.subheadline)
                         .foregroundColor(.primary)
@@ -274,7 +289,6 @@ struct ContextoSimulacionView: View {
                 
                 HStack {
                     Image(systemName: "clock")
-                        .foregroundColor(.secondary)
                     Text("Hora: \(context.timeOfDay)")
                         .font(.subheadline)
                         .foregroundColor(.primary)
@@ -283,7 +297,6 @@ struct ContextoSimulacionView: View {
                 if !context.childState.isEmpty {
                     HStack {
                         Image(systemName: "person")
-                            .foregroundColor(.secondary)
                         Text("Estado del niño: \(context.childState.joined(separator: ", "))")
                             .font(.subheadline)
                             .foregroundColor(.primary)
@@ -292,7 +305,6 @@ struct ContextoSimulacionView: View {
                 
                 HStack {
                     Image(systemName: "gauge")
-                        .foregroundColor(.secondary)
                     Text("Tu nivel de estrés: \(context.parentStress)/5")
                         .font(.subheadline)
                         .foregroundColor(.primary)
@@ -344,39 +356,6 @@ struct NodoSimulacionView: View {
                                 .multilineTextAlignment(.leading)
                             
                             Spacer()
-                            
-                            // Indicadores de impacto
-                            HStack(spacing: 4) {
-                                if opcion.deltaCON > 0 {
-                                    Image(systemName: "arrow.up.circle.fill")
-                                        .foregroundColor(.blue)
-                                        .font(.caption)
-                                } else if opcion.deltaCON < 0 {
-                                    Image(systemName: "arrow.down.circle.fill")
-                                        .foregroundColor(.red)
-                                        .font(.caption)
-                                }
-                                
-                                if opcion.deltaREG > 0 {
-                                    Image(systemName: "arrow.up.circle.fill")
-                                        .foregroundColor(.green)
-                                        .font(.caption)
-                                } else if opcion.deltaREG < 0 {
-                                    Image(systemName: "arrow.down.circle.fill")
-                                        .foregroundColor(.red)
-                                        .font(.caption)
-                                }
-                                
-                                if opcion.deltaLIM > 0 {
-                                    Image(systemName: "arrow.up.circle.fill")
-                                        .foregroundColor(.orange)
-                                        .font(.caption)
-                                } else if opcion.deltaLIM < 0 {
-                                    Image(systemName: "arrow.down.circle.fill")
-                                        .foregroundColor(.red)
-                                        .font(.caption)
-                                }
-                            }
                         }
                         .padding()
                         .background(
@@ -558,7 +537,9 @@ struct ResultadoSimulacionView: View {
     }
 }
 
+#if DEBUG && false
 #Preview {
-    let simulacion = Capa4SimulacionesAvanzadas.contenidoCerebroDelNino().first!
-    return BrainSimView(simulacion: simulacion)
+    // Desactivado temporalmente por migración de modelos Capa 4
+    EmptyView()
 }
+#endif
