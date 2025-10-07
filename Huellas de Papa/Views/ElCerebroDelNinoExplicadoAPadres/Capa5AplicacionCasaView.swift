@@ -332,8 +332,13 @@ struct SeccionDesafios: View {
 }
 
 struct SeccionReflexion: View {
+    @State private var reflexionActual = ""
+    @State private var emocionSeleccionada: EmocionReflexion = .alegria
+    @State private var mostrarEditor = false
+    @State private var reflexionesGuardadas: [Capa5Reflection] = []
+    
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 20) {
             // Header de sección
             HStack {
                 Image(systemName: "book.closed.fill")
@@ -342,18 +347,324 @@ struct SeccionReflexion: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                 Spacer()
+                
+                Button(action: {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        mostrarEditor = true
+                    }
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.purple)
+                }
             }
             .padding(.horizontal)
             
-            // Placeholder para reflexión
-            PlaceholderSeccion(
-                icono: "book.closed.fill",
-                titulo: "Reflexión Diaria",
-                descripcion: "Registra aprendizajes y sensaciones del día",
-                color: .purple
-            )
+            // Selector de emociones
+            VStack(alignment: .leading, spacing: 12) {
+                Text("¿Cómo te sientes hoy?")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(EmocionReflexion.allCases, id: \.self) { emocion in
+                            EmocionButton(
+                                emocion: emocion,
+                                isSelected: emocionSeleccionada == emocion,
+                                action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                                        emocionSeleccionada = emocion
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            
+            // Editor de reflexión
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Reflexiona sobre tu día")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                VStack(spacing: 8) {
+                    TextEditor(text: $reflexionActual)
+                        .frame(minHeight: 100)
+                        .padding(12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(.secondarySystemBackground))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.purple.opacity(0.3), lineWidth: 1)
+                        )
+                    
+                    if reflexionActual.isEmpty {
+                        Text("Escribe sobre tu día, aprendizajes, momentos especiales...")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 4)
+                    }
+                }
+                
+                // Botones de acción
+                HStack(spacing: 12) {
+                    Button(action: {
+                        guardarReflexion()
+                    }) {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text("Guardar Reflexión")
+                        }
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.purple)
+                        )
+                    }
+                    .disabled(reflexionActual.isEmpty)
+                    .opacity(reflexionActual.isEmpty ? 0.5 : 1.0)
+                    
+                    Button(action: {
+                        limpiarReflexion()
+                    }) {
+                        HStack {
+                            Image(systemName: "trash.circle.fill")
+                            Text("Limpiar")
+                        }
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.red)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.red.opacity(0.1))
+                        )
+                    }
+                    .disabled(reflexionActual.isEmpty)
+                    .opacity(reflexionActual.isEmpty ? 0.5 : 1.0)
+                    
+                    Spacer()
+                }
+            }
+            .padding(.horizontal)
+            
+            // Historial de reflexiones
+            if !reflexionesGuardadas.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Reflexiones Recientes")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                    
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            ForEach(reflexionesGuardadas.prefix(3)) { reflexion in
+                                ReflexionCard(reflexion: reflexion)
+                            }
+                        }
+                    }
+                    .frame(maxHeight: 200)
+                }
+                .padding(.horizontal)
+            }
         }
         .padding(.vertical)
+        .sheet(isPresented: $mostrarEditor) {
+            EditorReflexionCompleto(
+                emocionSeleccionada: $emocionSeleccionada,
+                reflexionActual: $reflexionActual,
+                onSave: { reflexion in
+                    reflexionesGuardadas.insert(reflexion, at: 0)
+                    mostrarEditor = false
+                }
+            )
+        }
+    }
+    
+    private func guardarReflexion() {
+        let nuevaReflexion = Capa5Reflection(
+            titulo: "Reflexión del día",
+            contenido: reflexionActual,
+            emociones: [emocionSeleccionada],
+            aprendizajes: [],
+            gratitud: []
+        )
+        
+        reflexionesGuardadas.insert(nuevaReflexion, at: 0)
+        limpiarReflexion()
+        
+        // Feedback haptic
+        #if canImport(UIKit)
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+        #endif
+    }
+    
+    private func limpiarReflexion() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            reflexionActual = ""
+            emocionSeleccionada = .alegria
+        }
+    }
+}
+
+// MARK: - Componentes de Reflexión
+
+struct EmocionButton: View {
+    let emocion: EmocionReflexion
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                Image(systemName: emocion.icono)
+                    .font(.title2)
+                    .foregroundColor(isSelected ? .white : Color(emocion.color))
+                
+                Text(emocion.rawValue)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundColor(isSelected ? .white : .primary)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(isSelected ? Color(emocion.color) : Color(.secondarySystemBackground))
+            )
+            .scaleEffect(isSelected ? 1.05 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isSelected)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct ReflexionCard: View {
+    let reflexion: Capa5Reflection
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                if let primeraEmocion = reflexion.emociones.first {
+                    Image(systemName: primeraEmocion.icono)
+                        .foregroundColor(Color(primeraEmocion.color))
+                    
+                    Text(primeraEmocion.rawValue)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(Color(primeraEmocion.color))
+                }
+                
+                Spacer()
+                
+                Text(reflexion.fecha, style: .date)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            
+            Text(reflexion.contenido)
+                .font(.body)
+                .foregroundColor(.primary)
+                .lineLimit(3)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        )
+    }
+}
+
+struct EditorReflexionCompleto: View {
+    @Binding var emocionSeleccionada: EmocionReflexion
+    @Binding var reflexionActual: String
+    let onSave: (Capa5Reflection) -> Void
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                // Selector de emociones expandido
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("¿Cómo te sientes hoy?")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 12) {
+                        ForEach(EmocionReflexion.allCases, id: \.self) { emocion in
+                            EmocionButton(
+                                emocion: emocion,
+                                isSelected: emocionSeleccionada == emocion,
+                                action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                                        emocionSeleccionada = emocion
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+                
+                // Editor expandido
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Reflexiona sobre tu día")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    TextEditor(text: $reflexionActual)
+                        .frame(minHeight: 200)
+                        .padding(12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(.secondarySystemBackground))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.purple.opacity(0.3), lineWidth: 1)
+                        )
+                }
+                
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Reflexión Diaria")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancelar") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Guardar") {
+                        let reflexion = Capa5Reflection(
+                            titulo: "Reflexión del día",
+                            contenido: reflexionActual,
+                            emociones: [emocionSeleccionada],
+                            aprendizajes: [],
+                            gratitud: []
+                        )
+                        onSave(reflexion)
+                    }
+                    .disabled(reflexionActual.isEmpty)
+                }
+            }
+        }
     }
 }
 
