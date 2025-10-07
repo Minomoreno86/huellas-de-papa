@@ -1,170 +1,7 @@
 import Foundation
 import SwiftUI
 
-// MARK: - Modelos de Evaluación
-
-struct EvalItem: Identifiable, Codable {
-    enum ItemType: String, Codable, CaseIterable {
-        case mcq = "mcq"
-        case multi = "multi"
-        case order = "order"
-        case branch = "branch"
-        case microReto = "microReto"
-        case transfer = "transfer"
-        case journaling = "journaling"
-    }
-    
-    let id: String
-    let moduleId: String
-    let chapter: String
-    let concept: String
-    let ageRange: String // "2-5", "6-10", "11-14"
-    let difficulty: Int // 1...5
-    let type: ItemType
-    let prompt: String
-    let options: [String]?           // mcq/multi
-    let correct: [Int]?              // índices correctos
-    let branches: [BranchNode]?      // para simulaciones
-    let explanation: String
-    let chapterReference: String
-}
-
-struct BranchNode: Codable {
-    let optionText: String
-    let nextId: String?      // id del siguiente nodo/ítem
-    let weight: Double       // impacto en H (0..1)
-    let feedback: String
-}
-
-struct EvalSessionState: Codable {
-    var difficulty = 2
-    var streak = 0
-    var fails = 0
-    var lastConcept: String?
-    var currentSession: Date = Date()
-    var itemsCompleted: [String] = []
-}
-
-struct ModuleScore: Codable {
-    var K: Double = 0.0      // Conocimiento
-    var H: Double = 0.0      // Habilidad aplicada
-    var C: Double = 0.0      // Consistencia
-    var T: Double = 0.0      // Transferencia al hogar
-    var updatedAt: Date = Date()
-    
-    var totalScore: Double {
-        return 0.30 * K + 0.30 * H + 0.20 * C + 0.20 * T
-    }
-    
-    var level: EvaluationLevel {
-        switch totalScore {
-        case 0..<50: return .novato
-        case 50..<70: return .practico
-        case 70..<85: return .guiador
-        default: return .maestro
-        }
-    }
-}
-
-enum EvaluationLevel: String, Codable, CaseIterable {
-    case novato = "Novato"
-    case practico = "Práctico"
-    case guiador = "Guiador"
-    case maestro = "Maestro"
-    
-    var description: String {
-        switch self {
-        case .novato: return "Estás comenzando tu viaje de aprendizaje"
-        case .practico: return "Ya tienes conocimientos sólidos"
-        case .guiador: return "Eres un guía experto"
-        case .maestro: return "Dominas completamente el tema"
-        }
-    }
-    
-    var color: Color {
-        switch self {
-        case .novato: return .orange
-        case .practico: return .blue
-        case .guiador: return .purple
-        case .maestro: return .green
-        }
-    }
-}
-
-// MARK: - Sistema Adaptativo
-
-class EvaluationAdaptiveSystem: ObservableObject {
-    @Published var sessionState: EvalSessionState
-    @Published var moduleScore: ModuleScore
-    
-    init() {
-        self.sessionState = EvalSessionState()
-        self.moduleScore = ModuleScore()
-    }
-    
-    func nextItem(from bank: [EvalItem], targetConcept: String? = nil) -> EvalItem? {
-        let concept = targetConcept ?? sessionState.lastConcept
-        let pool = bank.filter { 
-            $0.concept == concept && 
-            $0.difficulty == sessionState.difficulty &&
-            !sessionState.itemsCompleted.contains($0.id)
-        }
-        
-        if let pick = pool.randomElement() { 
-            return pick 
-        }
-        
-        // Fallback por dificultad +/- 1
-        let alt = bank.filter { 
-            $0.concept == concept && 
-            abs($0.difficulty - sessionState.difficulty) <= 1 &&
-            !sessionState.itemsCompleted.contains($0.id)
-        }
-        
-        return alt.randomElement() ?? bank.filter { 
-            !sessionState.itemsCompleted.contains($0.id) 
-        }.randomElement()
-    }
-    
-    func registerMCQ(answer idx: Int, correct: Int, difficulty: Int) -> (deltaK: Double, deltaH: Double) {
-        let ok = (idx == correct)
-        sessionState.streak = ok ? (sessionState.streak + 1) : 0
-        sessionState.fails = ok ? 0 : (sessionState.fails + 1)
-        
-        if sessionState.streak >= 2 { 
-            sessionState.difficulty = min(sessionState.difficulty + 1, 5) 
-        }
-        if sessionState.fails >= 2 { 
-            sessionState.difficulty = max(sessionState.difficulty - 1, 1) 
-        }
-        
-        let dK = ok ? (10.0 * Double(difficulty)) : (-5.0)
-        return (dK, 0.0)
-    }
-    
-    func registerBranching(weight: Double) -> (deltaK: Double, deltaH: Double) {
-        let dH = weight * 15.0
-        return (0.0, dH)
-    }
-    
-    func registerMicroReto() -> Double {
-        return 5.0 // Puntos de consistencia
-    }
-    
-    func registerTransfer(effectiveness: Int) -> Double {
-        return Double(effectiveness) * 8.0 // Puntos de transferencia
-    }
-    
-    func updateScores(deltaK: Double, deltaH: Double, deltaC: Double = 0, deltaT: Double = 0) {
-        moduleScore.K = max(0, min(100, moduleScore.K + deltaK))
-        moduleScore.H = max(0, min(100, moduleScore.H + deltaH))
-        moduleScore.C = max(0, min(100, moduleScore.C + deltaC))
-        moduleScore.T = max(0, min(100, moduleScore.T + deltaT))
-        moduleScore.updatedAt = Date()
-    }
-}
-
-// MARK: - Contenido del Módulo "El Cerebro del Niño"
+// MARK: - Modelo Principal de Capa 7
 
 struct Capa7Evaluacion: Codable {
     let id: UUID
@@ -172,494 +9,582 @@ struct Capa7Evaluacion: Codable {
     let descripcion: String
     let introduccion: String
     let objetivos: [String]
-    let dimensiones: [DimensionEvaluacion]
-    let items: [EvalItem]
+    let reflectionTests: [Capa7ReflectionTest]
+    let scenarios: [Capa7Scenario]
     let progreso: Double
     
-    init(titulo: String, descripcion: String, introduccion: String, objetivos: [String], dimensiones: [DimensionEvaluacion], items: [EvalItem], progreso: Double) {
+    init(titulo: String, descripcion: String, introduccion: String, objetivos: [String], reflectionTests: [Capa7ReflectionTest], scenarios: [Capa7Scenario], progreso: Double) {
         self.id = UUID()
         self.titulo = titulo
         self.descripcion = descripcion
         self.introduccion = introduccion
         self.objetivos = objetivos
-        self.dimensiones = dimensiones
-        self.items = items
+        self.reflectionTests = reflectionTests
+        self.scenarios = scenarios
         self.progreso = progreso
     }
     
     static func contenidoCerebroDelNino() -> Capa7Evaluacion {
         return Capa7Evaluacion(
-            titulo: "Evaluación del Desarrollo Cerebral",
-            descripcion: "Sistema adaptativo de evaluación en 4 dimensiones: Conocimiento, Habilidad, Consistencia y Transferencia",
+            titulo: "Evaluación Reflexiva y de Escenarios",
+            descripcion: "Autoevaluación emocional y cognitiva basada en 'El cerebro de un niño explicado a los padres'",
             introduccion: """
-            Esta evaluación te permitirá medir tu comprensión y aplicación práctica de los conceptos del desarrollo cerebral infantil. 
+            Esta evaluación te ayuda a darte cuenta de cómo reaccionas, sientes, piensas y actúas frente a las emociones y conductas de tu hijo.
             
-            El sistema se adapta a tu nivel y te proporciona retroalimentación inmediata basada en el libro "El Cerebro del Niño explicado a los padres".
+            No hay respuestas correctas o incorrectas. Se trata de observarte con compasión y entender tu estado emocional actual para crecer como padre.
             """,
             objetivos: [
-                "Medir tu conocimiento teórico sobre neurodesarrollo",
-                "Evaluar tu capacidad de aplicación práctica",
-                "Fomentar la consistencia en el uso de técnicas",
-                "Promover la transferencia efectiva al hogar"
+                "Autoconocimiento emocional y cognitivo",
+                "Reflexión sobre patrones de respuesta",
+                "Desarrollo de co-regulación",
+                "Fortalecimiento de la conexión empática",
+                "Aplicación consciente de herramientas"
             ],
-            dimensiones: [
-                DimensionEvaluacion(
-                    nombre: "Conocimiento (K)",
-                    descripcion: "Comprensión teórica de conceptos neurocientíficos",
-                    peso: 0.30,
-                    icono: "brain.head.profile",
-                    color: "blue"
-                ),
-                DimensionEvaluacion(
-                    nombre: "Habilidad (H)",
-                    descripcion: "Capacidad de aplicar técnicas en situaciones reales",
-                    peso: 0.30,
-                    icono: "hand.raised.fill",
-                    color: "green"
-                ),
-                DimensionEvaluacion(
-                    nombre: "Consistencia (C)",
-                    descripcion: "Uso regular y sostenido de las estrategias",
-                    peso: 0.20,
-                    icono: "calendar.badge.clock",
-                    color: "orange"
-                ),
-                DimensionEvaluacion(
-                    nombre: "Transferencia (T)",
-                    descripcion: "Aplicación exitosa en el contexto familiar",
-                    peso: 0.20,
-                    icono: "house.fill",
-                    color: "purple"
-                )
-            ],
-            items: generarItemsEvaluacion(),
+            reflectionTests: generarTestsReflexivos(),
+            scenarios: generarEscenariosInteractivos(),
             progreso: 0.0
         )
     }
 }
 
-struct DimensionEvaluacion: Identifiable, Codable {
-    let id: UUID
-    let nombre: String
-    let descripcion: String
-    let peso: Double
-    let icono: String
-    let color: String
-    
-    init(nombre: String, descripcion: String, peso: Double, icono: String, color: String) {
-        self.id = UUID()
-        self.nombre = nombre
-        self.descripcion = descripcion
-        self.peso = peso
-        self.icono = icono
-        self.color = color
-    }
+// MARK: - Generación de Tests Reflexivos
+
+func generarTestsReflexivos() -> [Capa7ReflectionTest] {
+    return [
+        // Test 1: "Mi Calma Interior"
+        Capa7ReflectionTest(
+            id: UUID(),
+            title: "Mi Calma Interior",
+            questions: [
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "Cuando mi hijo se frustra, suelo mantener la calma antes de hablar.",
+                    options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Siempre",
+                            feedback: "Tu calma está creciendo. La corteza prefrontal se entrena cuando logras pausar antes de reaccionar.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Casi siempre",
+                            feedback: "Estás desarrollando autorregulación. Cada pausa fortalece las conexiones neuronales de calma.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "A veces",
+                            feedback: "Es normal tener días difíciles. La práctica de la respiración consciente te ayudará.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Me cuesta mucho",
+                            feedback: "Reconocer esto es el primer paso. La co-regulación se aprende paso a paso.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                ),
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "Cuando mi hijo llora, mi primera reacción es...",
+                    options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Abrazarlo y validar su emoción",
+                            feedback: "Perfecto. La validación emocional construye seguridad y conexión.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Preguntarle qué le pasa",
+                            feedback: "Bien, pero primero la conexión emocional, luego las palabras.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Decirle que no llore",
+                            feedback: "Las emociones necesitan ser sentidas. La represión no ayuda.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Ignorarlo hasta que se calme",
+                            feedback: "El niño necesita tu presencia emocional para autorregularse.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                ),
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "Antes de establecer un límite, suelo...",
+            options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Conectarme emocionalmente con mi hijo",
+                            feedback: "Excelente. Conexión antes que corrección es la base del desarrollo cerebral.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Explicar por qué es importante",
+                            feedback: "Bueno, pero primero la conexión emocional, luego la explicación.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Ser firme inmediatamente",
+                            feedback: "La firmeza sin conexión puede activar el sistema de defensa del niño.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Amenazar con consecuencias",
+                            feedback: "El miedo no enseña autorregulación. La conexión sí.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                )
+            ]
+        ),
+        
+        // Test 2: "Lenguaje que Educa"
+        Capa7ReflectionTest(
+            id: UUID(),
+            title: "Lenguaje que Educa",
+            questions: [
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "Cuando mi hijo hace algo que no me gusta, suelo decir...",
+                    options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Veo que estás molesto, pero necesitamos...",
+                            feedback: "Perfecto. Validar la emoción y luego establecer el límite.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "No está bien lo que hiciste",
+                            feedback: "Es mejor enfocarse en la emoción que en la conducta.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Eres malo cuando haces eso",
+                            feedback: "Separar la conducta de la persona es fundamental.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Ya no te quiero",
+                            feedback: "El amor incondicional es la base de la seguridad emocional.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                ),
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "Cuando mi hijo logra algo, mi respuesta típica es...",
+            options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Me alegra ver tu esfuerzo y dedicación",
+                            feedback: "Excelente. Enfocarse en el proceso fortalece la motivación intrínseca.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "¡Qué inteligente eres!",
+                            feedback: "Es mejor elogiar el esfuerzo que la inteligencia fija.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Finalmente lo hiciste bien",
+                            feedback: "El lenguaje positivo construye autoestima.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Era hora de que lo lograras",
+                            feedback: "La validación del esfuerzo es más importante que el resultado.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                )
+            ]
+        ),
+        
+        // Test 3: "Cuando pierdo el control"
+        Capa7ReflectionTest(
+            id: UUID(),
+            title: "Cuando pierdo el control",
+            questions: [
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "¿Qué situaciones me hacen perder la calma más fácilmente?",
+                    options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Cuando mi hijo no me escucha",
+                            feedback: "La desobediencia activa nuestro sistema de amenaza. Respira y conecta.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Cuando hay mucho ruido y desorden",
+                            feedback: "El caos sensorial puede sobrecargar el sistema nervioso. Busca espacios de calma.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Cuando estoy cansado o estresado",
+                            feedback: "El autocuidado es fundamental para la co-regulación.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Cuando siento que no tengo control",
+                            feedback: "La necesidad de control puede activar la amígdala. Practica la aceptación.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                ),
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "Cuando pierdo el control, mi primera reacción es...",
+            options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Respirar profundamente y pedir disculpas",
+                            feedback: "Excelente. La reparación fortalece la conexión y enseña autorregulación.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Alejarme para calmarme",
+                            feedback: "Bien, pero comunica tu necesidad de calma al niño.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Seguir discutiendo",
+                            feedback: "La escalada emocional no resuelve conflictos.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Culpar a mi hijo",
+                            feedback: "La responsabilidad emocional es clave para el desarrollo.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                )
+            ]
+        ),
+        
+        // Test 4: "La mirada del niño"
+        Capa7ReflectionTest(
+            id: UUID(),
+            title: "La mirada del niño",
+            questions: [
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "¿Cómo crees que se siente mi hijo cuando estoy estresado?",
+                    options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Se siente seguro porque sabe que lo amo",
+                            feedback: "El amor incondicional es la base, pero la co-regulación es clave.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Se siente confundido y ansioso",
+                            feedback: "Los niños son esponjas emocionales. Tu calma es su calma.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "No se da cuenta de mi estado",
+                            feedback: "Los niños perciben todo. Son expertos en leer emociones.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Se siente culpable",
+                            feedback: "Los niños pueden internalizar el estrés de los padres.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                ),
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "¿Qué necesita mi hijo de mí cuando está molesto?",
+            options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Mi presencia calmada y empática",
+                            feedback: "Perfecto. La co-regulación es el regalo más valioso.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Que le diga qué hacer",
+                            feedback: "Primero la conexión emocional, luego la guía.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Que lo deje solo",
+                            feedback: "Los niños necesitan acompañamiento emocional.",
+                            brainLevel: .amygdala
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Que le dé lo que quiere",
+                            feedback: "Las emociones necesitan validación, no satisfacción inmediata.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                )
+            ]
+        ),
+        
+        // Test 5: "Mi progreso invisible"
+        Capa7ReflectionTest(
+            id: UUID(),
+            title: "Mi progreso invisible",
+            questions: [
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "¿Qué he notado diferente en mi relación con mi hijo últimamente?",
+                    options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Me siento más conectado y presente",
+                            feedback: "La presencia consciente transforma las relaciones.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Puedo mantener la calma más tiempo",
+                            feedback: "La autorregulación se desarrolla con la práctica.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Entiendo mejor sus emociones",
+                            feedback: "La empatía se fortalece con la observación consciente.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Aún me cuesta, pero sigo intentando",
+                            feedback: "El crecimiento es un proceso. Cada intento cuenta.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                ),
+                ReflectionQuestion(
+                    id: UUID(),
+                    prompt: "¿Qué herramienta me ha resultado más útil?",
+            options: [
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "La respiración consciente",
+                            feedback: "La respiración es la base de la autorregulación.",
+                            brainLevel: .prefrontal
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Validar las emociones",
+                            feedback: "La validación construye conexión y seguridad.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Establecer límites con amor",
+                            feedback: "Los límites con conexión enseñan autorregulación.",
+                            brainLevel: .bridge
+                        ),
+                        ReflectionOption(
+                            id: UUID(),
+                            text: "Todavía estoy aprendiendo",
+                            feedback: "El aprendizaje es un viaje. Cada paso importa.",
+                            brainLevel: .amygdala
+                        )
+                    ]
+                )
+            ]
+        )
+    ]
 }
 
-// MARK: - Generación de Items de Evaluación
+// MARK: - Generación de Escenarios Interactivos
 
-func generarItemsEvaluacion() -> [EvalItem] {
-    var items: [EvalItem] = []
-    
-    // Items de Conocimiento (K) - Situaciones Prácticas
-    items.append(contentsOf: [
-        EvalItem(
-            id: "k1",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 1",
-            concept: "rabietas",
-            ageRange: "2-5",
-            difficulty: 2,
-            type: .mcq,
-            prompt: "Tu hijo de 3 años tiene una rabieta porque no quiere irse del parque. ¿Qué debes hacer PRIMERO?",
+func generarEscenariosInteractivos() -> [Capa7Scenario] {
+    return [
+        Capa7Scenario(
+            id: UUID(),
+            context: "Es la hora de dormir y tu hijo de 4 años no quiere irse a la cama.",
+            situation: "Tu hijo lanza un juguete cuando le dices que apague la tablet.",
             options: [
-                "Gritarle que se calme",
-                "Agacharte a su altura y respirar profundamente",
-                "Ignorarlo hasta que se canse",
-                "Prometerle un premio si se calma"
-            ],
-            correct: [1],
-            branches: nil,
-            explanation: "La co-regulación comienza con tu propia calma. Al respirar profundamente, le enseñas al niño a autorregularse.",
-            chapterReference: "Capítulo 1: El cerebro emocional del niño"
-        ),
-        
-        EvalItem(
-            id: "k2",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 2",
-            concept: "límites",
-            ageRange: "6-10",
-            difficulty: 3,
-            type: .mcq,
-            prompt: "Tu hijo de 7 años se niega a hacer la tarea. ¿Cuál es la mejor estrategia?",
-            options: [
-                "Castigarlo sin videojuegos",
-                "Explicarle por qué es importante y ofrecer ayuda",
-                "Hacer la tarea por él",
-                "Dejarlo que no la haga"
-            ],
-            correct: [1],
-            branches: nil,
-            explanation: "Los límites deben establecerse con conexión emocional. Explicar el 'por qué' ayuda al cerebro a entender la importancia.",
-            chapterReference: "Capítulo 2: Límites con amor"
-        ),
-        
-        EvalItem(
-            id: "k3",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 3",
-            concept: "validación",
-            ageRange: "2-5",
-            difficulty: 2,
-            type: .multi,
-            prompt: "Tu hijo está llorando porque se cayó. ¿Qué frases son VALIDADORAS? (Selecciona todas las correctas)",
-            options: [
-                "No es nada, no llores",
-                "Veo que te duele mucho",
-                "Los niños grandes no lloran",
-                "Entiendo que te asustaste"
-            ],
-            correct: [1, 3],
-            branches: nil,
-            explanation: "Validar las emociones significa reconocer lo que siente el niño sin minimizar su experiencia.",
-            chapterReference: "Capítulo 3: Validación emocional"
-        ),
-        
-        EvalItem(
-            id: "k4",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 4",
-            concept: "rutinas",
-            ageRange: "2-5",
-            difficulty: 2,
-            type: .mcq,
-            prompt: "¿Por qué son importantes las rutinas para el cerebro del niño?",
-            options: [
-                "Porque les da estructura y seguridad",
-                "Porque así aprenden más rápido",
-                "Porque los padres se sienten mejor",
-                "Porque es más fácil para los adultos"
-            ],
-            correct: [0],
-            branches: nil,
-            explanation: "Las rutinas crean predictibilidad, lo que reduce la ansiedad y permite al cerebro enfocarse en el aprendizaje.",
-            chapterReference: "Capítulo 4: El poder de las rutinas"
-        ),
-        
-        EvalItem(
-            id: "k5",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 5",
-            concept: "sueño",
-            ageRange: "2-5",
-            difficulty: 3,
-            type: .mcq,
-            prompt: "Tu hijo no quiere irse a dormir. ¿Cuál es la mejor estrategia?",
-            options: [
-                "Obligarlo a acostarse inmediatamente",
-                "Crear una rutina relajante antes de dormir",
-                "Dejarlo que se duerma cuando quiera",
-                "Amenazarlo con castigos"
-            ],
-            correct: [1],
-            branches: nil,
-            explanation: "Una rutina de sueño relajante ayuda al cerebro a prepararse para el descanso y reduce la resistencia.",
-            chapterReference: "Capítulo 5: El sueño y el desarrollo cerebral"
-        )
-    ])
-    
-    // Items de Habilidad (H) - Simulaciones Ramificadas Completas
-    items.append(contentsOf: [
-        EvalItem(
-            id: "h1",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 4",
-            concept: "co_regulacion",
-            ageRange: "2-5",
-            difficulty: 3,
-            type: .branch,
-            prompt: "Tu hijo de 3 años tiene una rabieta en el supermercado porque no le compras un dulce. ¿Qué haces?",
-            options: nil,
-            correct: nil,
-            branches: [
-                BranchNode(
-                    optionText: "Le dices que se calme o se va a quedar sin postre",
-                    nextId: "h1_feedback1",
-                    weight: 0.2,
-                    feedback: "Las amenazas aumentan la activación emocional. Recuerda: conexión antes que corrección."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le quito la tablet inmediatamente",
+                    reflection: "Estableces el límite pero sin conexión emocional. El niño puede sentirse desconectado.",
+                    brainResponse: .amygdala
                 ),
-                BranchNode(
-                    optionText: "Te agachas a su altura, respiras y dices 'Veo que realmente querías ese dulce'",
-                    nextId: "h1_feedback2",
-                    weight: 0.9,
-                    feedback: "¡Perfecto! Validaste su emoción y te autorregulaste. Esto enseña al niño a calmarse."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le digo 'Ya te dije que no, y punto'",
+                    reflection: "La firmeza sin empatía puede activar el sistema de defensa del niño.",
+                    brainResponse: .amygdala
                 ),
-                BranchNode(
-                    optionText: "Le compras el dulce para que se calme",
-                    nextId: "h1_feedback3",
-                    weight: 0.3,
-                    feedback: "Aunque funciona a corto plazo, no enseña autorregulación. Es mejor la co-regulación."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le miro y digo: 'Veo que estás muy molesto, respiremos juntos'",
+                    reflection: "¡Perfecto! La co-regulación enseña al cerebro del niño a calmarse observando tu calma.",
+                    brainResponse: .prefrontal
                 ),
-                BranchNode(
-                    optionText: "Lo sacas del supermercado inmediatamente",
-                    nextId: "h1_feedback4",
-                    weight: 0.6,
-                    feedback: "Bueno para evitar la sobreestimulación, pero primero intenta la co-regulación."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Ignoro y me voy",
+                    reflection: "El niño necesita tu presencia emocional para autorregularse.",
+                    brainResponse: .amygdala
                 )
-            ],
-            explanation: "La co-regulación es fundamental para el desarrollo del cerebro emocional del niño.",
-            chapterReference: "Capítulo 4: Conexión antes que corrección"
+            ]
         ),
         
-        EvalItem(
-            id: "h2",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 6",
-            concept: "límites_amorosos",
-            ageRange: "6-10",
-            difficulty: 4,
-            type: .branch,
-            prompt: "Tu hijo de 8 años se niega a apagar la tablet después de 2 horas. ¿Cómo manejas esta situación?",
-            options: nil,
-            correct: nil,
-            branches: [
-                BranchNode(
-                    optionText: "Le quitas la tablet inmediatamente y la escondes",
-                    nextId: "h2_feedback1",
-                    weight: 0.4,
-                    feedback: "Aunque establece el límite, puede crear resistencia. Es mejor darle opciones."
+        Capa7Scenario(
+            id: UUID(),
+            context: "Tu hijo de 6 años tiene una rabieta en el supermercado porque no le compras un dulce.",
+            situation: "La gente te está mirando y te sientes juzgado.",
+            options: [
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le compro el dulce para que se calme",
+                    reflection: "Funciona a corto plazo, pero no enseña autorregulación. Es mejor la co-regulación.",
+                    brainResponse: .amygdala
                 ),
-                BranchNode(
-                    optionText: "Le dices 'Entiendo que es difícil parar algo divertido. Tienes 5 minutos más, luego la guardamos juntos'",
-                    nextId: "h2_feedback2",
-                    weight: 0.9,
-                    feedback: "¡Excelente! Validaste su emoción, estableciste el límite y ofreciste colaboración."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le grito que se calme",
+                    reflection: "El miedo no enseña autorregulación. La calma se enseña con calma.",
+                    brainResponse: .amygdala
                 ),
-                BranchNode(
-                    optionText: "Le permites seguir jugando porque ya es tarde",
-                    nextId: "h2_feedback3",
-                    weight: 0.2,
-                    feedback: "Los límites inconsistentes confunden al cerebro del niño. La consistencia es clave."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Me agacho a su altura y respiro con él",
+                    reflection: "Excelente. La co-regulación en público es valiente y efectiva.",
+                    brainResponse: .prefrontal
                 ),
-                BranchNode(
-                    optionText: "Le gritas que apague la tablet ahora mismo",
-                    nextId: "h2_feedback4",
-                    weight: 0.3,
-                    feedback: "El miedo no enseña autorregulación. Los límites con amor son más efectivos."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Lo saco del supermercado inmediatamente",
+                    reflection: "Bueno para evitar sobreestimulación, pero primero intenta la co-regulación.",
+                    brainResponse: .bridge
                 )
-            ],
-            explanation: "Los límites con amor enseñan autorregulación sin dañar la conexión emocional.",
-            chapterReference: "Capítulo 6: Límites que conectan"
+            ]
         ),
         
-        EvalItem(
-            id: "h3",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 7",
-            concept: "conflictos_hermanos",
-            ageRange: "6-10",
-            difficulty: 4,
-            type: .branch,
-            prompt: "Tus hijos de 6 y 8 años están peleando por un juguete. ¿Cómo intervienes?",
-            options: nil,
-            correct: nil,
-            branches: [
-                BranchNode(
-                    optionText: "Le das el juguete al mayor porque es más responsable",
-                    nextId: "h3_feedback1",
-                    weight: 0.3,
-                    feedback: "Esto puede crear resentimiento. Es mejor enseñarles a resolver juntos."
+        Capa7Scenario(
+            id: UUID(),
+            context: "Tus hijos de 5 y 7 años están peleando por un juguete.",
+            situation: "El mayor le quita el juguete al menor y este empieza a llorar.",
+            options: [
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le doy el juguete al mayor porque es más responsable",
+                    reflection: "Esto puede crear resentimiento. Es mejor enseñarles a resolver juntos.",
+                    brainResponse: .amygdala
                 ),
-                BranchNode(
-                    optionText: "Les dices 'Veo que ambos quieren el juguete. ¿Cómo podemos solucionarlo juntos?'",
-                    nextId: "h3_feedback2",
-                    weight: 0.9,
-                    feedback: "¡Perfecto! Validaste ambas emociones y los involucraste en la solución."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Les quito el juguete a ambos",
+                    reflection: "Evita el conflicto pero no enseña resolución de problemas.",
+                    brainResponse: .bridge
                 ),
-                BranchNode(
-                    optionText: "Les quitas el juguete a ambos",
-                    nextId: "h3_feedback3",
-                    weight: 0.4,
-                    feedback: "Esto evita el conflicto pero no enseña resolución de problemas."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Les digo 'Veo que ambos quieren el juguete. ¿Cómo podemos solucionarlo juntos?'",
+                    reflection: "¡Perfecto! Validaste ambas emociones y los involucraste en la solución.",
+                    brainResponse: .prefrontal
                 ),
-                BranchNode(
-                    optionText: "Los dejas que se peleen hasta que se cansen",
-                    nextId: "h3_feedback4",
-                    weight: 0.2,
-                    feedback: "Los conflictos no resueltos pueden escalar. La mediación es importante."
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Los dejo que se peleen hasta que se cansen",
+                    reflection: "Los conflictos no resueltos pueden escalar. La mediación es importante.",
+                    brainResponse: .amygdala
                 )
-            ],
-            explanation: "Enseñar resolución de conflictos desarrolla habilidades sociales importantes.",
-            chapterReference: "Capítulo 7: Hermanos y conflictos"
+            ]
+        ),
+        
+        Capa7Scenario(
+            id: UUID(),
+            context: "Tu hijo de 8 años se niega a hacer la tarea después de 2 horas de intentar convencerlo.",
+            situation: "Ya es tarde y necesitas que se acueste pronto.",
+            options: [
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le quito todos sus privilegios",
+                    reflection: "Los castigos pueden crear resistencia. Es mejor la conexión y colaboración.",
+                    brainResponse: .amygdala
+                ),
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le digo 'Entiendo que es difícil. Tienes 10 minutos más, luego la guardamos juntos'",
+                    reflection: "¡Excelente! Validaste su emoción, estableciste el límite y ofreciste colaboración.",
+                    brainResponse: .prefrontal
+                ),
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Hago la tarea por él",
+                    reflection: "Aunque es tentador, no enseña responsabilidad ni autorregulación.",
+                    brainResponse: .amygdala
+                ),
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le grito que la haga ahora mismo",
+                    reflection: "El miedo no enseña motivación intrínseca. La conexión sí.",
+                    brainResponse: .amygdala
+                )
+            ]
+        ),
+        
+        Capa7Scenario(
+            id: UUID(),
+            context: "Tu hijo de 3 años tiene una rabieta porque no quiere ponerse el abrigo para salir.",
+            situation: "Tienes prisa y necesitas salir en 5 minutos.",
+            options: [
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le pongo el abrigo a la fuerza",
+                    reflection: "La fuerza física puede activar el sistema de defensa del niño.",
+                    brainResponse: .amygdala
+                ),
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le digo 'Veo que no quieres el abrigo. ¿Te ayudo a ponértelo o prefieres hacerlo tú?'",
+                    reflection: "¡Perfecto! Validaste su resistencia y le diste opciones dentro del límite.",
+                    brainResponse: .prefrontal
+                ),
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Le prometo un premio si se pone el abrigo",
+                    reflection: "Los premios externos no enseñan autorregulación. Es mejor la conexión.",
+                    brainResponse: .bridge
+                ),
+                ScenarioOption(
+                    id: UUID(),
+                    text: "Me voy sin él",
+                    reflection: "El abandono no es una opción. Los niños necesitan tu presencia.",
+                    brainResponse: .amygdala
+                )
+            ]
         )
-    ])
-    
-    // Items de Consistencia (C) - Micro-Retos Prácticos Completos
-    items.append(contentsOf: [
-        EvalItem(
-            id: "c1",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 5",
-            concept: "respiración_volcán",
-            ageRange: "2-5",
-            difficulty: 1,
-            type: .microReto,
-            prompt: "Hoy practica la respiración del volcán con tu hijo: 'Inhalamos como si oliéramos una flor, exhalamos como si sopláramos una vela'",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "La respiración consciente fortalece las conexiones neuronales de autorregulación.",
-            chapterReference: "Capítulo 5: Técnicas de respiración"
-        ),
-        
-        EvalItem(
-            id: "c2",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 6",
-            concept: "validación_diaria",
-            ageRange: "2-5",
-            difficulty: 2,
-            type: .microReto,
-            prompt: "Hoy valida las emociones de tu hijo usando frases como 'Veo que te sientes...' al menos 3 veces",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "La validación emocional regular fortalece la conexión y el desarrollo emocional.",
-            chapterReference: "Capítulo 6: Validación emocional"
-        ),
-        
-        EvalItem(
-            id: "c3",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 4",
-            concept: "rutina_mañana",
-            ageRange: "6-10",
-            difficulty: 2,
-            type: .microReto,
-            prompt: "Hoy crea una rutina matutina con tu hijo: despertar, desayunar, prepararse, salir. Hazlo juntos paso a paso.",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "Las rutinas predecibles reducen el estrés y permiten al cerebro enfocarse en el aprendizaje.",
-            chapterReference: "Capítulo 4: El poder de las rutinas"
-        ),
-        
-        EvalItem(
-            id: "c4",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 7",
-            concept: "tiempo_calidad",
-            ageRange: "2-5",
-            difficulty: 1,
-            type: .microReto,
-            prompt: "Hoy dedica 15 minutos de tiempo exclusivo con tu hijo: juega, lee o simplemente conversa sin distracciones.",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "El tiempo de calidad fortalece la conexión emocional y el vínculo padre-hijo.",
-            chapterReference: "Capítulo 7: Conexión emocional"
-        ),
-        
-        EvalItem(
-            id: "c5",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 8",
-            concept: "límites_consistentes",
-            ageRange: "6-10",
-            difficulty: 3,
-            type: .microReto,
-            prompt: "Hoy mantén un límite que hayas establecido, aunque tu hijo proteste. Recuerda: límites con amor.",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "La consistencia en los límites enseña al cerebro a autorregularse y respetar las reglas.",
-            chapterReference: "Capítulo 8: Límites consistentes"
-        )
-    ])
-    
-    // Items de Transferencia (T) - Transfer Test Completos
-    items.append(contentsOf: [
-        EvalItem(
-            id: "t1",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 7",
-            concept: "rabieta_hogar",
-            ageRange: "2-5",
-            difficulty: 3,
-            type: .transfer,
-            prompt: "¿Hubo alguna rabieta o berrinche con tu hijo hoy? ¿Qué técnica aplicaste y qué tan efectiva fue?",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "La transferencia al hogar es la prueba real de la efectividad de las estrategias aprendidas.",
-            chapterReference: "Capítulo 7: Aplicación en casa"
-        ),
-        
-        EvalItem(
-            id: "t2",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 6",
-            concept: "límites_aplicados",
-            ageRange: "6-10",
-            difficulty: 4,
-            type: .transfer,
-            prompt: "¿Tuviste que establecer algún límite hoy? ¿Cómo lo manejaste y qué resultado obtuviste?",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "Los límites con amor en situaciones reales desarrollan la autorregulación del niño.",
-            chapterReference: "Capítulo 6: Límites en la práctica"
-        ),
-        
-        EvalItem(
-            id: "t3",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 5",
-            concept: "técnicas_estrés",
-            ageRange: "2-5",
-            difficulty: 3,
-            type: .transfer,
-            prompt: "¿Tu hijo se sintió estresado o ansioso hoy? ¿Qué técnica de calma usaste y funcionó?",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "Las técnicas de autorregulación en momentos de estrés real son fundamentales para el desarrollo.",
-            chapterReference: "Capítulo 5: Manejo del estrés"
-        ),
-        
-        EvalItem(
-            id: "t4",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 4",
-            concept: "rutina_implementada",
-            ageRange: "6-10",
-            difficulty: 2,
-            type: .transfer,
-            prompt: "¿Lograste seguir alguna rutina establecida hoy? ¿Cómo se sintió tu hijo con la predictibilidad?",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "Las rutinas en la vida real crean seguridad y reducen la ansiedad del niño.",
-            chapterReference: "Capítulo 4: Rutinas en acción"
-        ),
-        
-        EvalItem(
-            id: "t5",
-            moduleId: "cerebro-nino-explicado-padres",
-            chapter: "Capítulo 8",
-            concept: "conflicto_resuelto",
-            ageRange: "6-10",
-            difficulty: 4,
-            type: .transfer,
-            prompt: "¿Hubo algún conflicto entre hermanos o con otros niños hoy? ¿Cómo lo manejaste y qué aprendieron?",
-            options: nil,
-            correct: nil,
-            branches: nil,
-            explanation: "Resolver conflictos reales enseña habilidades sociales importantes para toda la vida.",
-            chapterReference: "Capítulo 8: Resolución de conflictos"
-        )
-    ])
-    
-    return items
+    ]
 }

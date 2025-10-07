@@ -1,7 +1,8 @@
 import SwiftUI
+import Foundation
 
 struct EvaluacionDetalleView: View {
-    let tipo: Capa7EvaluacionView.TipoEvaluacion
+    let tipo: TipoEvaluacion
     let items: [EvalItem]
     @ObservedObject var adaptiveSystem: EvaluationAdaptiveSystem
     
@@ -451,9 +452,9 @@ struct ItemEvaluacionView: View {
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(Color.purple.opacity(0.1))
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(Color.purple.opacity(0.3), lineWidth: 1)
-                                )
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.purple.opacity(0.3), lineWidth: 1)
+                            )
                         )
                         .transition(.scale.combined(with: .opacity))
                     } else {
@@ -470,7 +471,7 @@ struct ItemEvaluacionView: View {
         }
     }
     
-    private var tipoIcono: String {
+    var tipoIcono: String {
         switch item.type {
         case .mcq, .multi: return "questionmark.circle"
         case .branch: return "flowchart"
@@ -481,7 +482,7 @@ struct ItemEvaluacionView: View {
         }
     }
     
-    private var tipoColor: Color {
+    var tipoColor: Color {
         switch item.type {
         case .mcq, .multi: return .blue
         case .branch: return .green
@@ -492,7 +493,7 @@ struct ItemEvaluacionView: View {
         }
     }
     
-    private var tipoTexto: String {
+    var tipoTexto: String {
         switch item.type {
         case .mcq: return "Pregunta de opción múltiple"
         case .multi: return "Selección múltiple"
@@ -552,7 +553,7 @@ struct FeedbackView: View {
 }
 
 struct ResultadosEvaluacionView: View {
-    let tipo: Capa7EvaluacionView.TipoEvaluacion
+    let tipo: TipoEvaluacion
     @ObservedObject var adaptiveSystem: EvaluationAdaptiveSystem
     let tiempoTotal: TimeInterval
     
@@ -759,7 +760,7 @@ struct RecomendacionCard: View {
 
 #Preview {
     EvaluacionDetalleView(
-        tipo: .conocimiento,
+        tipo: TipoEvaluacion.conocimiento,
         items: [],
         adaptiveSystem: EvaluationAdaptiveSystem()
     )

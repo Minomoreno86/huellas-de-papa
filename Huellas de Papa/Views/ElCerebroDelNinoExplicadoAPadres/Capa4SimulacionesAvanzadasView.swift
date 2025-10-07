@@ -842,7 +842,7 @@ private extension Capa4SimulacionesAvanzadasView {
     // MARK: - Evaluación de outcomes
     
     func findBestMatchingOutcome() -> Capa4Outcome? {
-        guard let simulation = currentSimulation else { return nil }
+        guard currentSimulation != nil else { return nil }
         
         // Filtrar outcomes relevantes para esta simulación
         let relevantOutcomes = Capa4SimulationData.todosLosOutcomes.filter { outcome in
