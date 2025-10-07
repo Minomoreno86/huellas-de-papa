@@ -55,7 +55,7 @@ enum TipoCapa: String, CaseIterable, Codable {
         case .planEntrenamiento: return "Plan de Entrenamiento"
         case .reflexion: return "Reflexión Profunda"
         case .modoNino: return "Modo Niño"
-        case .gamificacion: return "Gamificación"
+        case .gamificacion: return "Círculo de Crecimiento"
         }
     }
     
@@ -69,7 +69,7 @@ enum TipoCapa: String, CaseIterable, Codable {
         case .planEntrenamiento: return "calendar"
         case .reflexion: return "book.pages"
         case .modoNino: return "figure.child"
-        case .gamificacion: return "trophy"
+        case .gamificacion: return "circle.fill"
         }
     }
 }

@@ -76,8 +76,8 @@ class FactoryModulos {
             print("🔍 DEBUG: Creando Capa8ModoNinoView...")
             return AnyView(Capa8ModoNinoView())
         case .gamificacion:
-            print("🔍 DEBUG: Creando Capa9GamificacionView...")
-            return AnyView(Capa9GamificacionView())
+            print("🔍 DEBUG: Creando Capa9CirculoDeCrecimientoView...")
+            return AnyView(Capa9CirculoDeCrecimientoView())
         }
     }
 }

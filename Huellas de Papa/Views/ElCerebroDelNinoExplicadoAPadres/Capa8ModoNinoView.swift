@@ -1,21 +1,12 @@
 import SwiftUI
 
+// MARK: - Capa 8: Modo Niño - Vista Principal
+// Vista que integra todas las experiencias del Modo Niño
+// Redirige al hub principal Capa8View
+
 struct Capa8ModoNinoView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "figure.child")
-                .font(.system(size: 60))
-                .foregroundColor(.pink)
-            
-            Text("CAPA 8: MODO NIÑO")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Próximamente...")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Capa8View()
     }
 }
 

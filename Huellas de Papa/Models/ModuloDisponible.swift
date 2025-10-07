@@ -516,6 +516,141 @@ extension ModuloDisponible {
                 tiempoEstimado: "20-25 horas",
                 dificultad: .intermedio,
                 categoria: .autoconoceimiento
+            ),
+            
+            // NUEVOS MÓDULOS SOLICITADOS
+            
+            ModuloDisponible(
+                id: "nino-dejo-desastre",
+                titulo: "El niño que dejó de ser un desastre",
+                autor: "Daniel J. Siegel & Tina Payne Bryson",
+                tematica: "Transformación y cambio positivo en niños",
+                enfoque: "Neuroplasticidad y desarrollo",
+                publico: "Padres de 3-12 años",
+                icono: "brain.head.profile",
+                color: "blue",
+                progreso: 0.0,
+                medallasObtenidas: 0,
+                medallasTotales: 12,
+                estaCompletado: false,
+                esFavorito: false,
+                tiempoEstimado: "20-25 horas",
+                dificultad: .intermedio,
+                categoria: .neurociencia
+            ),
+            
+            ModuloDisponible(
+                id: "caballero-creyo-si-mismo",
+                titulo: "El caballero que creyó en sí mismo",
+                autor: "Mireia Canals",
+                tematica: "Autoestima y confianza en niños",
+                enfoque: "Desarrollo de la confianza",
+                publico: "Padres de 4-10 años",
+                icono: "paintbrush",
+                color: "purple",
+                progreso: 0.0,
+                medallasObtenidas: 0,
+                medallasTotales: 12,
+                estaCompletado: false,
+                esFavorito: false,
+                tiempoEstimado: "20-25 horas",
+                dificultad: .principiante,
+                categoria: .imaginacion
+            ),
+            
+            ModuloDisponible(
+                id: "siempre-seras-chico-especial",
+                titulo: "Siempre serás un chico especial",
+                autor: "Mireia Canals",
+                tematica: "Valoración personal y amor incondicional",
+                enfoque: "Autoestima y vínculo",
+                publico: "Padres de 3-8 años",
+                icono: "heart",
+                color: "pink",
+                progreso: 0.0,
+                medallasObtenidas: 0,
+                medallasTotales: 12,
+                estaCompletado: false,
+                esFavorito: false,
+                tiempoEstimado: "20-25 horas",
+                dificultad: .principiante,
+                categoria: .gestionEmocional
+            ),
+            
+            ModuloDisponible(
+                id: "caballero-armadura-oxidada",
+                titulo: "El caballero de la armadura oxidada",
+                autor: "Robert Fisher",
+                tematica: "Autoconocimiento y crecimiento personal",
+                enfoque: "Reflexión y transformación",
+                publico: "Padres y adultos",
+                icono: "person.crop.circle",
+                color: "teal",
+                progreso: 0.0,
+                medallasObtenidas: 0,
+                medallasTotales: 12,
+                estaCompletado: false,
+                esFavorito: false,
+                tiempoEstimado: "20-25 horas",
+                dificultad: .avanzado,
+                categoria: .autoconoceimiento
+            ),
+            
+            ModuloDisponible(
+                id: "tragate-sapo",
+                titulo: "Trágate el sapo",
+                autor: "Brian Tracy",
+                tematica: "Productividad y gestión del tiempo",
+                enfoque: "Herramientas de organización",
+                publico: "Padres ocupados",
+                icono: "wrench.and.screwdriver",
+                color: "orange",
+                progreso: 0.0,
+                medallasObtenidas: 0,
+                medallasTotales: 12,
+                estaCompletado: false,
+                esFavorito: false,
+                tiempoEstimado: "20-25 horas",
+                dificultad: .intermedio,
+                categoria: .herramientas
+            ),
+            
+            ModuloDisponible(
+                id: "juanita-cosmos",
+                titulo: "Juanita en el cosmos",
+                autor: "Mireia Canals",
+                tematica: "Imaginación, aventura y creatividad",
+                enfoque: "Desarrollo creativo",
+                publico: "Padres de 4-10 años",
+                icono: "paintbrush",
+                color: "purple",
+                progreso: 0.0,
+                medallasObtenidas: 0,
+                medallasTotales: 12,
+                estaCompletado: false,
+                esFavorito: false,
+                tiempoEstimado: "20-25 horas",
+                dificultad: .principiante,
+                categoria: .imaginacion
+            ),
+            
+            ModuloDisponible(
+                id: "primer-libro-educacion-financiera",
+                titulo: "Mi primer libro de educación financiera",
+                autor: "Floren Verdú",
+                tematica: "Educación financiera para niños",
+                enfoque: "Habilidades financieras básicas",
+                publico: "Padres de 6-12 años",
+                icono: "wrench.and.screwdriver",
+                color: "orange",
+                progreso: 0.0,
+                medallasObtenidas: 0,
+                medallasTotales: 12,
+                estaCompletado: false,
+                esFavorito: false,
+                tiempoEstimado: "20-25 horas",
+                dificultad: .intermedio,
+                categoria: .herramientas
             )
         ]
     }

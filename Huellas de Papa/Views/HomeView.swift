@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct HomeView: View {
     @EnvironmentObject var progresoManager: ProgresoManager
@@ -74,7 +75,7 @@ struct HeaderView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                     
-                    Text("22 módulos de crianza basados en neurociencia")
+                    Text("29 módulos de crianza basados en neurociencia")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
