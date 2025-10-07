@@ -1,529 +1,643 @@
 import SwiftUI
+import UserNotifications
 
+// MARK: - CAPA 6: PLAN DE ENTRENAMIENTO VIEW - SuperDesign
+/// Vista principal del Plan de Entrenamiento de 28 días con SuperDesign y micro-interacciones
 struct Capa6PlanEntrenamientoView: View {
     @EnvironmentObject private var progresoManager: ProgresoManager
-    @State private var capa6: Capa6PlanEntrenamiento?
-    @State private var planSeleccionado: PlanEntrenamiento? = nil
-    @State private var mostrarDetalle = false
-    @State private var filtroCategoria: CategoriaPlan? = nil
-    @State private var filtroDificultad: NivelDificultadPlan? = nil
-    @State private var filtroEdad: RangoEdadPlan? = nil
+    @StateObject private var trainingProgressManager = TrainingProgressManager()
+    @State private var trainingPlan: Capa6PlanEntrenamiento?
+    @State private var showReflection = false
+    @State private var showReward = false
+    @State private var currentReward: RewardType?
+    @State private var showPhaseOverview = false
+    @State private var selectedPhase = 0
+    @State private var showStats = false
     
-    var planesFiltrados: [PlanEntrenamiento] {
-        guard let capa6 = capa6 else { return [] }
-        var filtrados = capa6.planes
-        
-        if let categoria = filtroCategoria {
-            filtrados = filtrados.filter { $0.categoria == categoria }
+    var currentDay: Int {
+        trainingProgressManager.userProgress.currentDay
+    }
+    
+    var progress: Double {
+        trainingProgressManager.userProgress.totalProgress
+    }
+    
+    var streak: Int {
+        trainingProgressManager.userProgress.streak
+    }
+    
+    var currentObjective: Capa6Objective? {
+        guard let plan = trainingPlan else { return nil }
+        let allObjectives = plan.trainingPlan.phases.flatMap { $0.objectives }
+        return allObjectives.first { $0.dayNumber == currentDay }
+    }
+    
+    var currentPhase: Capa6Phase? {
+        guard let plan = trainingPlan else { return nil }
+        return plan.trainingPlan.phases.first { phase in
+            phase.objectives.contains { $0.dayNumber == currentDay }
         }
-        
-        if let dificultad = filtroDificultad {
-            filtrados = filtrados.filter { $0.nivelDificultad == dificultad }
-        }
-        
-        if let edad = filtroEdad {
-            filtrados = filtrados.filter { $0.edadRecomendada == edad }
-        }
-        
-        return filtrados
     }
     
     var body: some View {
-        NavigationView {
+        VStack(spacing: 0) {
+            // Training Header con progreso animado
+            TrainingHeader(
+                progress: progress,
+                currentDay: currentDay,
+                streak: streak,
+                phase: currentPhase,
+                onStatsTap: {
+                    showStats = true
+                }
+            )
+            
             ScrollView {
-                if let capa6 = capa6 {
                     VStack(spacing: 20) {
-                        // Header
-                        VStack(spacing: 12) {
-                            HStack {
-                                Image(systemName: "calendar.badge.clock")
-                                    .font(.title2)
-                                    .foregroundColor(.blue)
-                                
-                                Text("Planes de Entrenamiento")
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                
-                                Spacer()
+                    // Training Day Card con animaciones
+                    if let objective = currentObjective {
+                        TrainingDayCard(
+                            objective: objective,
+                            onComplete: {
+                                completeDay()
                             }
-                            
-                            Text("Programas estructurados basados en neurociencia")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
+                        )
+                        .transition(.asymmetric(
+                            insertion: .scale.combined(with: .opacity),
+                            removal: .opacity
+                        ))
+                    }
+                    
+                    // Fases Overview
+                    PhasesOverview(
+                        phases: trainingPlan?.trainingPlan.phases ?? [],
+                        currentPhase: selectedPhase,
+                        onPhaseSelect: { phase in
+                            selectedPhase = phase
+                            showPhaseOverview = true
                         }
-                        .padding(.horizontal)
-                        
-                        // Introducción
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Introducción")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                            
-                            Text(capa6.introduccion)
-                                .font(.body)
-                                .foregroundColor(.secondary)
-                                .lineLimit(nil)
+                    )
+                    
+                    // Motivational Quote
+                    MotivationalQuote(day: currentDay)
                         }
                         .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
-                        .padding(.horizontal)
-                        
-                        // Filtros
-                        VStack(spacing: 16) {
-                            // Filtro por categoría
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Por Categoría:")
-                                    .font(.headline)
-                                    .foregroundColor(.secondary)
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 12) {
-                                        FilterButton(
-                                            titulo: "Todas",
-                                            isSelected: filtroCategoria == nil,
-                                            action: {
-                                                filtroCategoria = nil
-                                            }
-                                        )
-                                        
-                                        ForEach(CategoriaPlan.allCases, id: \.self) { categoria in
-                                            FilterButton(
-                                                titulo: categoria.rawValue,
-                                                isSelected: filtroCategoria == categoria,
-                                                action: {
-                                                    filtroCategoria = categoria
-                                                }
-                                            )
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                            
-                            // Filtro por dificultad
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Por Dificultad:")
-                                    .font(.headline)
-                                    .foregroundColor(.secondary)
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 12) {
-                                        FilterButton(
-                                            titulo: "Todas",
-                                            isSelected: filtroDificultad == nil,
-                                            action: {
-                                                filtroDificultad = nil
-                                            }
-                                        )
-                                        
-                                        ForEach(NivelDificultadPlan.allCases, id: \.self) { dificultad in
-                                            FilterButton(
-                                                titulo: dificultad.rawValue,
-                                                isSelected: filtroDificultad == dificultad,
-                                                action: {
-                                                    filtroDificultad = dificultad
-                                                }
-                                            )
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                            
-                            // Filtro por edad
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Por Edad:")
-                                    .font(.headline)
-                                    .foregroundColor(.secondary)
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 12) {
-                                        FilterButton(
-                                            titulo: "Todas",
-                                            isSelected: filtroEdad == nil,
-                                            action: {
-                                                filtroEdad = nil
-                                            }
-                                        )
-                                        
-                                        ForEach(RangoEdadPlan.allCases, id: \.self) { edad in
-                                            FilterButton(
-                                                titulo: edad.rawValue,
-                                                isSelected: filtroEdad == edad,
-                                                action: {
-                                                    filtroEdad = edad
-                                                }
-                                            )
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
+            }
+            
+            // Bottom Action Button
+            VStack(spacing: 12) {
+                if let objective = currentObjective {
+                    Button(action: {
+                        showReflection.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "brain.head.profile")
+                            Text("Reflexionar")
                         }
-                        
-                        // Lista de Planes
-                        VStack(alignment: .leading, spacing: 20) {
-                            HStack {
-                                Text("\(planesFiltrados.count) Planes Disponibles")
-                                    .font(.headline)
-                                    .foregroundColor(.primary)
-                                
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                            
-                            LazyVStack(spacing: 16) {
-                                ForEach(planesFiltrados) { plan in
-                                    PlanEntrenamientoCard(plan: plan) {
-                                        planSeleccionado = plan
-                                        mostrarDetalle = true
-                                    }
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
-                        
-                        // Resumen
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Resumen Integrador")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                            
-                            Text(capa6.resumenIntegrador)
-                                .font(.body)
-                                .foregroundColor(.secondary)
-                                .lineLimit(nil)
-                        }
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
-                        .padding(.horizontal)
+                        .background(
+                            LinearGradient(
+                                colors: [Color.blue, Color.purple],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(16)
                     }
-                } else {
-                    VStack(spacing: 20) {
-                        ProgressView()
-                            .scaleEffect(1.5)
-                        
-                        Text("Cargando planes de entrenamiento...")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .buttonStyle(MainButtonStyle())
                 }
             }
-            .navigationTitle("Plan de Entrenamiento")
-            .navigationBarTitleDisplayMode(.inline)
+            .padding()
         }
-        .onAppear {
-            if capa6 == nil {
-                capa6 = Capa6PlanEntrenamiento.contenidoCerebroDelNino()
+        .sheet(isPresented: $showReflection) {
+            if let objective = currentObjective {
+                ReflectionPrompt(
+                    objective: objective,
+                    onComplete: { reflection in
+                        saveReflection(reflection)
+                    }
+                )
             }
         }
-        .sheet(isPresented: $mostrarDetalle) {
-            if let plan = planSeleccionado {
-                PlanEntrenamientoDetalleView(plan: plan)
+        .sheet(isPresented: $showPhaseOverview) {
+            PhaseDetailView(
+                phase: trainingPlan?.trainingPlan.phases[selectedPhase],
+                onClose: {
+                    showPhaseOverview = false
+                }
+            )
+        }
+        .sheet(isPresented: $showStats) {
+            TrainingStatsView(
+                progressManager: trainingProgressManager,
+                onClose: {
+                    showStats = false
+                }
+            )
+        }
+        .overlay(
+            // Reward Modal
+            Group {
+                if showReward, let reward = currentReward {
+                    RewardModal(
+                        rewardType: reward,
+                        onDismiss: {
+                            showReward = false
+                            currentReward = nil
+                        }
+                    )
+                }
+            }
+        )
+        .animation(.spring(response: 0.35, dampingFraction: 0.8), value: currentDay)
+        .animation(.spring(response: 0.35, dampingFraction: 0.8), value: progress)
+        .onAppear {
+            loadTrainingPlan()
+            playSoftIntroSound()
+        }
+    }
+    
+    // MARK: - Funciones de Acción
+    
+    private func loadTrainingPlan() {
+        trainingPlan = Capa6PlanEntrenamiento.contenidoCerebroDelNino()
+        
+        // Si es la primera vez, inicializar el entrenamiento
+        if trainingProgressManager.isFirstTime {
+            trainingProgressManager.startTraining()
+        }
+    }
+    
+    private func completeDay() {
+        guard let objective = currentObjective else { return }
+        
+        // Marcar día como completado usando el manager de persistencia
+        trainingProgressManager.completeDay(currentDay)
+        
+        // Crear y guardar recompensa
+        let reward = RewardEarned(
+            dayNumber: currentDay,
+            rewardType: objective.rewardType,
+            message: "¡Día \(currentDay) completado! \(objective.title)"
+        )
+        trainingProgressManager.addReward(reward)
+        
+        // Mostrar recompensa
+        currentReward = objective.rewardType
+        showReward = true
+        
+        // Vibración de éxito
+        #if os(iOS)
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+        #endif
+        
+        // Avanzar al siguiente día
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            if currentDay < 28 {
+                trainingProgressManager.userProgress.currentDay += 1
+                trainingProgressManager.saveProgress()
+            }
+        }
+    }
+    
+    private func saveReflection(_ reflection: String) {
+        guard let objective = currentObjective else { return }
+        
+        // Crear reflexión con datos del día
+        let dayReflection = DayReflection(
+            dayNumber: currentDay,
+            reflectionText: reflection,
+            moodRating: 4 // Valor por defecto, se puede mejorar con un slider
+        )
+        
+        // Guardar reflexión usando el manager de persistencia
+        trainingProgressManager.addReflection(dayReflection)
+        showReflection = false
+    }
+    
+    private func playSoftIntroSound() {
+        // Reproducir sonido suave de introducción
+        // Implementar con AVAudioPlayer si es necesario
+    }
+}
+
+// MARK: - Componentes SuperDesign
+
+// MARK: - Training Header
+struct TrainingHeader: View {
+    let progress: Double
+    let currentDay: Int
+    let streak: Int
+    let phase: Capa6Phase?
+    let onStatsTap: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Progreso circular animado
+            ZStack {
+                Circle()
+                    .stroke(Color.gray.opacity(0.3), lineWidth: 8)
+                    .frame(width: 120, height: 120)
+                
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(
+                        LinearGradient(
+                            colors: [Color.blue, Color.purple],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                    )
+                    .frame(width: 120, height: 120)
+                    .rotationEffect(.degrees(-90))
+                    .animation(.easeInOut(duration: 1.0), value: progress)
+                
+                VStack(spacing: 4) {
+                    Text("Día \(currentDay)")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                                    .foregroundColor(.primary)
+                                
+                    Text("de 28")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            
+            // Información de la fase actual
+            if let phase = phase {
+                HStack(spacing: 12) {
+                    Text(phase.visualSymbol)
+                        .font(.title)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(phase.title)
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                            
+                        Text(phase.description)
+                            .font(.caption)
+                                .foregroundColor(.secondary)
+                            .multilineTextAlignment(.leading)
+                    }
+                                
+                                Spacer()
+                            }
+                        .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(phase.themeColor).opacity(0.1))
+                )
+            }
+            
+            // Streak counter y botón de estadísticas
+            HStack {
+                HStack(spacing: 8) {
+                    Image(systemName: "flame.fill")
+                        .foregroundColor(.orange)
+                    
+                    Text("\(streak) días consecutivos")
+                            .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.primary)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(
+                    Capsule()
+                        .fill(Color.orange.opacity(0.1))
+                )
+                
+                Spacer()
+                
+                Button(action: onStatsTap) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chart.bar.fill")
+                        Text("Estadísticas")
+                    }
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(
+                        Capsule()
+                            .fill(Color.blue.opacity(0.1))
+                    )
+                }
+            }
+        }
+        .padding()
+        .background(
+            LinearGradient(
+                colors: [Color.blue.opacity(0.05), Color.purple.opacity(0.05)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+    }
+}
+
+// MARK: - Training Day Card
+struct TrainingDayCard: View {
+    let objective: Capa6Objective
+    let onComplete: () -> Void
+    @State private var isCompleted = false
+    @State private var showActivity = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header del día
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                    Text("Día \(objective.dayNumber)")
+                            .font(.caption)
+                        .fontWeight(.semibold)
+                            .foregroundColor(.secondary)
+                    
+                    Text(objective.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                                .foregroundColor(.primary)
+                    }
+                    
+                    Spacer()
+                    
+                // Icono de la actividad
+                Image(systemName: objective.activity.type.icon)
+                    .font(.title2)
+                    .foregroundColor(.blue)
+                }
+                
+                // Descripción
+            Text(objective.description)
+                                .font(.body)
+                                .foregroundColor(.secondary)
+                                .lineLimit(nil)
+                
+            // Información de la actividad
+                HStack(spacing: 16) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "clock")
+                            .font(.caption)
+                    Text("\(objective.activity.durationMinutes) min")
+                            .font(.caption)
+                    }
+                    .foregroundColor(.secondary)
+                    
+                    HStack(spacing: 4) {
+                    Image(systemName: "brain.head.profile")
+                            .font(.caption)
+                    Text(objective.activity.type.displayName)
+                            .font(.caption)
+                    }
+                    .foregroundColor(.secondary)
+                    
+                Spacer()
+            }
+            
+            // Botón de actividad
+            Button(action: {
+                showActivity.toggle()
+            }) {
+                HStack {
+                    Image(systemName: "play.circle.fill")
+                    Text("Comenzar Actividad")
+                }
+                .font(.headline)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                        .padding()
+                .background(
+                    LinearGradient(
+                        colors: [Color.blue, Color.purple],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                        .cornerRadius(12)
+        }
+        .buttonStyle(ScaleButtonStyle())
+        }
+        .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color(.systemBackground))
+                        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                )
+        .sheet(isPresented: $showActivity) {
+            ActivityDetailView(
+                objective: objective,
+                onComplete: {
+                    isCompleted = true
+                    onComplete()
+                }
+            )
+        }
+    }
+}
+
+// MARK: - Phases Overview
+struct PhasesOverview: View {
+    let phases: [Capa6Phase]
+    let currentPhase: Int
+    let onPhaseSelect: (Int) -> Void
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Fases del Plan")
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(0..<phases.count, id: \.self) { index in
+                        PhaseCard(
+                            phase: phases[index],
+                            isCurrent: index == currentPhase,
+                            onTap: {
+                                onPhaseSelect(index)
+                            }
+                        )
+                    }
+                }
+                .padding(.horizontal)
             }
         }
     }
 }
 
-// MARK: - Componentes de la Vista
-
-struct PlanEntrenamientoCard: View {
-    let plan: PlanEntrenamiento
-    let action: () -> Void
+// MARK: - Phase Card
+struct PhaseCard: View {
+    let phase: Capa6Phase
+    let isCurrent: Bool
+    let onTap: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            VStack(alignment: .leading, spacing: 12) {
-                // Header
-                HStack {
-                    Image(systemName: plan.icono)
-                        .font(.title2)
-                        .foregroundColor(Color(plan.color))
+        Button(action: onTap) {
+            VStack(spacing: 12) {
+                Text(phase.visualSymbol)
+                                .font(.title)
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(plan.titulo)
+                    Text(phase.title)
                             .font(.headline)
+                                    .fontWeight(.bold)
                             .foregroundColor(.primary)
                             .multilineTextAlignment(.leading)
                         
-                        Text(plan.categoria.rawValue)
+                    Text(phase.description)
                             .font(.caption)
                             .foregroundColor(.secondary)
-                    }
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text(plan.nivelDificultad.rawValue)
-                            .font(.caption)
-                            .foregroundColor(Color(plan.nivelDificultad.color))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color(plan.nivelDificultad.color).opacity(0.1))
-                            .cornerRadius(8)
-                        
-                        Text(plan.edadRecomendada.rawValue)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
-                
-                // Descripción
-                Text(plan.descripcion)
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .lineLimit(3)
-                
-                // Información del plan
-                HStack(spacing: 16) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "clock")
-                            .font(.caption)
-                        Text("\(plan.duracionSemanas) semanas")
-                            .font(.caption)
-                    }
-                    .foregroundColor(.secondary)
-                    
-                    HStack(spacing: 4) {
-                        Image(systemName: "calendar")
-                            .font(.caption)
-                        Text("\(plan.frecuenciaSemanal)x/semana")
-                            .font(.caption)
-                    }
-                    .foregroundColor(.secondary)
-                    
-                    HStack(spacing: 4) {
-                        Image(systemName: "timer")
-                            .font(.caption)
-                        Text(plan.duracionSesion)
-                            .font(.caption)
-                    }
-                    .foregroundColor(.secondary)
-                    
-                    Spacer()
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
                 }
             }
             .padding()
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            .frame(width: 140)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isCurrent ? Color(phase.themeColor).opacity(0.2) : Color(.systemGray6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(
+                                isCurrent ? Color(phase.themeColor) : Color.clear,
+                                lineWidth: 2
+                            )
+                    )
+            )
         }
         .buttonStyle(ScaleButtonStyle())
     }
 }
 
-struct PlanEntrenamientoDetalleView: View {
-    let plan: PlanEntrenamiento
+// MARK: - Motivational Quote
+struct MotivationalQuote: View {
+    let day: Int
+    
+    var quotes: [String] = [
+        "Tú puedes formar el cerebro que deseas acompañar",
+        "La conexión emocional es la base del desarrollo",
+        "Cada día es una oportunidad de crecer juntos",
+        "La calma es contagiosa, la paz se transmite",
+        "El amor es el mejor nutriente para el cerebro"
+    ]
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            Text("💡")
+                .font(.title)
+            
+            Text(quotes[day % quotes.count])
+                .font(.headline)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.yellow.opacity(0.1))
+                )
+        }
+    }
+}
+
+// MARK: - Activity Detail View
+struct ActivityDetailView: View {
+    let objective: Capa6Objective
+    let onComplete: () -> Void
     @Environment(\.dismiss) private var dismiss
+    @State private var currentStep = 0
+    @State private var isCompleted = false
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // Header
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Image(systemName: plan.icono)
-                                .font(.title)
-                                .foregroundColor(Color(plan.color))
-                            
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(plan.titulo)
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.primary)
-                                
-                                Text(plan.categoria.rawValue)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                            
-                            Spacer()
-                        }
+            VStack(spacing: 20) {
+                // Header
+                VStack(spacing: 12) {
+                    Text(objective.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                    
+                    Text(objective.description)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                    }
+                    .padding()
+                
+                // Instrucciones
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Instrucciones")
+                            .font(.headline)
+                        .fontWeight(.bold)
                         
-                        Text(plan.descripcion)
+                    Text(objective.activity.instruction)
                             .font(.body)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .foregroundColor(.secondary)
                     
-                    // Objetivo Neurocientífico
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Objetivo Neurocientífico")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        Text(plan.objetivoNeurocientifico)
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                    
-                    // Información del Plan
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Información del Plan")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        VStack(spacing: 8) {
-                            PlanInfoRow(icono: "clock", titulo: "Duración", valor: "\(plan.duracionSemanas) semanas")
-                            PlanInfoRow(icono: "calendar", titulo: "Frecuencia", valor: "\(plan.frecuenciaSemanal) veces por semana")
-                            PlanInfoRow(icono: "timer", titulo: "Duración por sesión", valor: plan.duracionSesion)
-                            PlanInfoRow(icono: "chart.bar.fill", titulo: "Dificultad", valor: plan.nivelDificultad.rawValue)
-                            PlanInfoRow(icono: "person.fill", titulo: "Edad recomendada", valor: plan.edadRecomendada.rawValue)
-                        }
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                    
-                    // Actividades
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Actividades del Plan")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        ForEach(Array(plan.actividades.enumerated()), id: \.offset) { index, actividad in
-                            HStack(alignment: .top, spacing: 12) {
-                                Text("\(index + 1)")
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .frame(width: 20, height: 20)
-                                    .background(Color.blue)
-                                    .cornerRadius(10)
-                                
-                                Text(actividad)
-                                    .font(.body)
-                                    .foregroundColor(.secondary)
-                                
-                                Spacer()
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                    
-                    // Progresión
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Progresión del Plan")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        ForEach(Array(plan.progresion.enumerated()), id: \.offset) { index, nivel in
-                            HStack(alignment: .top, spacing: 12) {
-                                Text("Nivel \(index + 1)")
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .frame(width: 40, height: 20)
-                                    .background(Color.green)
-                                    .cornerRadius(10)
-                                
-                                Text(nivel)
-                                    .font(.body)
-                                    .foregroundColor(.secondary)
-                                
-                                Spacer()
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                    
-                    // Materiales Necesarios
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Materiales Necesarios")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 8) {
-                            ForEach(plan.materialesNecesarios, id: \.self) { material in
+                    // Materiales necesarios
+                    if !objective.activity.materials.isEmpty {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Materiales necesarios:")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                            
+                            ForEach(objective.activity.materials, id: \.self) { material in
                                 HStack(spacing: 8) {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(.green)
-                                        .font(.caption)
-                                    
                                     Text(material)
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color(.systemGray5))
-                                .cornerRadius(8)
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                    
-                    // Ejemplos Prácticos
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Ejemplos Prácticos")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        ForEach(Array(plan.ejemplosPracticos.enumerated()), id: \.offset) { index, ejemplo in
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack(alignment: .top, spacing: 12) {
-                                    Text("Ejemplo \(index + 1)")
-                                        .font(.caption)
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.white)
-                                        .frame(width: 60, height: 20)
-                                        .background(Color.orange)
-                                        .cornerRadius(10)
-                                    
-                                    Text(ejemplo)
                                         .font(.body)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Spacer()
                                 }
-                                
-                                Divider()
-                                    .padding(.vertical, 4)
                             }
                         }
                     }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                    
-                    // Resultados Esperados
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Resultados Esperados")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        Text(plan.resultadosEsperados)
-                            .font(.body)
-                            .foregroundColor(.secondary)
                     }
                     .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                }
-                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(.systemGray6))
+                )
+                    
+                    Spacer()
+                
+                // Botón de completar
+                Button(action: {
+                    isCompleted = true
+                    onComplete()
+                    dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                        Text("Completar Actividad")
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+            .padding()
+                    .background(
+                        LinearGradient(
+                            colors: [Color.green, Color.blue],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+            .cornerRadius(12)
+        }
+        .buttonStyle(ScaleButtonStyle())
             }
-            .navigationTitle("Detalle del Plan")
+            .padding()
+            .navigationTitle("Actividad")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Cerrar") {
                         dismiss()
                     }
@@ -533,28 +647,655 @@ struct PlanEntrenamientoDetalleView: View {
     }
 }
 
-struct PlanInfoRow: View {
-    let icono: String
-    let titulo: String
-    let valor: String
+// MARK: - Reflection Prompt
+struct ReflectionPrompt: View {
+    let objective: Capa6Objective
+    let onComplete: (String) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var reflection = ""
+    @State private var useTextField = false
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                // Header fijo
+                VStack(spacing: 16) {
+                    Text("📝 Reflexión del Día")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                    
+                    Text(objective.title)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
+                .padding()
+                .background(Color(.systemBackground))
+                
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // Prompt de reflexión
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "lightbulb.fill")
+                                    .foregroundColor(.orange)
+                                
+                                Text("Pregunta de reflexión:")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                            }
+                            
+                            Text(objective.reflectionPrompt)
+                                .font(.body)
+                                .foregroundColor(.secondary)
+                                .padding(16)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color(.systemGray6))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color.orange.opacity(0.3), lineWidth: 1)
+                                        )
+                                )
+                        }
+                        .padding(.horizontal)
+                        
+                        // Campo de texto con opciones
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "pencil.and.outline")
+                                    .foregroundColor(.blue)
+                                
+                                Text("Tu reflexión:")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                // Toggle entre TextEditor y TextField
+                                Button(action: {
+                                    useTextField.toggle()
+                                }) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: useTextField ? "textformat" : "textformat.abc")
+                                        Text(useTextField ? "Cambiar a TextEditor" : "Cambiar a TextField")
+                                    }
+                                    .font(.caption)
+                                    .foregroundColor(.blue)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(
+                                        Capsule()
+                                            .fill(Color.blue.opacity(0.1))
+                                    )
+                                }
+                            }
+                            
+                            if useTextField {
+                                // TextField multilínea
+                                VStack(spacing: 8) {
+                                    TextField("Escribe tu reflexión aquí...", text: $reflection, axis: .vertical)
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .lineLimit(5...10)
+                                        .frame(minHeight: 120)
+                                    
+                                    Text("Usando TextField - Puedes escribir múltiples líneas")
+                                        .font(.caption)
+                                        .foregroundColor(.green)
+                                }
+                            } else {
+                                // TextEditor con fondo visible
+                                ZStack(alignment: .topLeading) {
+                                    // Fondo visible
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color(.systemBackground))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                                        )
+                                        .frame(minHeight: 150)
+                                    
+                                    // TextEditor
+                                    TextEditor(text: $reflection)
+                                        .frame(minHeight: 150)
+                                        .padding(12)
+                                        .background(Color.clear)
+                                        .cornerRadius(12)
+                                        .overlay(
+                                            // Placeholder visible
+                                            Group {
+                                                if reflection.isEmpty {
+                                                    VStack {
+                                                        HStack {
+                                                            Text("Escribe tu reflexión aquí...")
+                                                                .foregroundColor(.secondary)
+                                                                .font(.body)
+                                                                .allowsHitTesting(false)
+                                                            Spacer()
+                                                        }
+                                                        Spacer()
+                                                    }
+                                                    .padding(.horizontal, 16)
+                                                    .padding(.vertical, 20)
+                                                }
+                                            }
+                                        )
+                                }
+                                
+                                Text("Usando TextEditor - Área de texto principal")
+                                    .font(.caption)
+                                    .foregroundColor(.blue)
+                            }
+                            
+                            // Contador de caracteres
+                            HStack {
+                                Text("\(reflection.count) caracteres")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                
+                                Spacer()
+                                
+                                if !reflection.isEmpty {
+                                    Text("✓ Texto guardado")
+                                        .font(.caption)
+                                        .foregroundColor(.green)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        // Botón de guardar
+                        VStack(spacing: 16) {
+                            Button(action: {
+                                onComplete(reflection)
+                            }) {
+                                HStack(spacing: 12) {
+                                    Image(systemName: "book.fill")
+                                        .font(.title3)
+                                    
+                                    Text("Guardar Reflexión")
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
+                                }
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(
+                                    LinearGradient(
+                                        colors: reflection.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 
+                                            [Color.gray, Color.gray] : [Color.purple, Color.blue],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .cornerRadius(16)
+                                .shadow(
+                                    color: reflection.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 
+                                        .clear : .purple.opacity(0.3),
+                                    radius: 8,
+                                    x: 0,
+                                    y: 4
+                                )
+                            }
+                            .buttonStyle(ScaleButtonStyle())
+                            .disabled(reflection.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                            
+                            // Texto de ayuda
+                            Text("Escribe al menos unas palabras para guardar tu reflexión")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 20)
+                    }
+                }
+            }
+            .navigationTitle("Reflexión")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cerrar") {
+                        dismiss()
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Reward Modal
+struct RewardModal: View {
+    let rewardType: RewardType
+    let onDismiss: () -> Void
+    @State private var showAnimation = false
+    
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    onDismiss()
+                }
+            
+            VStack(spacing: 20) {
+                // Icono de recompensa
+                Image(systemName: rewardType.icon)
+                    .font(.system(size: 60))
+                    .foregroundColor(.blue)
+                    .scaleEffect(showAnimation ? 1.2 : 0.8)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: showAnimation)
+                
+                VStack(spacing: 8) {
+                    Text("¡Bien hecho!")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        
+                    Text(rewardType.displayName)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                }
+                
+                // Mensaje motivacional
+                Text("Has completado otro día de tu plan de entrenamiento. ¡Sigue así!")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+            .padding(30)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
+            )
+            .scaleEffect(showAnimation ? 1.0 : 0.8)
+            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: showAnimation)
+        }
+        .onAppear {
+            showAnimation = true
+        }
+    }
+}
+
+// MARK: - Phase Detail View
+struct PhaseDetailView: View {
+    let phase: Capa6Phase?
+    let onClose: () -> Void
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    if let phase = phase {
+                        // Header de la fase
+                        VStack(spacing: 16) {
+                            Text(phase.visualSymbol)
+                                .font(.system(size: 60))
+                            
+                            Text(phase.title)
+                                .font(.title)
+                                    .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                
+                            Text(phase.description)
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color(phase.themeColor).opacity(0.1))
+                        )
+                        
+                        // Objetivos de la fase
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Objetivos de esta fase:")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                            
+                            ForEach(phase.objectives) { objective in
+                                ObjectiveRow(objective: objective)
+                            }
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(.systemGray6))
+                        )
+                        }
+                    }
+                    .padding()
+            }
+            .navigationTitle("Detalle de Fase")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cerrar") {
+                        onClose()
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Objective Row
+struct ObjectiveRow: View {
+    let objective: Capa6Objective
     
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: icono)
-                .font(.caption)
-                .foregroundColor(.blue)
-                .frame(width: 16)
+            Text("Día \(objective.dayNumber)")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .frame(width: 40, height: 20)
+                .background(Color.blue)
+                                    .cornerRadius(10)
+                                
+            VStack(alignment: .leading, spacing: 4) {
+                Text(objective.title)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                Text(objective.description)
+                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                    .lineLimit(2)
+            }
+                                
+                                Spacer()
+                            }
+        .padding(.vertical, 4)
+    }
+}
+
+// MARK: - Button Styles
+struct MainButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+
+// MARK: - Training Stats View
+struct TrainingStatsView: View {
+    @ObservedObject var progressManager: TrainingProgressManager
+    let onClose: () -> Void
+    @Environment(\.dismiss) private var dismiss
+    
+    var stats: TrainingStats {
+        progressManager.getTrainingStats()
+    }
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Header con progreso general
+                    VStack(spacing: 16) {
+                        Text("📊 Estadísticas del Entrenamiento")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        
+                        // Progreso circular
+                        ZStack {
+                            Circle()
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 12)
+                                .frame(width: 120, height: 120)
+                            
+                            Circle()
+                                .trim(from: 0, to: stats.completionPercentage)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.blue, Color.purple],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    style: StrokeStyle(lineWidth: 12, lineCap: .round)
+                                )
+                                .frame(width: 120, height: 120)
+                                .rotationEffect(.degrees(-90))
+                                .animation(.easeInOut(duration: 1.0), value: stats.completionPercentage)
+                            
+                            VStack(spacing: 4) {
+                                Text("\(Int(stats.completionPercentage * 100))%")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.primary)
+                                
+                                Text("Completado")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color(.systemGray6))
+                    )
+                    
+                    // Estadísticas principales
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 16) {
+                        StatCard(
+                            title: "Días Completados",
+                            value: "\(stats.totalDaysCompleted)",
+                            subtitle: "de 28 días",
+                            icon: "calendar.badge.checkmark",
+                            color: .green
+                        )
+                        
+                        StatCard(
+                            title: "Racha Actual",
+                            value: "\(stats.currentStreak)",
+                            subtitle: "días consecutivos",
+                            icon: "flame.fill",
+                            color: .orange
+                        )
+                        
+                        StatCard(
+                            title: "Reflexiones",
+                            value: "\(stats.totalReflections)",
+                            subtitle: "en el diario",
+                            icon: "book.fill",
+                            color: .blue
+                        )
+                        
+                        StatCard(
+                            title: "Recompensas",
+                            value: "\(stats.totalRewards)",
+                            subtitle: "ganadas",
+                            icon: "medal.fill",
+                            color: .purple
+                        )
+                    }
+                    
+                    // Progreso por fases
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Progreso por Fases")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        
+                        ForEach(1...4, id: \.self) { phaseNumber in
+                            PhaseProgressRow(
+                                phaseNumber: phaseNumber,
+                                progress: progressManager.getPhaseProgress(phaseNumber),
+                                phaseName: getPhaseName(phaseNumber)
+                            )
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(.systemGray6))
+                    )
+                    
+                    // Configuraciones
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Configuraciones")
+                            .font(.headline)
+                                        .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                                    
+                        VStack(spacing: 12) {
+                            HStack {
+                                Text("Notificaciones")
+                                        .font(.body)
+                                    .foregroundColor(.primary)
+                                    
+                                    Spacer()
+                                
+                                Toggle("", isOn: $progressManager.notificationsEnabled)
+                                    .onChange(of: progressManager.notificationsEnabled) { enabled in
+                                        progressManager.toggleNotifications(enabled)
+                                    }
+                            }
+                            
+                            if progressManager.notificationsEnabled {
+                                HStack {
+                                    Text("Hora de recordatorio")
+                                        .font(.body)
+                            .foregroundColor(.primary)
+                        
+                                    Spacer()
+                                    
+                                    DatePicker("", selection: $progressManager.reminderTime, displayedComponents: .hourAndMinute)
+                                        .onChange(of: progressManager.reminderTime) { time in
+                                            progressManager.updateReminderTime(time)
+                                        }
+                                }
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(.systemGray6))
+                    )
+                }
+                .padding()
+            }
+            .navigationTitle("Estadísticas")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cerrar") {
+                        onClose()
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .onAppear {
+            progressManager.requestNotificationPermission()
+        }
+    }
+    
+    private func getPhaseName(_ phaseNumber: Int) -> String {
+        switch phaseNumber {
+        case 1: return "Conecta"
+        case 2: return "Regula"
+        case 3: return "Guía"
+        case 4: return "Integra"
+        default: return "Desconocida"
+        }
+    }
+}
+
+// MARK: - Stat Card
+struct StatCard: View {
+    let title: String
+    let value: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(color)
             
-            Text(titulo)
+            Text(value)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            
+            Text(title)
+                .font(.caption)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+            
+            Text(subtitle)
+                .font(.caption2)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+        )
+    }
+}
+
+// MARK: - Phase Progress Row
+struct PhaseProgressRow: View {
+    let phaseNumber: Int
+    let progress: Double
+    let phaseName: String
+    
+    var body: some View {
+        HStack {
+            Text("Fase \(phaseNumber)")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+            
+            Text(phaseName)
                 .font(.caption)
                 .foregroundColor(.secondary)
             
             Spacer()
             
-            Text(valor)
+            HStack(spacing: 8) {
+                ProgressView(value: progress)
+                    .progressViewStyle(LinearProgressViewStyle(tint: getPhaseColor(phaseNumber)))
+                    .frame(width: 100)
+                
+                Text("\(Int(progress * 100))%")
                 .font(.caption)
                 .fontWeight(.medium)
-                .foregroundColor(.primary)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+    
+    private func getPhaseColor(_ phaseNumber: Int) -> Color {
+        switch phaseNumber {
+        case 1: return .blue
+        case 2: return .green
+        case 3: return .orange
+        case 4: return .purple
+        default: return .gray
         }
     }
 }
