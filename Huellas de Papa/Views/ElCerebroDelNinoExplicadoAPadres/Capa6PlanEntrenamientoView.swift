@@ -55,13 +55,13 @@ struct Capa6PlanEntrenamientoView: View {
             ScrollView {
                     VStack(spacing: 20) {
                     // Training Day Card con animaciones
-                    if let objective = currentObjective {
-                        TrainingDayCard(
-                            objective: objective,
-                            onComplete: {
-                                completeDay()
-                            }
-                        )
+                if currentObjective != nil {
+                    TrainingDayCard(
+                        objective: currentObjective!,
+                        onComplete: {
+                            completeDay()
+                        }
+                    )
                         .transition(.asymmetric(
                             insertion: .scale.combined(with: .opacity),
                             removal: .opacity
@@ -86,7 +86,7 @@ struct Capa6PlanEntrenamientoView: View {
             
             // Bottom Action Button
             VStack(spacing: 12) {
-                if let objective = currentObjective {
+                if currentObjective != nil {
                     Button(action: {
                         showReflection.toggle()
                     }) {
@@ -113,14 +113,14 @@ struct Capa6PlanEntrenamientoView: View {
             .padding()
         }
         .sheet(isPresented: $showReflection) {
-            if let objective = currentObjective {
-                ReflectionPrompt(
-                    objective: objective,
-                    onComplete: { reflection in
-                        saveReflection(reflection)
-                    }
-                )
-            }
+                if currentObjective != nil {
+                    ReflectionPrompt(
+                        objective: currentObjective!,
+                        onComplete: { reflection in
+                            saveReflection(reflection)
+                        }
+                    )
+                }
         }
         .sheet(isPresented: $showPhaseOverview) {
             PhaseDetailView(
@@ -205,7 +205,7 @@ struct Capa6PlanEntrenamientoView: View {
     }
     
     private func saveReflection(_ reflection: String) {
-        guard let objective = currentObjective else { return }
+        guard currentObjective != nil else { return }
         
         // Crear reflexión con datos del día
         let dayReflection = DayReflection(
@@ -1162,7 +1162,7 @@ struct TrainingStatsView: View {
                                     Spacer()
                                 
                                 Toggle("", isOn: $progressManager.notificationsEnabled)
-                                    .onChange(of: progressManager.notificationsEnabled) { enabled in
+                                    .onChange(of: progressManager.notificationsEnabled) { _, enabled in
                                         progressManager.toggleNotifications(enabled)
                                     }
                             }
@@ -1176,7 +1176,7 @@ struct TrainingStatsView: View {
                                     Spacer()
                                     
                                     DatePicker("", selection: $progressManager.reminderTime, displayedComponents: .hourAndMinute)
-                                        .onChange(of: progressManager.reminderTime) { time in
+                                        .onChange(of: progressManager.reminderTime) { _, time in
                                             progressManager.updateReminderTime(time)
                                         }
                                 }
