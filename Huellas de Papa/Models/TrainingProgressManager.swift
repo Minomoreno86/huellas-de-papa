@@ -169,17 +169,15 @@ class TrainingProgressManager: ObservableObject {
         ]
         
         for (phaseNumber, dayRange) in phaseDays {
-            let completedInPhase = userProgress.completedDays.filter { dayRange.contains($0) }
+            let _ = userProgress.completedDays.filter { dayRange.contains($0) }
             
-            if let existingPhase = userProgress.phaseProgress.first(where: { $0.phaseNumber == phaseNumber }) {
-                // Actualizar fase existente
-                if let index = userProgress.phaseProgress.firstIndex(where: { $0.phaseNumber == phaseNumber }) {
-                    userProgress.phaseProgress[index] = PhaseProgress(
-                        phaseNumber: phaseNumber,
-                        phaseName: getPhaseName(phaseNumber),
-                        totalDays: dayRange.count
-                    )
-                }
+            if let index = userProgress.phaseProgress.firstIndex(where: { $0.phaseNumber == phaseNumber }) {
+                // Actualizar fase existente - el progreso se calcula dinámicamente en getPhaseProgress
+                userProgress.phaseProgress[index] = PhaseProgress(
+                    phaseNumber: phaseNumber,
+                    phaseName: getPhaseName(phaseNumber),
+                    totalDays: dayRange.count
+                )
             } else {
                 // Crear nueva fase
                 let newPhase = PhaseProgress(
