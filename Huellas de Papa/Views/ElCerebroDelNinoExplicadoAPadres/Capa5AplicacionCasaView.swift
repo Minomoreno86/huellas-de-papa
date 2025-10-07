@@ -1,387 +1,1074 @@
 import SwiftUI
 
+// MARK: - Capa 5: Aplicación en Casa - Vista Principal
+/// Transforma el hogar en un laboratorio de desarrollo cerebral
+/// Basado en "El cerebro del niño explicado a los padres" de Álvaro Bilbao
 struct Capa5AplicacionCasaView: View {
-    @EnvironmentObject private var progresoManager: ProgresoManager
-    @State private var capa5: Capa5AplicacionCasa?
-    @State private var actividadSeleccionada: ActividadCasa? = nil
-    @State private var mostrarDetalle = false
-    @State private var filtroCategoria: CategoriaActividadCasa? = nil
-    @State private var filtroEdad: RangoEdad? = nil
-    
-    var actividadesFiltradas: [ActividadCasa] {
-        guard let capa5 = capa5 else { return [] }
-        var filtradas = capa5.actividades
-        
-        if let categoria = filtroCategoria {
-            filtradas = filtradas.filter { $0.categoria == categoria }
-        }
-        
-        if let edad = filtroEdad {
-            filtradas = filtradas.filter { $0.rangoEdad == edad }
-        }
-        
-        return filtradas
-    }
+    @State private var capa5: Capa5AplicacionCasa = Capa5AplicacionCasa()
+    @State private var mostrarReflexion = false
+    @State private var seccionActiva: SeccionCapa5 = .rutinas
     
     var body: some View {
         NavigationView {
             ScrollView {
-                if let capa5 = capa5 {
-                    VStack(alignment: .leading, spacing: 25) {
-                        // Header con gradiente
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Image(systemName: "house.fill")
-                                    .font(.title2)
-                                    .foregroundColor(.green)
-                                Text("Aplicación en Casa")
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.green)
-                            }
-                            
-                            Text("Transforma tu hogar en un laboratorio de desarrollo cerebral")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        .padding()
-                        .background(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color.green.opacity(0.1), Color.mint.opacity(0.1)]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .cornerRadius(12)
-                        
-                        // Introducción
-                        VStack(alignment: .leading, spacing: 15) {
-                            HStack {
-                                Image(systemName: "book.closed.fill")
-                                    .foregroundColor(.blue)
-                                Text("Introducción")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                            }
-                            
-                            Text(capa5.introduccion)
-                                .font(.body)
-                                .lineSpacing(6)
-                                .padding()
-                                .background(Color(.systemGray6))
-                                .cornerRadius(12)
-                        }
-                        
-                        // Filtros
-                        VStack(alignment: .leading, spacing: 15) {
-                            HStack {
-                                Image(systemName: "slider.horizontal.3")
-                                    .foregroundColor(.orange)
-                                Text("Filtrar Actividades")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                            }
-                            
-                            // Filtro por categoría
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Por Categoría:")
-                                    .font(.headline)
-                                    .foregroundColor(.secondary)
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 12) {
-                                        FilterButton(
-                                            titulo: "Todas",
-                                            isSelected: filtroCategoria == nil,
-                                            action: {
-                                                filtroCategoria = nil
-                                            }
-                                        )
-                                        
-                                        ForEach(CategoriaActividadCasa.allCases, id: \.self) { categoria in
-                                            FilterButton(
-                                                titulo: categoria.rawValue,
-                                                isSelected: filtroCategoria == categoria,
-                                                action: {
-                                                    filtroCategoria = categoria
-                                                }
-                                            )
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                            
-                            // Filtro por edad
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Por Edad:")
-                                    .font(.headline)
-                                    .foregroundColor(.secondary)
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 12) {
-                                        FilterButton(
-                                            titulo: "Todas",
-                                            isSelected: filtroEdad == nil,
-                                            action: {
-                                                filtroEdad = nil
-                                            }
-                                        )
-                                        
-                                        ForEach(RangoEdad.allCases, id: \.self) { edad in
-                                            FilterButton(
-                                                titulo: edad.rawValue,
-                                                isSelected: filtroEdad == edad,
-                                                action: {
-                                                    filtroEdad = edad
-                                                }
-                                            )
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                        }
-                        
-                        // Lista de Actividades
-                        VStack(alignment: .leading, spacing: 20) {
-                            HStack {
-                                Image(systemName: "house.fill")
-                                    .foregroundColor(.green)
-                                Text("\(actividadesFiltradas.count) Actividades Disponibles")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                Text("Toca para explorar")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                            
-                            LazyVStack(spacing: 16) {
-                                ForEach(Array(actividadesFiltradas.enumerated()), id: \.offset) { index, actividad in
-                                    ActividadCasaCard(
-                                        actividad: actividad,
-                                        index: index + 1
-                                    ) {
-                                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                            actividadSeleccionada = actividad
-                                            mostrarDetalle = true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // Resumen Integrador
-                        VStack(alignment: .leading, spacing: 15) {
-                            HStack {
-                                Image(systemName: "brain.head.profile")
-                                    .foregroundColor(.green)
-                                Text("Resumen Integrador")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                            }
-                            
-                            Text(capa5.resumenIntegrador)
-                                .font(.body)
-                                .lineSpacing(6)
-                                .padding()
-                                .background(Color(.systemGray6))
-                                .cornerRadius(12)
-                        }
+                VStack(spacing: 0) {
+                    // MARK: - Header con Progreso Familiar
+                    HeaderProgresoFamiliar(progreso: capa5.progreso)
+                        .padding(.horizontal)
+                        .padding(.top)
+                    
+                    // MARK: - Navegación por Secciones
+                    NavegacionSecciones(seccionActiva: $seccionActiva)
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                    
+                    // MARK: - Contenido Dinámico por Sección
+                    switch seccionActiva {
+                    case .rutinas:
+                        SeccionRutinas(rutinas: capa5.rutinas)
+                    case .habitos:
+                        SeccionHabitos(habitos: capa5.habitos)
+                    case .desafios:
+                        SeccionDesafios(desafios: capa5.desafios)
+                    case .reflexion:
+                        SeccionReflexion()
+                    case .progreso:
+                        SeccionProgreso(progreso: capa5.progreso)
                     }
-                    .padding()
-                } else {
-                    VStack(spacing: 20) {
-                        ProgressView()
-                            .scaleEffect(1.5)
-                        Text("Cargando actividades en casa...")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
             .navigationTitle("Aplicación en Casa")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                if capa5 == nil {
-                    capa5 = Capa5AplicacionCasa.contenidoCerebroDelNino()
-                }
-            }
-            .sheet(isPresented: $mostrarDetalle) {
-                if let actividad = actividadSeleccionada {
-                    ActividadCasaDetalleView(actividad: actividad)
-                }
+            .navigationBarTitleDisplayMode(.large)
+            .background(
+                // Fondo orgánico con gradientes suaves
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color.mint.opacity(0.08),
+                        Color.green.opacity(0.04),
+                        Color.blue.opacity(0.02)
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .sheet(isPresented: $mostrarReflexion) {
+                ReflexionDiariaView()
             }
         }
     }
 }
 
-// MARK: - Tarjeta de Actividad en Casa
-struct ActividadCasaCard: View {
-    let actividad: ActividadCasa
-    let index: Int
-    let onTap: () -> Void
+// MARK: - Header con Progreso Familiar
+struct HeaderProgresoFamiliar: View {
+    let progreso: Capa5Progress
     
     var body: some View {
-        Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 12) {
-                // Header con gradiente
+        VStack(spacing: 16) {
+            // Título y descripción
+            VStack(spacing: 8) {
                 HStack {
+                    Image(systemName: "house.fill")
+                        .font(.title2)
+                        .foregroundColor(.green)
+                    
+                    Text("Transforma tu hogar en un laboratorio de desarrollo cerebral")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.leading)
+                    
+                    Spacer()
+                }
+                
+                Text("Aplica los principios de Álvaro Bilbao en tu vida diaria familiar")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+            }
+            
+            // Progreso circular
+            HStack(spacing: 20) {
+                // Progreso general
+                VStack(spacing: 8) {
+                    ZStack {
+                        Circle()
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 8)
+                            .frame(width: 80, height: 80)
+                        
+                        Circle()
+                            .trim(from: 0, to: CGFloat(progreso.nivel) / 10.0)
+                            .stroke(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.green, .mint]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                            )
+                            .frame(width: 80, height: 80)
+                            .rotationEffect(.degrees(-90))
+                            .animation(.easeInOut(duration: 1.0), value: progreso.nivel)
+                        
+                        VStack(spacing: 2) {
+                            Text("\(progreso.nivel)")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.green)
+                            
+                            Text("Nivel")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    Text("Progreso Familiar")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(.secondary)
+                }
+                
+                // Estadísticas rápidas
+                VStack(alignment: .leading, spacing: 8) {
+                    EstadisticaRapida(
+                        icono: "checkmark.circle.fill",
+                        titulo: "Rutinas Completadas",
+                        valor: "\(progreso.rutinasCompletadas)",
+                        color: .green
+                    )
+                    
+                    EstadisticaRapida(
+                        icono: "repeat.circle.fill",
+                        titulo: "Hábitos Activos",
+                        valor: "\(progreso.habitosActivos)",
+                        color: .blue
+                    )
+                    
+                    EstadisticaRapida(
+                        icono: "trophy.fill",
+                        titulo: "Desafíos Completados",
+                        valor: "\(progreso.desafiosCompletados)",
+                        color: .orange
+                    )
+                }
+                
+                Spacer()
+            }
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+        )
+    }
+}
+
+// MARK: - Navegación por Secciones
+struct NavegacionSecciones: View {
+    @Binding var seccionActiva: SeccionCapa5
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                ForEach(SeccionCapa5.allCases, id: \.self) { seccion in
+                    BotonSeccion(
+                        seccion: seccion,
+                        isSelected: seccionActiva == seccion
+                    ) {
+                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                            seccionActiva = seccion
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+}
+
+// MARK: - Botón de Sección
+struct BotonSeccion: View {
+    let seccion: SeccionCapa5
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: seccion.icono)
+                    .font(.caption)
+                        .foregroundColor(isSelected ? .white : Color(seccion.color))
+                
+                Text(seccion.titulo)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundColor(isSelected ? .white : .primary)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(isSelected ? Color(seccion.color) : Color(.secondarySystemBackground))
+            )
+        }
+        .buttonStyle(Capa5ScaleButtonStyle())
+    }
+}
+
+// MARK: - Secciones de Contenido (Placeholders)
+
+struct SeccionRutinas: View {
+    let rutinas: [Capa5Routine]
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Header de sección
+            HStack {
+                Image(systemName: "clock.fill")
+                    .foregroundColor(.orange)
+                Text("Rutinas Familiares")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            if rutinas.isEmpty {
+                // Placeholder para rutinas
+                PlaceholderSeccion(
+                    icono: "clock.fill",
+                    titulo: "Rutinas Familiares",
+                    descripcion: "Crea rutinas basadas en neurociencia para tu familia",
+                    color: .orange
+                )
+            } else {
+                // Lista de rutinas (cuando se implementen)
+                LazyVStack(spacing: 12) {
+                    ForEach(rutinas) { rutina in
+                        RutinaCard(rutina: rutina)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+        .padding(.vertical)
+    }
+}
+
+struct SeccionHabitos: View {
+    let habitos: [Capa5Habit]
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Header de sección
+            HStack {
+                Image(systemName: "repeat.circle.fill")
+                    .foregroundColor(.blue)
+                Text("Hábitos Medibles")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            if habitos.isEmpty {
+                // Placeholder para hábitos
+                PlaceholderSeccion(
+                    icono: "repeat.circle.fill",
+                    titulo: "Hábitos Medibles",
+                    descripcion: "Desarrolla hábitos diarios con seguimiento de progreso",
+                    color: .blue
+                )
+            } else {
+                // Lista de hábitos (cuando se implementen)
+                LazyVStack(spacing: 12) {
+                    ForEach(habitos) { habito in
+                        HabitoCard(habito: habito)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+        .padding(.vertical)
+    }
+}
+
+struct SeccionDesafios: View {
+    let desafios: [Capa5Challenge]
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Header de sección
+            HStack {
+                Image(systemName: "trophy.fill")
+                    .foregroundColor(.orange)
+                Text("Desafíos Familiares")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            if desafios.isEmpty {
+                // Placeholder para desafíos
+                PlaceholderSeccion(
+                    icono: "trophy.fill",
+                    titulo: "Desafíos Familiares",
+                    descripcion: "Retos semanales para aplicar conocimientos en familia",
+                    color: .orange
+                )
+            } else {
+                // Lista de desafíos (cuando se implementen)
+                LazyVStack(spacing: 12) {
+                    ForEach(desafios) { desafio in
+                        DesafioCard(desafio: desafio)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+        .padding(.vertical)
+    }
+}
+
+struct SeccionReflexion: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            // Header de sección
+            HStack {
+                Image(systemName: "book.closed.fill")
+                    .foregroundColor(.purple)
+                Text("Reflexión Diaria")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            // Placeholder para reflexión
+            PlaceholderSeccion(
+                icono: "book.closed.fill",
+                titulo: "Reflexión Diaria",
+                descripcion: "Registra aprendizajes y sensaciones del día",
+                color: .purple
+            )
+        }
+        .padding(.vertical)
+    }
+}
+
+struct SeccionProgreso: View {
+    let progreso: Capa5Progress
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Header de sección
+            HStack {
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .foregroundColor(.green)
+                Text("Progreso Familiar")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            // Placeholder para progreso detallado
+            PlaceholderSeccion(
+                icono: "chart.line.uptrend.xyaxis",
+                titulo: "Progreso Familiar",
+                descripcion: "Visualiza el avance de tu familia en el desarrollo cerebral",
+                color: .green
+            )
+        }
+        .padding(.vertical)
+    }
+}
+
+// MARK: - Componentes de Ayuda
+
+struct EstadisticaRapida: View {
+    let icono: String
+    let titulo: String
+    let valor: String
+    let color: Color
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icono)
+                .font(.caption)
+                .foregroundColor(color)
+                .frame(width: 16)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(titulo)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                
+                Text(valor)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+            }
+        }
+    }
+}
+
+struct PlaceholderSeccion: View {
+    let icono: String
+    let titulo: String
+    let descripcion: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: icono)
+                .font(.system(size: 48))
+                .foregroundColor(color.opacity(0.6))
+            
+            VStack(spacing: 8) {
+                Text(titulo)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                Text(descripcion)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(4)
+            }
+            
+            Button(action: {
+                // Acción para agregar contenido
+            }) {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Agregar \(titulo)")
+                }
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundColor(.white)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(color)
+                )
+            }
+            .buttonStyle(Capa5ScaleButtonStyle())
+        }
+        .padding(24)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.secondarySystemBackground))
+                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+        )
+        .padding(.horizontal)
+    }
+}
+
+// MARK: - Cards de Contenido (Placeholders)
+
+struct RutinaCard: View {
+    let rutina: Capa5Routine
+    @State private var isPressed = false
+    @State private var mostrarDetalle = false
+    
+    var body: some View {
+        Button(action: {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                mostrarDetalle = true
+            }
+        }) {
+            VStack(alignment: .leading, spacing: 16) {
+                // Header con gradiente y animación
+                HStack {
+                    // Icono con animación de respiración
                     ZStack {
                         Circle()
                             .fill(
                                 LinearGradient(
-                                    gradient: Gradient(colors: [Color(actividad.color), Color(actividad.color).opacity(0.7)]),
+                                    gradient: Gradient(colors: [
+                                        Color(rutina.color).opacity(0.8),
+                                        Color(rutina.color).opacity(0.4)
+                                    ]),
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
                             )
-                            .frame(width: 32, height: 32)
+                            .frame(width: 50, height: 50)
+                            .scaleEffect(isPressed ? 1.1 : 1.0)
+                            .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: isPressed)
                         
-                        Text("\(index)")
-                            .font(.caption)
-                            .fontWeight(.bold)
+                        Image(systemName: rutina.icono)
+                            .font(.title2)
                             .foregroundColor(.white)
+                            .fontWeight(.semibold)
                     }
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(actividad.titulo)
+                        Text(rutina.titulo)
                             .font(.headline)
-                            .fontWeight(.semibold)
+                            .fontWeight(.bold)
                             .foregroundColor(.primary)
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)
                         
                         HStack {
-                            Image(systemName: actividad.categoria.icono)
+                            Image(systemName: rutina.categoria.icono)
                                 .font(.caption)
-                                .foregroundColor(Color(actividad.categoria.color))
+                                .foregroundColor(Color(rutina.categoria.color))
                             
-                            Text(actividad.categoria.rawValue)
+                            Text(rutina.categoria.rawValue)
                                 .font(.caption)
-                                .foregroundColor(Color(actividad.categoria.color))
+                                .foregroundColor(Color(rutina.categoria.color))
                             
                             Spacer()
                             
                             HStack {
-                                Image(systemName: actividad.rangoEdad.icono)
+                                Image(systemName: rutina.frecuencia.icono)
                                     .font(.caption)
-                                    .foregroundColor(Color(actividad.rangoEdad.color))
+                                    .foregroundColor(Color(rutina.frecuencia.color))
                                 
-                                Text(actividad.rangoEdad.rawValue)
+                                Text(rutina.frecuencia.rawValue)
                                     .font(.caption)
-                                    .foregroundColor(Color(actividad.rangoEdad.color))
+                                    .foregroundColor(Color(rutina.frecuencia.color))
                             }
                         }
                     }
                     
                     Spacer()
                     
-                    VStack {
-                        Image(systemName: "house.circle.fill")
+                    // Botón de acción con animación
+                    VStack(spacing: 4) {
+                        Image(systemName: "play.circle.fill")
                             .font(.title2)
-                            .foregroundColor(Color(actividad.color))
+                            .foregroundColor(Color(rutina.color))
+                            .scaleEffect(isPressed ? 1.2 : 1.0)
+                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
                         
                         Text("Iniciar")
                             .font(.caption2)
-                            .foregroundColor(Color(actividad.color))
+                            .fontWeight(.medium)
+                            .foregroundColor(Color(rutina.color))
                     }
                 }
                 
-                // Contenido con diseño mejorado
+                // Descripción con diseño orgánico
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(actividad.descripcion)
+                    Text(rutina.descripcion)
                         .font(.body)
                         .foregroundColor(.secondary)
                         .lineLimit(3)
                         .multilineTextAlignment(.leading)
                         .lineSpacing(2)
                     
-                    // Información adicional
-                    HStack {
-                        HStack {
+                    // Información adicional con iconos
+                    HStack(spacing: 16) {
+                        HStack(spacing: 4) {
                             Image(systemName: "clock.fill")
                                 .font(.caption)
                                 .foregroundColor(.orange)
                             
-                            Text(actividad.duracionEstimada)
+                            Text(rutina.duracion)
                                 .font(.caption)
                                 .foregroundColor(.orange)
                         }
                         
-                        Spacer()
-                        
-                        HStack {
-                            Image(systemName: "person.fill")
+                        HStack(spacing: 4) {
+                            Image(systemName: rutina.edadRecomendada.icono)
                                 .font(.caption)
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color(rutina.edadRecomendada.color))
                             
-                            Text(actividad.edadRecomendada)
+                            Text(rutina.edadRecomendada.rawValue)
                                 .font(.caption)
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color(rutina.edadRecomendada.color))
                         }
                         
                         Spacer()
                         
-                        HStack {
-                            Image(systemName: "star.fill")
+                        // Indicador de completado
+                        HStack(spacing: 4) {
+                            Image(systemName: rutina.completada ? "checkmark.circle.fill" : "circle")
                                 .font(.caption)
-                                .foregroundColor(Color(actividad.nivelDificultad.color))
+                                .foregroundColor(rutina.completada ? .green : .gray)
                             
-                            Text(actividad.nivelDificultad.rawValue)
+                            Text(rutina.completada ? "Completada" : "Pendiente")
                                 .font(.caption)
-                                .foregroundColor(Color(actividad.nivelDificultad.color))
+                                .foregroundColor(rutina.completada ? .green : .gray)
                         }
                     }
                     .padding(.top, 4)
                 }
                 
-                // Barra de progreso visual
+                // Barra de progreso visual con efecto orgánico
                 HStack {
-                    ForEach(0..<5) { _ in
+                    ForEach(0..<5) { index in
                         Circle()
-                            .fill(Color(actividad.color).opacity(0.3))
-                            .frame(width: 6, height: 6)
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        Color(rutina.color).opacity(0.6),
+                                        Color(rutina.color).opacity(0.3)
+                                    ]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 8, height: 8)
+                            .scaleEffect(isPressed ? 1.2 : 1.0)
+                            .animation(.easeInOut(duration: 0.5).delay(Double(index) * 0.1), value: isPressed)
                     }
                     
                     Spacer()
                     
-                    Text("Toca para iniciar")
+                    Text("Toca para explorar")
                         .font(.caption2)
                         .foregroundColor(.secondary)
                 }
             }
-            .padding(16)
+            .padding(20)
             .background(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 20)
                     .fill(Color(.systemBackground))
-                    .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+                    .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 6)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 20)
                     .stroke(
                         LinearGradient(
-                            gradient: Gradient(colors: [Color(actividad.color).opacity(0.3), Color(actividad.color).opacity(0.1)]),
+                            gradient: Gradient(colors: [
+                                Color(rutina.color).opacity(0.3),
+                                Color(rutina.color).opacity(0.1)
+                            ]),
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         ),
-                        lineWidth: 1
+                        lineWidth: 2
                     )
             )
+            .scaleEffect(isPressed ? 0.98 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         }
-        .buttonStyle(ScaleButtonStyle())
+        .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0) { pressing in
+            withAnimation(.easeInOut(duration: 0.1)) {
+                isPressed = pressing
+            }
+        } perform: {
+            // Acción de presión larga
+        }
+        .sheet(isPresented: $mostrarDetalle) {
+            RutinaDetalleView(rutina: rutina)
+        }
     }
 }
 
-// MARK: - Vista de Detalle de Actividad en Casa
-struct ActividadCasaDetalleView: View {
-    let actividad: ActividadCasa
+
+struct HabitoCard: View {
+    let habito: Capa5Habit
+    @State private var mostrarDetalle = false
+    
+    var body: some View {
+        Button(action: {
+            mostrarDetalle = true
+        }) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Image(systemName: habito.icono)
+                        .font(.title2)
+                        .foregroundColor(Color(habito.color))
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(habito.titulo)
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                            .lineLimit(2)
+                        
+                        Text(habito.categoria.rawValue)
+                            .font(.caption)
+                            .foregroundColor(Color(habito.categoria.color))
+                    }
+                    
+                    Spacer()
+                }
+                
+                Text(habito.descripcion)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
+                
+                HStack {
+                    Text("Streak: \(habito.streak) días")
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                    
+                    Spacer()
+                    
+                    Text("Máximo: \(habito.streakMaximo) días")
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                }
+            }
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
+        .sheet(isPresented: $mostrarDetalle) {
+            HabitoDetalleView(habito: habito)
+        }
+    }
+}
+
+struct DesafioCard: View {
+    let desafio: Capa5Challenge
+    @State private var isPressed = false
+    @State private var mostrarDetalle = false
+    @State private var isStarted = false
+    
+    var body: some View {
+        Button(action: {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                mostrarDetalle = true
+            }
+        }) {
+            VStack(alignment: .leading, spacing: 16) {
+                // Header con progreso visual
+                HStack {
+                    // Icono con animación de pulso
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        Color(desafio.color).opacity(0.8),
+                                        Color(desafio.color).opacity(0.4)
+                                    ]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 50, height: 50)
+                            .scaleEffect(isPressed ? 1.1 : 1.0)
+                            .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: isPressed)
+                        
+                        Image(systemName: desafio.icono)
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(desafio.titulo)
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(2)
+                        
+                        HStack {
+                            Image(systemName: desafio.categoria.icono)
+                                .font(.caption)
+                                .foregroundColor(Color(desafio.categoria.color))
+                            
+                            Text(desafio.categoria.rawValue)
+                                .font(.caption)
+                                .foregroundColor(Color(desafio.categoria.color))
+                            
+                            Spacer()
+                            
+                            HStack {
+                                Image(systemName: "clock.fill")
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
+                                
+                                Text(desafio.duracion)
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
+                            }
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    // Botón de iniciar con animación
+                    Button(action: {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                            isStarted.toggle()
+                        }
+                    }) {
+                        VStack(spacing: 4) {
+                            Image(systemName: isStarted ? "play.circle.fill" : "play.circle")
+                                .font(.title2)
+                                .foregroundColor(isStarted ? .green : Color(desafio.color))
+                                .scaleEffect(isStarted ? 1.2 : 1.0)
+                                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isStarted)
+                            
+                            Text(isStarted ? "En Progreso" : "Iniciar")
+                                .font(.caption2)
+                                .fontWeight(.medium)
+                                .foregroundColor(isStarted ? .green : Color(desafio.color))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+                
+                // Descripción y información
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(desafio.descripcion)
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                        .lineSpacing(2)
+                    
+                    // Información adicional
+                    HStack(spacing: 16) {
+                        HStack(spacing: 4) {
+                            Image(systemName: desafio.edadRecomendada.icono)
+                                .font(.caption)
+                                .foregroundColor(Color(desafio.edadRecomendada.color))
+                            
+                            Text(desafio.edadRecomendada.rawValue)
+                                .font(.caption)
+                                .foregroundColor(Color(desafio.edadRecomendada.color))
+                        }
+                        
+                        Spacer()
+                        
+                        // Estado del desafío
+                        HStack(spacing: 4) {
+                            Image(systemName: desafio.activo ? "play.circle.fill" : "pause.circle.fill")
+                                .font(.caption)
+                                .foregroundColor(desafio.activo ? .green : .gray)
+                            
+                            Text(desafio.activo ? "Activo" : "Disponible")
+                                .font(.caption)
+                                .foregroundColor(desafio.activo ? .green : .gray)
+                        }
+                    }
+                    .padding(.top, 4)
+                }
+                
+                // Progreso visual con animación
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("Progreso del Desafío")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        Text("\(Int(desafio.progreso * 100))%")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.green)
+                    }
+                    
+                    // Barra de progreso animada
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(height: 8)
+                        
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.green, .mint]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(width: CGFloat(desafio.progreso) * 200, height: 8)
+                            .animation(.easeInOut(duration: 1.0), value: desafio.progreso)
+                    }
+                    .frame(width: 200)
+                }
+                
+                // Recompensa y criterios
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Recompensa")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                        
+                        Text(desafio.recompensa)
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.orange)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("Criterios")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                        
+                        Text("\(desafio.criteriosExito.count) objetivos")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.blue)
+                    }
+                }
+                
+                // Barra de progreso visual con efecto orgánico
+                HStack {
+                    ForEach(0..<5) { index in
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        Color(desafio.color).opacity(0.6),
+                                        Color(desafio.color).opacity(0.3)
+                                    ]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 6, height: 6)
+                            .scaleEffect(isPressed ? 1.3 : 1.0)
+                            .animation(.easeInOut(duration: 0.3).delay(Double(index) * 0.05), value: isPressed)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("Toca para ver detalles")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(20)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 6)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color(desafio.color).opacity(0.3),
+                                Color(desafio.color).opacity(0.1)
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 2
+                    )
+            )
+            .scaleEffect(isPressed ? 0.98 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0) { pressing in
+            withAnimation(.easeInOut(duration: 0.1)) {
+                isPressed = pressing
+            }
+        } perform: {
+            // Acción de presión larga
+        }
+        .sheet(isPresented: $mostrarDetalle) {
+            DesafioDetalleView(desafio: desafio)
+        }
+    }
+}
+
+// MARK: - Vista de Reflexión Diaria
+struct ReflexionDiariaView: View {
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Reflexión Diaria")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding()
+                
+                Text("Esta funcionalidad se implementará en los siguientes pasos")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                
+                Spacer()
+            }
+            .navigationTitle("Reflexión")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                #if os(iOS)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cerrar") {
+                        dismiss()
+                    }
+                }
+                #endif
+            }
+        }
+    }
+}
+
+// MARK: - Enums y Estructuras de Soporte
+
+enum SeccionCapa5: String, CaseIterable {
+    case rutinas = "Rutinas"
+    case habitos = "Hábitos"
+    case desafios = "Desafíos"
+    case reflexion = "Reflexión"
+    case progreso = "Progreso"
+    
+    var titulo: String {
+        return self.rawValue
+    }
+    
+    var icono: String {
+        switch self {
+        case .rutinas: return "clock.fill"
+        case .habitos: return "repeat.circle.fill"
+        case .desafios: return "trophy.fill"
+        case .reflexion: return "book.closed.fill"
+        case .progreso: return "chart.line.uptrend.xyaxis"
+        }
+    }
+    
+    var color: String {
+        switch self {
+        case .rutinas: return "orange"
+        case .habitos: return "blue"
+        case .desafios: return "orange"
+        case .reflexion: return "purple"
+        case .progreso: return "green"
+        }
+    }
+}
+
+// MARK: - Estilo de Botón con Animación
+struct Capa5ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+// MARK: - Vista de Detalle de Rutina
+struct RutinaDetalleView: View {
+    let rutina: Capa5Routine
     @Environment(\.dismiss) private var dismiss
     @State private var mostrarPasos = false
-    @State private var mostrarVariaciones = false
-    @State private var mostrarMateriales = false
+    @State private var mostrarPrincipios = false
+    @State private var mostrarHerramientas = false
     
     var body: some View {
         NavigationView {
@@ -390,17 +1077,17 @@ struct ActividadCasaDetalleView: View {
                     // Header con gradiente
                     VStack(alignment: .leading, spacing: 16) {
                         HStack {
-                            Image(systemName: actividad.icono)
+                            Image(systemName: rutina.icono)
                                 .font(.largeTitle)
-                                .foregroundColor(Color(actividad.color))
+                                .foregroundColor(Color(rutina.color))
                             
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Actividad en Casa")
+                                Text("Rutina Familiar")
                                     .font(.title2)
                                     .fontWeight(.bold)
-                                    .foregroundColor(Color(actividad.color))
+                                    .foregroundColor(Color(rutina.color))
                                 
-                                Text("Experiencia Familiar")
+                                Text("Basada en Neurociencia")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
@@ -408,7 +1095,7 @@ struct ActividadCasaDetalleView: View {
                             Spacer()
                         }
                         
-                        Text(actividad.titulo)
+                        Text(rutina.titulo)
                             .font(.title)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.leading)
@@ -417,7 +1104,10 @@ struct ActividadCasaDetalleView: View {
                     .padding(20)
                     .background(
                         LinearGradient(
-                            gradient: Gradient(colors: [Color(actividad.color).opacity(0.1), Color(actividad.color).opacity(0.05)]),
+                            gradient: Gradient(colors: [
+                                Color(rutina.color).opacity(0.1),
+                                Color(rutina.color).opacity(0.05)
+                            ]),
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -429,21 +1119,20 @@ struct ActividadCasaDetalleView: View {
                         HStack {
                             Image(systemName: "info.circle.fill")
                                 .foregroundColor(.blue)
-                            Text("Información de la Actividad")
+                            Text("Información de la Rutina")
                                 .font(.headline)
                                 .fontWeight(.semibold)
                         }
                         
                         VStack(alignment: .leading, spacing: 8) {
-                            ActividadInfoRow(icon: "clock.fill", title: "Duración", value: actividad.duracionEstimada, color: .orange)
-                            ActividadInfoRow(icon: "person.fill", title: "Edad Recomendada", value: actividad.edadRecomendada, color: .blue)
-                            ActividadInfoRow(icon: "star.fill", title: "Dificultad", value: actividad.nivelDificultad.rawValue, color: Color(actividad.nivelDificultad.color))
-                            ActividadInfoRow(icon: actividad.categoria.icono, title: "Categoría", value: actividad.categoria.rawValue, color: Color(actividad.categoria.color))
-                            ActividadInfoRow(icon: actividad.rangoEdad.icono, title: "Rango de Edad", value: actividad.rangoEdad.rawValue, color: Color(actividad.rangoEdad.color))
+                            InfoRow(icon: "clock.fill", title: "Duración", value: rutina.duracion, color: .orange)
+                            InfoRow(icon: "repeat", title: "Frecuencia", value: rutina.frecuencia.rawValue, color: Color(rutina.frecuencia.color))
+                            InfoRow(icon: rutina.categoria.icono, title: "Categoría", value: rutina.categoria.rawValue, color: Color(rutina.categoria.color))
+                            InfoRow(icon: rutina.edadRecomendada.icono, title: "Edad Recomendada", value: rutina.edadRecomendada.rawValue, color: Color(rutina.edadRecomendada.color))
                         }
                     }
                     .padding(16)
-                    .background(Color(.systemGray6))
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
                     
                     // Descripción
@@ -456,7 +1145,7 @@ struct ActividadCasaDetalleView: View {
                                 .fontWeight(.semibold)
                         }
                         
-                        Text(actividad.descripcion)
+                        Text(rutina.descripcion)
                             .font(.body)
                             .lineSpacing(6)
                             .foregroundColor(.primary)
@@ -466,17 +1155,17 @@ struct ActividadCasaDetalleView: View {
                     .cornerRadius(12)
                     .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
                     
-                    // Objetivo neurocientífico
+                    // Propósito neurocientífico
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
                             Image(systemName: "target")
                                 .foregroundColor(.purple)
-                            Text("Objetivo Neurocientífico")
+                            Text("Propósito Neurocientífico")
                                 .font(.headline)
                                 .fontWeight(.semibold)
                         }
                         
-                        Text(actividad.objetivoNeurocientifico)
+                        Text(rutina.proposito)
                             .font(.body)
                             .foregroundColor(.secondary)
                             .padding(.horizontal, 12)
@@ -489,7 +1178,7 @@ struct ActividadCasaDetalleView: View {
                     .cornerRadius(12)
                     .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
                     
-                    // Pasos de la actividad (expandible)
+                    // Pasos de la rutina (expandible)
                     VStack(alignment: .leading, spacing: 12) {
                         Button(action: {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
@@ -499,7 +1188,7 @@ struct ActividadCasaDetalleView: View {
                             HStack {
                                 Image(systemName: "list.number")
                                     .foregroundColor(.green)
-                                Text("Pasos de la Actividad")
+                                Text("Pasos de la Rutina")
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                     .foregroundColor(.primary)
@@ -515,20 +1204,20 @@ struct ActividadCasaDetalleView: View {
                         
                         if mostrarPasos {
                             VStack(alignment: .leading, spacing: 8) {
-                                ForEach(Array(actividad.pasosActividad.enumerated()), id: \.offset) { index, paso in
-                                HStack(alignment: .top, spacing: 12) {
-                                    Text("\(index + 1).")
-                                        .font(.caption)
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.green)
-                                        .frame(width: 20, alignment: .leading)
-                                    
-                                    Text(paso)
-                                        .font(.body)
-                                        .foregroundColor(.primary)
+                                ForEach(Array(rutina.pasos.enumerated()), id: \.offset) { index, paso in
+                                    HStack(alignment: .top, spacing: 12) {
+                                        Text("\(index + 1).")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.green)
+                                            .frame(width: 20, alignment: .leading)
+                                        
+                                        Text(paso)
+                                            .font(.body)
+                                            .foregroundColor(.primary)
+                                    }
+                                    .padding(.vertical, 2)
                                 }
-                                .padding(.vertical, 2)
-                            }
                             }
                             .padding(12)
                             .background(Color.green.opacity(0.1))
@@ -544,41 +1233,99 @@ struct ActividadCasaDetalleView: View {
                     .cornerRadius(12)
                     .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
                     
-                    // Materiales necesarios (expandible)
+                    // Principios relacionados (expandible)
                     VStack(alignment: .leading, spacing: 12) {
                         Button(action: {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                mostrarMateriales.toggle()
+                                mostrarPrincipios.toggle()
                             }
                         }) {
                             HStack {
-                                Image(systemName: "shippingbox.fill")
-                                    .foregroundColor(.orange)
-                                Text("Materiales Necesarios")
+                                Image(systemName: "brain.head.profile")
+                                    .foregroundColor(.blue)
+                                Text("Principios Relacionados")
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                     .foregroundColor(.primary)
                                 
                                 Spacer()
                                 
-                                Image(systemName: mostrarMateriales ? "chevron.up" : "chevron.down")
+                                Image(systemName: mostrarPrincipios ? "chevron.up" : "chevron.down")
+                                    .foregroundColor(.blue)
+                                    .font(.title3)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if mostrarPrincipios {
+                            LazyVGrid(columns: [
+                                GridItem(.flexible()),
+                                GridItem(.flexible())
+                            ], spacing: 8) {
+                                ForEach(rutina.vinculoPrincipios, id: \.self) { principio in
+                                    HStack {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.caption)
+                                            .foregroundColor(.green)
+                                        Text(principio)
+                                            .font(.caption)
+                                            .foregroundColor(.primary)
+                                    }
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(6)
+                                }
+                            }
+                            .padding(12)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(8)
+                            .transition(.asymmetric(
+                                insertion: .opacity.combined(with: .move(edge: .top)),
+                                removal: .opacity.combined(with: .move(edge: .top))
+                            ))
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Herramientas relacionadas (expandible)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                mostrarHerramientas.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "wrench.and.screwdriver.fill")
+                                    .foregroundColor(.orange)
+                                Text("Herramientas Relacionadas")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                Image(systemName: mostrarHerramientas ? "chevron.up" : "chevron.down")
                                     .foregroundColor(.orange)
                                     .font(.title3)
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
                         
-                        if mostrarMateriales {
+                        if mostrarHerramientas {
                             LazyVGrid(columns: [
                                 GridItem(.flexible()),
                                 GridItem(.flexible())
                             ], spacing: 8) {
-                                ForEach(actividad.materialesNecesarios, id: \.self) { material in
+                                ForEach(rutina.vinculoHerramientas, id: \.self) { herramienta in
                                     HStack {
                                         Image(systemName: "checkmark.circle.fill")
                                             .font(.caption)
                                             .foregroundColor(.green)
-                                        Text(material)
+                                        Text(herramienta)
                                             .font(.caption)
                                             .foregroundColor(.primary)
                                     }
@@ -602,118 +1349,20 @@ struct ActividadCasaDetalleView: View {
                     .cornerRadius(12)
                     .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
                     
-                    // Variaciones (expandible)
-                    VStack(alignment: .leading, spacing: 12) {
-                        Button(action: {
-                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                mostrarVariaciones.toggle()
-                            }
-                        }) {
-                            HStack {
-                                Image(systemName: "arrow.triangle.branch")
-                                    .foregroundColor(.blue)
-                                Text("Variaciones")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.primary)
-                                
-                                Spacer()
-                                
-                                Image(systemName: mostrarVariaciones ? "chevron.up" : "chevron.down")
-                                    .foregroundColor(.blue)
-                                    .font(.title3)
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                        if mostrarVariaciones {
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(Array(actividad.variaciones.enumerated()), id: \.offset) { index, variacion in
-                                HStack(alignment: .top, spacing: 12) {
-                                    Text("•")
-                                        .font(.caption)
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.blue)
-                                        .frame(width: 20, alignment: .leading)
-                                    
-                                    Text(variacion)
-                                        .font(.body)
-                                        .foregroundColor(.primary)
-                                }
-                                .padding(.vertical, 2)
-                            }
-                            }
-                            .padding(12)
-                            .background(Color.blue.opacity(0.1))
-                            .cornerRadius(8)
-                            .transition(.asymmetric(
-                                insertion: .opacity.combined(with: .move(edge: .top)),
-                                removal: .opacity.combined(with: .move(edge: .top))
-                            ))
-                        }
-                    }
-                    .padding(16)
-                    .background(Color(.systemBackground))
-                    .cornerRadius(12)
-                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-                    
-                    // Resultados esperados
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Image(systemName: "target")
-                                .foregroundColor(.green)
-                            Text("Resultados Esperados")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                        }
-                        
-                        Text(actividad.resultadosEsperados)
-                            .font(.body)
-                            .lineSpacing(4)
-                            .foregroundColor(.primary)
-                    }
-                    .padding(16)
-                    .background(Color(.systemBackground))
-                    .cornerRadius(12)
-                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-                    
-                    // Base científica
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Image(systemName: "atom")
-                                .foregroundColor(.purple)
-                            Text("Base Científica")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                        }
-                        
-                        Text(actividad.baseCientifica)
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color.purple.opacity(0.1))
-                            .cornerRadius(8)
-                    }
-                    .padding(16)
-                    .background(Color(.systemBackground))
-                    .cornerRadius(12)
-                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-                    
                     // Botones de acción
                     HStack(spacing: 12) {
                         Button(action: {
-                            // Acción para iniciar actividad
+                            // Acción para iniciar rutina
                         }) {
                             HStack {
                                 Image(systemName: "play.fill")
-                                Text("Iniciar Actividad")
+                                Text("Iniciar Rutina")
                             }
                             .font(.headline)
                             .foregroundColor(.white)
                             .padding(.horizontal, 20)
                             .padding(.vertical, 12)
-                            .background(Color(actividad.color))
+                            .background(Color(rutina.color))
                             .cornerRadius(12)
                         }
                         
@@ -722,7 +1371,7 @@ struct ActividadCasaDetalleView: View {
                         }) {
                             HStack {
                                 Image(systemName: "checkmark.circle.fill")
-                                Text("Completado")
+                                Text("Completada")
                             }
                             .font(.subheadline)
                             .foregroundColor(.green)
@@ -738,22 +1387,22 @@ struct ActividadCasaDetalleView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Actividad")
+            .navigationTitle("Rutina")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Cerrar") {
                         dismiss()
                     }
-                    .foregroundColor(Color(actividad.color))
+                    .foregroundColor(Color(rutina.color))
                 }
             }
         }
     }
 }
 
-// MARK: - Componentes de Ayuda
-struct ActividadInfoRow: View {
+// MARK: - Componente de Información
+struct InfoRow: View {
     let icon: String
     let title: String
     let value: String
@@ -780,10 +1429,667 @@ struct ActividadInfoRow: View {
     }
 }
 
+// MARK: - Vista de Detalle de Hábito
+struct HabitoDetalleView: View {
+    let habito: Capa5Habit
+    @Environment(\.dismiss) private var dismiss
+    @State private var mostrarBaseCientifica = false
+    @State private var mostrarEstadisticas = false
+    @State private var isCompleted = false
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    // Header con gradiente
+                    VStack(alignment: .leading, spacing: 16) {
+                        HStack {
+                            Image(systemName: habito.icono)
+                                .font(.largeTitle)
+                                .foregroundColor(Color(habito.color))
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Hábito Familiar")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color(habito.color))
+                                
+                                Text("Seguimiento Neurocientífico")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            
+                            Spacer()
+                        }
+                        
+                        Text(habito.titulo)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .multilineTextAlignment(.leading)
+                            .lineSpacing(4)
+                    }
+                    .padding(20)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color(habito.color).opacity(0.1),
+                                Color(habito.color).opacity(0.05)
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .cornerRadius(16)
+                    
+                    // Información básica
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.blue)
+                            Text("Información del Hábito")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            InfoRow(icon: "clock.fill", title: "Duración", value: habito.duracion, color: .orange)
+                            InfoRow(icon: "repeat", title: "Frecuencia", value: habito.frecuencia.rawValue, color: .blue)
+                            InfoRow(icon: habito.categoria.icono, title: "Categoría", value: habito.categoria.rawValue, color: Color(habito.categoria.color))
+                            InfoRow(icon: habito.edadRecomendada.icono, title: "Edad Recomendada", value: habito.edadRecomendada.rawValue, color: Color(habito.edadRecomendada.color))
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(12)
+                    
+                    // Descripción
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "text.alignleft")
+                                .foregroundColor(.green)
+                            Text("Descripción")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        Text(habito.descripcion)
+                            .font(.body)
+                            .lineSpacing(6)
+                            .foregroundColor(.primary)
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Objetivo neurocientífico
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "target")
+                                .foregroundColor(.purple)
+                            Text("Objetivo Neurocientífico")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        Text(habito.objetivo)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.purple.opacity(0.1))
+                            .cornerRadius(8)
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Base científica (expandible)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                mostrarBaseCientifica.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "atom")
+                                    .foregroundColor(.blue)
+                                Text("Base Científica")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                Image(systemName: mostrarBaseCientifica ? "chevron.up" : "chevron.down")
+                                    .foregroundColor(.blue)
+                                    .font(.title3)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if mostrarBaseCientifica {
+                            Text(habito.baseCientifica)
+                                .font(.body)
+                                .foregroundColor(.secondary)
+                                .padding(12)
+                                .background(Color.blue.opacity(0.1))
+                                .cornerRadius(8)
+                                .transition(.asymmetric(
+                                    insertion: .opacity.combined(with: .move(edge: .top)),
+                                    removal: .opacity.combined(with: .move(edge: .top))
+                                ))
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Estadísticas del hábito (expandible)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                mostrarEstadisticas.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "chart.bar.fill")
+                                    .foregroundColor(.green)
+                                Text("Estadísticas del Hábito")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                Image(systemName: mostrarEstadisticas ? "chevron.up" : "chevron.down")
+                                    .foregroundColor(.green)
+                                    .font(.title3)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if mostrarEstadisticas {
+                            VStack(spacing: 16) {
+                                // Streak actual
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Racha Actual")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                        
+                                        Text("\(habito.streak) días")
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.green)
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    VStack(alignment: .trailing, spacing: 4) {
+                                        Text("Racha Máxima")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                        
+                                        Text("\(habito.streakMaximo) días")
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                                
+                                // Progreso visual
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Progreso del Mes")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    
+                                    ZStack(alignment: .leading) {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color.gray.opacity(0.2))
+                                            .frame(height: 8)
+                                        
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(
+                                                LinearGradient(
+                                                    gradient: Gradient(colors: [.green, .mint]),
+                                                    startPoint: .leading,
+                                                    endPoint: .trailing
+                                                )
+                                            )
+                                            .frame(width: CGFloat(habito.streak) / 30.0 * 200, height: 8)
+                                            .animation(.easeInOut(duration: 1.0), value: habito.streak)
+                                    }
+                                    .frame(width: 200)
+                                }
+                                
+                                // Estadísticas adicionales
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Total Ejecuciones")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                        
+                                        Text("\(habito.totalEjecuciones)")
+                                            .font(.headline)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.orange)
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    VStack(alignment: .trailing, spacing: 4) {
+                                        Text("Estado")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                        
+                                        Text(habito.activo ? "Activo" : "Pausado")
+                                            .font(.headline)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(habito.activo ? .green : .gray)
+                                    }
+                                }
+                            }
+                            .padding(12)
+                            .background(Color.green.opacity(0.1))
+                            .cornerRadius(8)
+                            .transition(.asymmetric(
+                                insertion: .opacity.combined(with: .move(edge: .top)),
+                                removal: .opacity.combined(with: .move(edge: .top))
+                            ))
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Botones de acción
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                                isCompleted.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
+                                Text(isCompleted ? "¡Completado!" : "Completar Hoy")
+                            }
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .background(isCompleted ? Color.green : Color(habito.color))
+                            .cornerRadius(12)
+                        }
+                        
+                        Button(action: {
+                            // Acción para pausar/reanudar hábito
+                        }) {
+                            HStack {
+                                Image(systemName: habito.activo ? "pause.circle.fill" : "play.circle.fill")
+                                Text(habito.activo ? "Pausar" : "Reanudar")
+                            }
+                            .font(.subheadline)
+                            .foregroundColor(.orange)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.orange.opacity(0.1))
+                            .cornerRadius(8)
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding(.top, 8)
+                }
+                .padding()
+            }
+            .navigationTitle("Hábito")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cerrar") {
+                        dismiss()
+                    }
+                    .foregroundColor(Color(habito.color))
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Vista de Detalle de Desafío
+struct DesafioDetalleView: View {
+    let desafio: Capa5Challenge
+    @Environment(\.dismiss) private var dismiss
+    @State private var mostrarPasos = false
+    @State private var mostrarCriterios = false
+    @State private var isStarted = false
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    // Header con gradiente
+                    VStack(alignment: .leading, spacing: 16) {
+                        HStack {
+                            Image(systemName: desafio.icono)
+                                .font(.largeTitle)
+                                .foregroundColor(Color(desafio.color))
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Desafío Familiar")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color(desafio.color))
+                                
+                                Text("Reto Neurocientífico")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            
+                            Spacer()
+                        }
+                        
+                        Text(desafio.titulo)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .multilineTextAlignment(.leading)
+                            .lineSpacing(4)
+                    }
+                    .padding(20)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color(desafio.color).opacity(0.1),
+                                Color(desafio.color).opacity(0.05)
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .cornerRadius(16)
+                    
+                    // Información básica
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.blue)
+                            Text("Información del Desafío")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            InfoRow(icon: "clock.fill", title: "Duración", value: desafio.duracion, color: .orange)
+                            InfoRow(icon: desafio.categoria.icono, title: "Categoría", value: desafio.categoria.rawValue, color: Color(desafio.categoria.color))
+                            InfoRow(icon: desafio.edadRecomendada.icono, title: "Edad Recomendada", value: desafio.edadRecomendada.rawValue, color: Color(desafio.edadRecomendada.color))
+                            InfoRow(icon: "trophy.fill", title: "Recompensa", value: desafio.recompensa, color: .orange)
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(12)
+                    
+                    // Descripción
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "text.alignleft")
+                                .foregroundColor(.green)
+                            Text("Descripción")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        Text(desafio.descripcion)
+                            .font(.body)
+                            .lineSpacing(6)
+                            .foregroundColor(.primary)
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Objetivo neurocientífico
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "target")
+                                .foregroundColor(.purple)
+                            Text("Objetivo Neurocientífico")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        Text(desafio.objetivo)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.purple.opacity(0.1))
+                            .cornerRadius(8)
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Pasos del desafío (expandible)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                mostrarPasos.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "list.number")
+                                    .foregroundColor(.green)
+                                Text("Pasos del Desafío")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                Image(systemName: mostrarPasos ? "chevron.up" : "chevron.down")
+                                    .foregroundColor(.green)
+                                    .font(.title3)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if mostrarPasos {
+                            VStack(alignment: .leading, spacing: 8) {
+                                ForEach(Array(desafio.pasos.enumerated()), id: \.offset) { index, paso in
+                                    HStack(alignment: .top, spacing: 12) {
+                                        Text("\(index + 1).")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.green)
+                                            .frame(width: 20, alignment: .leading)
+                                        
+                                        Text(paso)
+                                            .font(.body)
+                                            .foregroundColor(.primary)
+                                    }
+                                    .padding(.vertical, 2)
+                                }
+                            }
+                            .padding(12)
+                            .background(Color.green.opacity(0.1))
+                            .cornerRadius(8)
+                            .transition(.asymmetric(
+                                insertion: .opacity.combined(with: .move(edge: .top)),
+                                removal: .opacity.combined(with: .move(edge: .top))
+                            ))
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Criterios de éxito (expandible)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                mostrarCriterios.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.blue)
+                                Text("Criterios de Éxito")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                Image(systemName: mostrarCriterios ? "chevron.up" : "chevron.down")
+                                    .foregroundColor(.blue)
+                                    .font(.title3)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if mostrarCriterios {
+                            VStack(alignment: .leading, spacing: 8) {
+                                ForEach(Array(desafio.criteriosExito.enumerated()), id: \.offset) { index, criterio in
+                                    HStack(alignment: .top, spacing: 12) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.caption)
+                                            .foregroundColor(.green)
+                                            .frame(width: 20, alignment: .leading)
+                                        
+                                        Text(criterio)
+                                            .font(.body)
+                                            .foregroundColor(.primary)
+                                    }
+                                    .padding(.vertical, 2)
+                                }
+                            }
+                            .padding(12)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(8)
+                            .transition(.asymmetric(
+                                insertion: .opacity.combined(with: .move(edge: .top)),
+                                removal: .opacity.combined(with: .move(edge: .top))
+                            ))
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Progreso del desafío
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "chart.bar.fill")
+                                .foregroundColor(.green)
+                            Text("Progreso del Desafío")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        VStack(spacing: 12) {
+                            HStack {
+                                Text("Progreso Actual")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                
+                                Spacer()
+                                
+                                Text("\(Int(desafio.progreso * 100))%")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.green)
+                            }
+                            
+                            ZStack(alignment: .leading) {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.gray.opacity(0.2))
+                                    .frame(height: 12)
+                                
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [.green, .mint]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .frame(width: CGFloat(desafio.progreso) * 300, height: 12)
+                                    .animation(.easeInOut(duration: 1.0), value: desafio.progreso)
+                            }
+                            .frame(width: 300)
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    
+                    // Botones de acción
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                                isStarted.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: isStarted ? "pause.circle.fill" : "play.circle.fill")
+                                Text(isStarted ? "Pausar Desafío" : "Iniciar Desafío")
+                            }
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .background(isStarted ? Color.orange : Color(desafio.color))
+                            .cornerRadius(12)
+                        }
+                        
+                        Button(action: {
+                            // Acción para marcar como completado
+                        }) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text("Completar")
+                            }
+                            .font(.subheadline)
+                            .foregroundColor(.green)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.green.opacity(0.1))
+                            .cornerRadius(8)
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding(.top, 8)
+                }
+                .padding()
+            }
+            .navigationTitle("Desafío")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cerrar") {
+                        dismiss()
+                    }
+                    .foregroundColor(Color(desafio.color))
+                }
+            }
+        }
+    }
+}
+
 // MARK: - Preview
 struct Capa5AplicacionCasaView_Previews: PreviewProvider {
     static var previews: some View {
         Capa5AplicacionCasaView()
-            .environmentObject(ProgresoManager())
     }
 }
