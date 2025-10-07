@@ -23,18 +23,41 @@ struct Capa5AplicacionCasaView: View {
                         .padding(.vertical, 8)
                     
                     // MARK: - Contenido Dinámico por Sección
-                    switch seccionActiva {
-                    case .rutinas:
-                        SeccionRutinas(rutinas: capa5.rutinas)
-                    case .habitos:
-                        SeccionHabitos(habitos: capa5.habitos)
-                    case .desafios:
-                        SeccionDesafios(desafios: capa5.desafios)
-                    case .reflexion:
-                        SeccionReflexion()
-                    case .progreso:
-                        SeccionProgreso(progreso: capa5.progreso)
+                    Group {
+                        switch seccionActiva {
+                        case .rutinas:
+                            SeccionRutinas(rutinas: capa5.rutinas)
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                                    removal: .move(edge: .leading).combined(with: .opacity)
+                                ))
+                        case .habitos:
+                            SeccionHabitos(habitos: capa5.habitos)
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                                    removal: .move(edge: .leading).combined(with: .opacity)
+                                ))
+                        case .desafios:
+                            SeccionDesafios(desafios: capa5.desafios)
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                                    removal: .move(edge: .leading).combined(with: .opacity)
+                                ))
+                        case .reflexion:
+                            SeccionReflexion()
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                                    removal: .move(edge: .leading).combined(with: .opacity)
+                                ))
+                        case .progreso:
+                            SeccionProgreso(progreso: capa5.progreso)
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                                    removal: .move(edge: .leading).combined(with: .opacity)
+                                ))
+                        }
                     }
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: seccionActiva)
                 }
             }
             .navigationTitle("Aplicación en Casa")
@@ -61,6 +84,8 @@ struct Capa5AplicacionCasaView: View {
 // MARK: - Header con Progreso Familiar
 struct HeaderProgresoFamiliar: View {
     let progreso: Capa5Progress
+    @State private var animacionProgreso = false
+    @State private var animacionEstadisticas = false
     
     var body: some View {
         VStack(spacing: 16) {
@@ -70,12 +95,18 @@ struct HeaderProgresoFamiliar: View {
                     Image(systemName: "house.fill")
                         .font(.title2)
                         .foregroundColor(.green)
+                        .scaleEffect(animacionProgreso ? 1.0 : 0.8)
+                        .opacity(animacionProgreso ? 1.0 : 0.0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: animacionProgreso)
                     
                     Text("Transforma tu hogar en un laboratorio de desarrollo cerebral")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.leading)
+                        .scaleEffect(animacionProgreso ? 1.0 : 0.95)
+                        .opacity(animacionProgreso ? 1.0 : 0.0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: animacionProgreso)
                     
                     Spacer()
                 }
@@ -84,6 +115,9 @@ struct HeaderProgresoFamiliar: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.leading)
+                    .scaleEffect(animacionProgreso ? 1.0 : 0.95)
+                    .opacity(animacionProgreso ? 1.0 : 0.0)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.3), value: animacionProgreso)
             }
             
             // Progreso circular
@@ -107,24 +141,26 @@ struct HeaderProgresoFamiliar: View {
                             )
                             .frame(width: 80, height: 80)
                             .rotationEffect(.degrees(-90))
-                            .animation(.easeInOut(duration: 1.0), value: progreso.nivel)
+                            .scaleEffect(animacionProgreso ? 1.0 : 0.8)
+                            .opacity(animacionProgreso ? 1.0 : 0.0)
+                            .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.4), value: animacionProgreso)
                         
                         VStack(spacing: 2) {
                             Text("\(progreso.nivel)")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.green)
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.green)
                             
                             Text("Nivel")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
-                    }
-                    
+                            }
+                            
                     Text("Progreso Familiar")
                         .font(.caption)
                         .fontWeight(.medium)
-                        .foregroundColor(.secondary)
+                                .foregroundColor(.secondary)
                 }
                 
                 // Estadísticas rápidas
@@ -160,6 +196,12 @@ struct HeaderProgresoFamiliar: View {
                 .fill(Color(.systemBackground))
                 .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
         )
+        .onAppear {
+            withAnimation {
+                animacionProgreso = true
+                animacionEstadisticas = true
+            }
+        }
     }
 }
 
@@ -191,13 +233,16 @@ struct BotonSeccion: View {
     let seccion: SeccionCapa5
     let isSelected: Bool
     let action: () -> Void
+    @State private var animacionBoton = false
     
     var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
                 Image(systemName: seccion.icono)
                     .font(.caption)
-                        .foregroundColor(isSelected ? .white : Color(seccion.color))
+                    .foregroundColor(isSelected ? .white : Color(seccion.color))
+                    .scaleEffect(isSelected ? 1.1 : 1.0)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isSelected)
                 
                 Text(seccion.titulo)
                     .font(.caption)
@@ -209,9 +254,25 @@ struct BotonSeccion: View {
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(isSelected ? Color(seccion.color) : Color(.secondarySystemBackground))
+                    .shadow(
+                        color: isSelected ? Color(seccion.color).opacity(0.3) : .clear,
+                        radius: isSelected ? 4 : 0,
+                        x: 0,
+                        y: 2
+                    )
             )
+            .scaleEffect(isSelected ? 1.05 : 1.0)
+            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isSelected)
         }
         .buttonStyle(Capa5ScaleButtonStyle())
+        .scaleEffect(animacionBoton ? 1.0 : 0.8)
+        .opacity(animacionBoton ? 1.0 : 0.0)
+        .animation(.spring(response: 0.6, dampingFraction: 0.8), value: animacionBoton)
+        .onAppear {
+            withAnimation {
+                animacionBoton = true
+            }
+        }
     }
 }
 
@@ -223,7 +284,7 @@ struct SeccionRutinas: View {
     var body: some View {
         VStack(spacing: 16) {
             // Header de sección
-            HStack {
+                            HStack {
                 Image(systemName: "clock.fill")
                     .foregroundColor(.orange)
                 Text("Rutinas Familiares")
@@ -263,10 +324,10 @@ struct SeccionHabitos: View {
             // Header de sección
             HStack {
                 Image(systemName: "repeat.circle.fill")
-                    .foregroundColor(.blue)
+                                    .foregroundColor(.blue)
                 Text("Hábitos Medibles")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
                 Spacer()
             }
             .padding(.horizontal)
@@ -299,12 +360,12 @@ struct SeccionDesafios: View {
     var body: some View {
         VStack(spacing: 16) {
             // Header de sección
-            HStack {
+                            HStack {
                 Image(systemName: "trophy.fill")
-                    .foregroundColor(.orange)
+                                    .foregroundColor(.orange)
                 Text("Desafíos Familiares")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
                 Spacer()
             }
             .padding(.horizontal)
@@ -363,17 +424,17 @@ struct SeccionReflexion: View {
             // Selector de emociones
             VStack(alignment: .leading, spacing: 12) {
                 Text("¿Cómo te sientes hoy?")
-                    .font(.headline)
+                                    .font(.headline)
                     .fontWeight(.semibold)
                     .foregroundColor(.primary)
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 12) {
                         ForEach(EmocionReflexion.allCases, id: \.self) { emocion in
                             EmocionButton(
                                 emocion: emocion,
                                 isSelected: emocionSeleccionada == emocion,
-                                action: {
+                                            action: {
                                     withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                                         emocionSeleccionada = emocion
                                     }
@@ -456,9 +517,9 @@ struct SeccionReflexion: View {
                     .opacity(reflexionActual.isEmpty ? 0.5 : 1.0)
                     
                     Spacer()
-                }
-            }
-            .padding(.horizontal)
+                                        }
+                                    }
+                                    .padding(.horizontal)
             
             // Historial de reflexiones
             if !reflexionesGuardadas.isEmpty {
@@ -556,7 +617,7 @@ struct ReflexionCard: View {
     let reflexion: Capa5Reflection
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 8) {
             HStack {
                 if let primeraEmocion = reflexion.emociones.first {
                     Image(systemName: primeraEmocion.icono)
@@ -572,7 +633,7 @@ struct ReflexionCard: View {
                 
                 Text(reflexion.fecha, style: .date)
                     .font(.caption2)
-                    .foregroundColor(.secondary)
+                                    .foregroundColor(.secondary)
             }
             
             Text(reflexion.contenido)
@@ -609,7 +670,7 @@ struct EditorReflexionCompleto: View {
                             EmocionButton(
                                 emocion: emocion,
                                 isSelected: emocionSeleccionada == emocion,
-                                action: {
+                                                action: {
                                     withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                                         emocionSeleccionada = emocion
                                     }
@@ -676,13 +737,13 @@ struct SeccionProgreso: View {
     var body: some View {
         VStack(spacing: 20) {
             // Header de sección
-            HStack {
+                            HStack {
                 Image(systemName: "chart.line.uptrend.xyaxis")
-                    .foregroundColor(.green)
+                                    .foregroundColor(.green)
                 Text("Progreso Familiar")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                Spacer()
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                Spacer()
                 
                 Button(action: {
                     withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
@@ -733,8 +794,8 @@ struct SeccionProgreso: View {
                             .foregroundColor(.green)
                         
                         Text("Completado")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
                     }
                 }
                 
@@ -834,7 +895,7 @@ struct SeccionProgreso: View {
                     mostrarEstadisticas = true
                 }
             }) {
-                HStack {
+                            HStack {
                     Image(systemName: "chart.bar.fill")
                     Text("Ver Estadísticas Detalladas")
                 }
@@ -875,7 +936,7 @@ struct EstadisticaCard: View {
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: icono)
-                .font(.title2)
+                                    .font(.title2)
                 .foregroundColor(color)
             
             Text(titulo)
@@ -934,7 +995,7 @@ struct EstadisticasDetalladasView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 20) {
+                    VStack(spacing: 20) {
                     GraficoSemanalView()
                     EstadisticasDetalladasSection(progreso: progreso)
                     InformacionAdicionalSection(progreso: progreso)
@@ -958,7 +1019,7 @@ struct GraficoSemanalView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Progreso Semanal")
-                .font(.headline)
+                            .font(.headline)
                 .fontWeight(.semibold)
             
             HStack(alignment: .bottom, spacing: 8) {
@@ -1344,7 +1405,7 @@ struct RutinaCard: View {
                 }
                 
                 // Barra de progreso visual con efecto orgánico
-                HStack {
+                        HStack {
                     ForEach(0..<5) { index in
                         Circle()
                             .fill(
@@ -1429,7 +1490,7 @@ struct HabitoCard: View {
                             .lineLimit(2)
                         
                         Text(habito.categoria.rawValue)
-                            .font(.caption)
+                                .font(.caption)
                             .foregroundColor(Color(habito.categoria.color))
                     }
                     
@@ -1449,8 +1510,8 @@ struct HabitoCard: View {
                     Spacer()
                     
                     Text("Máximo: \(habito.streakMaximo) días")
-                        .font(.caption)
-                        .foregroundColor(.blue)
+                                .font(.caption)
+                                .foregroundColor(.blue)
                 }
             }
             .padding(16)
@@ -1521,16 +1582,16 @@ struct DesafioCard: View {
                             Text(desafio.categoria.rawValue)
                                 .font(.caption)
                                 .foregroundColor(Color(desafio.categoria.color))
-                            
-                            Spacer()
-                            
-                            HStack {
+                        
+                        Spacer()
+                        
+                        HStack {
                                 Image(systemName: "clock.fill")
-                                    .font(.caption)
+                                .font(.caption)
                                     .foregroundColor(.orange)
-                                
+                            
                                 Text(desafio.duracion)
-                                    .font(.caption)
+                                .font(.caption)
                                     .foregroundColor(.orange)
                             }
                         }
@@ -1599,7 +1660,7 @@ struct DesafioCard: View {
                 
                 // Progreso visual con animación
                 VStack(alignment: .leading, spacing: 8) {
-                    HStack {
+                HStack {
                         Text("Progreso del Desafío")
                             .font(.caption)
                             .fontWeight(.medium)
@@ -1946,19 +2007,19 @@ struct RutinaDetalleView: View {
                         if mostrarPasos {
                             VStack(alignment: .leading, spacing: 8) {
                                 ForEach(Array(rutina.pasos.enumerated()), id: \.offset) { index, paso in
-                                    HStack(alignment: .top, spacing: 12) {
-                                        Text("\(index + 1).")
-                                            .font(.caption)
-                                            .fontWeight(.bold)
-                                            .foregroundColor(.green)
-                                            .frame(width: 20, alignment: .leading)
-                                        
-                                        Text(paso)
-                                            .font(.body)
-                                            .foregroundColor(.primary)
-                                    }
-                                    .padding(.vertical, 2)
+                                HStack(alignment: .top, spacing: 12) {
+                                    Text("\(index + 1).")
+                                        .font(.caption)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.green)
+                                        .frame(width: 20, alignment: .leading)
+                                    
+                                    Text(paso)
+                                        .font(.body)
+                                        .foregroundColor(.primary)
                                 }
+                                .padding(.vertical, 2)
+                            }
                             }
                             .padding(12)
                             .background(Color.green.opacity(0.1))
@@ -2064,17 +2125,17 @@ struct RutinaDetalleView: View {
                                 ForEach(rutina.vinculoHerramientas, id: \.self) { herramienta in
                                     HStack {
                                         Image(systemName: "checkmark.circle.fill")
-                                            .font(.caption)
+                                        .font(.caption)
                                             .foregroundColor(.green)
                                         Text(herramienta)
                                             .font(.caption)
-                                            .foregroundColor(.primary)
-                                    }
+                                        .foregroundColor(.primary)
+                                }
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
                                     .background(Color.orange.opacity(0.1))
                                     .cornerRadius(6)
-                                }
+                            }
                             }
                             .padding(12)
                             .background(Color.orange.opacity(0.1))
@@ -2515,7 +2576,7 @@ struct DesafioDetalleView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Header con gradiente
                     VStack(alignment: .leading, spacing: 16) {
-                        HStack {
+        HStack {
                             Image(systemName: desafio.icono)
                                 .font(.largeTitle)
                                 .foregroundColor(Color(desafio.color))
@@ -2646,7 +2707,7 @@ struct DesafioDetalleView: View {
                                 ForEach(Array(desafio.pasos.enumerated()), id: \.offset) { index, paso in
                                     HStack(alignment: .top, spacing: 12) {
                                         Text("\(index + 1).")
-                                            .font(.caption)
+                .font(.caption)
                                             .fontWeight(.bold)
                                             .foregroundColor(.green)
                                             .frame(width: 20, alignment: .leading)
@@ -2701,7 +2762,7 @@ struct DesafioDetalleView: View {
                                 ForEach(Array(desafio.criteriosExito.enumerated()), id: \.offset) { index, criterio in
                                     HStack(alignment: .top, spacing: 12) {
                                         Image(systemName: "checkmark.circle.fill")
-                                            .font(.caption)
+                .font(.caption)
                                             .foregroundColor(.green)
                                             .frame(width: 20, alignment: .leading)
                                         
@@ -2740,12 +2801,12 @@ struct DesafioDetalleView: View {
                             HStack {
                                 Text("Progreso Actual")
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
-                                
-                                Spacer()
-                                
+                .foregroundColor(.secondary)
+            
+            Spacer()
+            
                                 Text("\(Int(desafio.progreso * 100))%")
-                                    .font(.caption)
+                .font(.caption)
                                     .fontWeight(.bold)
                                     .foregroundColor(.green)
                             }
