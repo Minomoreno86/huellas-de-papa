@@ -670,9 +670,11 @@ struct EditorReflexionCompleto: View {
 
 struct SeccionProgreso: View {
     let progreso: Capa5Progress
+    @State private var mostrarEstadisticas = false
+    @State private var mostrarMedallas = false
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 20) {
             // Header de sección
             HStack {
                 Image(systemName: "chart.line.uptrend.xyaxis")
@@ -681,20 +683,448 @@ struct SeccionProgreso: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                 Spacer()
+                
+                Button(action: {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        mostrarEstadisticas = true
+                    }
+                }) {
+                    Image(systemName: "chart.bar.fill")
+                        .font(.title2)
+                        .foregroundColor(.green)
+                }
             }
             .padding(.horizontal)
             
-            // Placeholder para progreso detallado
-            PlaceholderSeccion(
-                icono: "chart.line.uptrend.xyaxis",
-                titulo: "Progreso Familiar",
-                descripcion: "Visualiza el avance de tu familia en el desarrollo cerebral",
-                color: .green
+            // Progreso general circular
+            VStack(spacing: 16) {
+                Text("Progreso General")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                ZStack {
+                    // Círculo de fondo
+                    Circle()
+                        .stroke(Color.gray.opacity(0.2), lineWidth: 12)
+                        .frame(width: 120, height: 120)
+                    
+                    // Círculo de progreso
+                    let progresoCalculado = Double(progreso.rutinasCompletadas + progreso.habitosActivos + progreso.desafiosCompletados + progreso.reflexionesEscritas) / 40.0 // Máximo estimado
+                    Circle()
+                        .trim(from: 0, to: min(progresoCalculado, 1.0))
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: [.green, .mint]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            style: StrokeStyle(lineWidth: 12, lineCap: .round)
+                        )
+                        .frame(width: 120, height: 120)
+                        .rotationEffect(.degrees(-90))
+                        .animation(.easeInOut(duration: 1.5), value: progresoCalculado)
+                    
+                    // Porcentaje
+                    VStack(spacing: 4) {
+                        Text("\(Int(min(progresoCalculado, 1.0) * 100))%")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.green)
+                        
+                        Text("Completado")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                Text("¡Excelente progreso familiar!")
+                    .font(.subheadline)
+                    .foregroundColor(.green)
+                    .fontWeight(.medium)
+            }
+            .padding(20)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.secondarySystemBackground))
+                    .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
             )
+            .padding(.horizontal)
+            
+            // Estadísticas rápidas
+            VStack(spacing: 12) {
+                Text("Estadísticas Rápidas")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 12) {
+                    EstadisticaCard(
+                        icono: "clock.fill",
+                        titulo: "Rutinas",
+                        valor: "\(progreso.rutinasCompletadas)",
+                        total: "10",
+                        color: .orange
+                    )
+                    
+                    EstadisticaCard(
+                        icono: "flame.fill",
+                        titulo: "Hábitos",
+                        valor: "\(progreso.habitosActivos)",
+                        total: "10",
+                        color: .red
+                    )
+                    
+                    EstadisticaCard(
+                        icono: "trophy.fill",
+                        titulo: "Desafíos",
+                        valor: "\(progreso.desafiosCompletados)",
+                        total: "10",
+                        color: .blue
+                    )
+                    
+                    EstadisticaCard(
+                        icono: "book.fill",
+                        titulo: "Reflexiones",
+                        valor: "\(progreso.reflexionesEscritas)",
+                        total: "10",
+                        color: .purple
+                    )
+                }
+            }
+            .padding(.horizontal)
+            
+            // Medallas obtenidas
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Medallas Obtenidas")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                    
+                    Spacer()
+                    
+                    Text("\(progreso.medallas.count)")
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundColor(.green)
+                }
+                
+                if progreso.medallas.isEmpty {
+                    Text("¡Completa actividades para obtener medallas!")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.vertical, 8)
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(progreso.medallas.prefix(3), id: \.self) { medalla in
+                                MedallaSimpleCard(titulo: medalla)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            
+            // Botón de estadísticas detalladas
+            Button(action: {
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                    mostrarEstadisticas = true
+                }
+            }) {
+                HStack {
+                    Image(systemName: "chart.bar.fill")
+                    Text("Ver Estadísticas Detalladas")
+                }
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(
+                            LinearGradient(
+                                gradient: Gradient(colors: [.green, .mint]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                )
+                .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
+            }
+            .padding(.horizontal)
         }
         .padding(.vertical)
+        .sheet(isPresented: $mostrarEstadisticas) {
+            EstadisticasDetalladasView(progreso: progreso)
+        }
     }
 }
+
+// MARK: - Componentes de Progreso
+
+struct EstadisticaCard: View {
+    let icono: String
+    let titulo: String
+    let valor: String
+    let total: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icono)
+                .font(.title2)
+                .foregroundColor(color)
+            
+            Text(titulo)
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundColor(.secondary)
+            
+            Text(valor)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            
+            Text("de \(total)")
+                .font(.caption2)
+                .foregroundColor(.secondary)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        )
+    }
+}
+
+struct MedallaSimpleCard: View {
+    let titulo: String
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "trophy.fill")
+                .font(.title)
+                .foregroundColor(.orange)
+            
+            Text(titulo)
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        )
+        .frame(width: 100)
+    }
+}
+
+struct EstadisticasDetalladasView: View {
+    let progreso: Capa5Progress
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    GraficoSemanalView()
+                    EstadisticasDetalladasSection(progreso: progreso)
+                    InformacionAdicionalSection(progreso: progreso)
+                }
+                .padding()
+            }
+            .navigationTitle("Estadísticas")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cerrar") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct GraficoSemanalView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Progreso Semanal")
+                .font(.headline)
+                .fontWeight(.semibold)
+            
+            HStack(alignment: .bottom, spacing: 8) {
+                ForEach(0..<7) { dia in
+                    VStack(spacing: 4) {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.green.opacity(0.7))
+                            .frame(width: 30, height: CGFloat.random(in: 20...80))
+                        
+                        Text(["L", "M", "X", "J", "V", "S", "D"][dia])
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .frame(height: 100)
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.secondarySystemBackground))
+        )
+    }
+}
+
+struct EstadisticasDetalladasSection: View {
+    let progreso: Capa5Progress
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Estadísticas Detalladas")
+                .font(.headline)
+                .fontWeight(.semibold)
+            
+            VStack(spacing: 12) {
+                EstadisticaDetallada(
+                    titulo: "Rutinas Completadas",
+                    valor: progreso.rutinasCompletadas,
+                    total: 10,
+                    color: .orange
+                )
+                
+                EstadisticaDetallada(
+                    titulo: "Hábitos Activos",
+                    valor: progreso.habitosActivos,
+                    total: 10,
+                    color: .red
+                )
+                
+                EstadisticaDetallada(
+                    titulo: "Desafíos Completados",
+                    valor: progreso.desafiosCompletados,
+                    total: 10,
+                    color: .blue
+                )
+                
+                EstadisticaDetallada(
+                    titulo: "Reflexiones Registradas",
+                    valor: progreso.reflexionesEscritas,
+                    total: 10,
+                    color: .purple
+                )
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.secondarySystemBackground))
+        )
+    }
+}
+
+struct InformacionAdicionalSection: View {
+    let progreso: Capa5Progress
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Información Adicional")
+                .font(.headline)
+                .fontWeight(.semibold)
+            
+            VStack(spacing: 12) {
+                HStack {
+                    Text("Streak General:")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text("\(progreso.streakGeneral) días")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.green)
+                }
+                
+                HStack {
+                    Text("Puntos Totales:")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text("\(progreso.puntos)")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                }
+                
+                HStack {
+                    Text("Nivel Actual:")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text("Nivel \(progreso.nivel)")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.purple)
+                }
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.secondarySystemBackground))
+        )
+    }
+}
+
+struct EstadisticaDetallada: View {
+    let titulo: String
+    let valor: Int
+    let total: Int
+    let color: Color
+    
+    var porcentaje: Double {
+        guard total > 0 else { return 0 }
+        return Double(valor) / Double(total)
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(titulo)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Text("\(valor)/\(total)")
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundColor(color)
+            }
+            
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 8)
+                
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(color)
+                    .frame(width: CGFloat(porcentaje) * 300, height: 8)
+                    .animation(.easeInOut(duration: 1.0), value: porcentaje)
+            }
+            .frame(width: 300)
+        }
+    }
+}
+
 
 // MARK: - Componentes de Ayuda
 
