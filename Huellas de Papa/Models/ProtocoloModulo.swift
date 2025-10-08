@@ -104,7 +104,7 @@ class FactoryModulos {
             return AnyView(Capa5View())
         case .planEntrenamiento:
             print("🔍 DEBUG: Creando Capa6View de The Yes Brain...")
-            return AnyView(Text("Capa 6 - Plan Entrenamiento (En desarrollo)"))
+            return AnyView(Capa6View())
         case .reflexion:
             print("🔍 DEBUG: Creando Capa7View de The Yes Brain...")
             return AnyView(Text("Capa 7 - Evaluaciones (En desarrollo)"))
