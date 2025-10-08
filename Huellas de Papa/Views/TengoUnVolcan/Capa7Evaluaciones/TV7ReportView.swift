@@ -246,32 +246,6 @@ struct TV7ReportView: View {
         )
     }
     
-    // MARK: - Results Button
-    private var resultsButton: some View {
-        Button {
-            showingReport = true
-        } label: {
-            HStack {
-                Image(systemName: "chart.bar.doc.horizontal.fill")
-                Text("Ver Mi Reporte Completo")
-                    .fontWeight(.semibold)
-            }
-            .foregroundColor(.white)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.green, .mint]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-            )
-        }
-    }
-    
     // MARK: - Computed Properties
     private var overallScore: Double {
         guard !responses.isEmpty else { return 0 }
