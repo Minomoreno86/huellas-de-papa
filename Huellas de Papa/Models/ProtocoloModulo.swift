@@ -130,8 +130,8 @@ class FactoryModulos {
             print("🔍 DEBUG: Creando TV2View de Tengo un Volcán...")
             return AnyView(TV2View())
         case .herramientas:
-            print("🔍 DEBUG: Capa 3 de Tengo un Volcán - Próximamente...")
-            return AnyView(Text("Capa 3: Herramientas - Próximamente"))
+            print("🔍 DEBUG: Creando TV3View de Tengo un Volcán...")
+            return AnyView(TV3View())
         case .simulaciones:
             print("🔍 DEBUG: Capa 4 de Tengo un Volcán - Próximamente...")
             return AnyView(Text("Capa 4: Simulaciones - Próximamente"))
