@@ -162,7 +162,7 @@ struct TV9View: View {
         }
     }
     
-    private func badgeCard(_ badge: BadgeTemplate) -> some View {
+    private func badgeCard(_ badge: TV9Data.BadgeTemplate) -> some View {
         VStack(spacing: 12) {
             ZStack {
                 Circle()
@@ -300,15 +300,15 @@ struct TV9View: View {
         progress.first ?? TV9Progress()
     }
     
-    private var unlockedBadges: [BadgeTemplate] {
+    private var unlockedBadges: [TV9Data.BadgeTemplate] {
         TV9Data.badgeTemplates.filter { isUnlocked($0) }
     }
     
-    private var sortedBadges: [BadgeTemplate] {
+    private var sortedBadges: [TV9Data.BadgeTemplate] {
         TV9Data.badgeTemplates.sorted { isUnlocked($0) && !isUnlocked($1) }
     }
     
-    private func isUnlocked(_ badge: BadgeTemplate) -> Bool {
+    private func isUnlocked(_ badge: TV9Data.BadgeTemplate) -> Bool {
         // Lógica simplificada - en producción verificaría contra datos reales
         switch badge.title {
         case "Conocedor del Volcán":

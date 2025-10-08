@@ -329,7 +329,7 @@ struct TV6View: View {
             
             Spacer()
             
-            if let toolUsed = log.toolUsed {
+            if log.toolUsed != nil {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundColor(.green)
                     .font(.title3)
