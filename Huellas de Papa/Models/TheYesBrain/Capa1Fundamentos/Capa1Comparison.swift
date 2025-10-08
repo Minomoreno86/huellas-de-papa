@@ -1,7 +1,7 @@
 import Foundation
 
 /// Modelo que representa la comparación entre estados Yes Brain y No Brain
-/// Permite visualizar las diferencias en diferentes ámbitos de la vida familiar
+/// Muestra cómo diferentes aspectos se comportan en cada modo cerebral
 struct Capa1Comparison: Codable, Identifiable {
     let id: UUID
     let axis: String
@@ -11,7 +11,7 @@ struct Capa1Comparison: Codable, Identifiable {
     /// Inicializador para crear una comparación Yes/No Brain
     /// - Parameters:
     ///   - axis: Ámbito de comparación (ej: "Emoción", "Aprendizaje", "Comunicación")
-    ///   - yesState: Descripción del estado Yes Brain (receptivo, integrador)
+    ///   - yesState: Descripción del estado Yes Brain (integrado, receptivo)
     ///   - noState: Descripción del estado No Brain (defensivo, reactivo)
     init(axis: String, yesState: String, noState: String) {
         self.id = UUID()

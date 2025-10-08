@@ -41,6 +41,8 @@ class FactoryModulos {
         switch moduloId {
         case "cerebro-nino-explicado-padres":
             return crearVistaCapaCerebroDelNino(capa: capa)
+        case "yes-brain":
+            return crearVistaCapaYesBrain(capa: capa)
         // Aquí se agregarán las vistas de los otros módulos
         default:
             return AnyView(Text("Módulo no encontrado: \(moduloId)"))
@@ -78,6 +80,40 @@ class FactoryModulos {
         case .gamificacion:
             print("🔍 DEBUG: Creando Capa9CirculoDeCrecimientoView...")
             return AnyView(Capa9CirculoDeCrecimientoView())
+        }
+    }
+    
+    private static func crearVistaCapaYesBrain(capa: TipoCapa) -> AnyView {
+        print("🔍 DEBUG: Creando vista Yes Brain para capa: \(capa)")
+        
+        switch capa {
+        case .fundamentos:
+            print("🔍 DEBUG: Creando Capa1View de The Yes Brain...")
+            return AnyView(Capa1View())
+        case .principios:
+            print("🔍 DEBUG: Creando Capa2View de The Yes Brain...")
+            return AnyView(Text("Capa 2 - Principios (En desarrollo)"))
+        case .herramientas:
+            print("🔍 DEBUG: Creando Capa3View de The Yes Brain...")
+            return AnyView(Text("Capa 3 - Herramientas (En desarrollo)"))
+        case .simulaciones:
+            print("🔍 DEBUG: Creando Capa4View de The Yes Brain...")
+            return AnyView(Text("Capa 4 - Simulaciones (En desarrollo)"))
+        case .aplicacionCasa:
+            print("🔍 DEBUG: Creando Capa5View de The Yes Brain...")
+            return AnyView(Text("Capa 5 - Aplicaciones Casa (En desarrollo)"))
+        case .planEntrenamiento:
+            print("🔍 DEBUG: Creando Capa6View de The Yes Brain...")
+            return AnyView(Text("Capa 6 - Plan Entrenamiento (En desarrollo)"))
+        case .reflexion:
+            print("🔍 DEBUG: Creando Capa7View de The Yes Brain...")
+            return AnyView(Text("Capa 7 - Evaluaciones (En desarrollo)"))
+        case .modoNino:
+            print("🔍 DEBUG: Creando Capa8View de The Yes Brain...")
+            return AnyView(Text("Capa 8 - Modo Niño (En desarrollo)"))
+        case .gamificacion:
+            print("🔍 DEBUG: Creando Capa9View de The Yes Brain...")
+            return AnyView(Text("Capa 9 - Círculo de Crecimiento (En desarrollo)"))
         }
     }
 }

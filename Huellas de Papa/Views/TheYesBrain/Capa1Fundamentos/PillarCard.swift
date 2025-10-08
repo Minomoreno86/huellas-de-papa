@@ -1,172 +1,117 @@
 import SwiftUI
 
-/// Tarjeta que representa uno de los 4 pilares del Yes Brain
-/// Muestra información sobre Balance, Resiliencia, Insight o Empatía
+/// Tarjeta que representa uno de los cuatro pilares del Yes Brain
+/// Muestra información básica y navega a vista detallada
 struct PillarCard: View {
-    let pillar: YesBrainPillar
-    let isSelected: Bool
-    let onTap: () -> Void
-    
+    let pillar: Capa1Pillar
     @State private var isPressed = false
     
+    // Colores específicos para cada pilar
+    private var pillarColor: Color {
+        switch pillar.name {
+        case "Equilibrio":
+            return .blue
+        case "Resiliencia":
+            return .green
+        case "Insight":
+            return .purple
+        case "Empatía":
+            return .mint
+        default:
+            return .blue
+        }
+    }
+    
+    // Íconos específicos para cada pilar
+    private var pillarIcon: String {
+        switch pillar.name {
+        case "Equilibrio":
+            return "scalemass"
+        case "Resiliencia":
+            return "arrow.clockwise.circle"
+        case "Insight":
+            return "brain.head.profile"
+        case "Empatía":
+            return "heart.circle"
+        default:
+            return "circle"
+        }
+    }
+    
     var body: some View {
-        Button(action: {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                onTap()
-                triggerHaptic()
-            }
-        }) {
-            VStack(spacing: 12) {
-                // Icono del pilar
-                iconView
+        NavigationLink(destination: PillarDetailView(pillar: pillar)) {
+            VStack(alignment: .leading, spacing: 16) {
+                // Header con ícono y nombre
+                HStack {
+                    Image(systemName: pillarIcon)
+                        .font(.title2)
+                        .foregroundColor(pillarColor)
+                        .frame(width: 24, height: 24)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(.title3)
+                        .foregroundColor(pillarColor)
+                }
                 
-                // Título del pilar
-                Text(pillar.rawValue)
+                // Nombre del pilar
+                Text(pillar.name)
                     .font(.headline)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                     .foregroundColor(.primary)
-                    .multilineTextAlignment(.center)
+                    .multilineTextAlignment(.leading)
                 
-                // Descripción del pilar
-                Text(pillar.description)
-                    .font(.caption)
+                // Definición
+                Text(pillar.definition)
+                    .font(.body)
                     .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
+                    .multilineTextAlignment(.leading)
                     .lineLimit(2)
                 
-                // Indicador de selección
-                if isSelected {
-                    selectionIndicator
+                Spacer()
+                
+                // Ejemplo parental básico
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Ejemplo:")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                    
+                    Text(pillar.parentalExample)
+                        .font(.subheadline)
+                        .foregroundColor(pillarColor)
+                        .italic()
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
                 }
             }
             .padding()
-            .frame(maxWidth: .infinity)
+            .frame(height: 160)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(backgroundColor)
+                    .fill(Color(.systemBackground))
                     .overlay(
                         RoundedRectangle(cornerRadius: 16)
-                            .stroke(borderColor, lineWidth: isSelected ? 2 : 1)
+                            .stroke(pillarColor.opacity(0.3), lineWidth: 1)
                     )
             )
-            .scaleEffect(isPressed ? 0.95 : 1.0)
             .shadow(
-                color: shadowColor,
-                radius: isSelected ? 8 : 4,
+                color: pillarColor.opacity(0.1),
+                radius: 6,
                 x: 0,
-                y: isSelected ? 4 : 2
+                y: 3
             )
         }
         .buttonStyle(PlainButtonStyle())
+        .scaleEffect(isPressed ? 0.95 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
         .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
-            withAnimation(.easeInOut(duration: 0.1)) {
-                isPressed = pressing
-            }
+            isPressed = pressing
         }, perform: {})
-        .accessibilityLabel("\(pillar.rawValue) - \(pillar.description)")
-        .accessibilityHint("Toca para obtener más información sobre este pilar")
-    }
-    
-    // MARK: - Icon View
-    private var iconView: some View {
-        ZStack {
-            Circle()
-                .fill(iconBackgroundColor)
-                .frame(width: 50, height: 50)
-            
-            Image(systemName: iconName)
-                .font(.title2)
-                .foregroundColor(iconColor)
-        }
-    }
-    
-    // MARK: - Selection Indicator
-    private var selectionIndicator: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.caption)
-                .foregroundColor(.blue)
-            
-            Text("Seleccionado")
-                .font(.caption)
-                .fontWeight(.medium)
-                .foregroundColor(.blue)
-        }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .background(
-            Capsule()
-                .fill(Color.blue.opacity(0.1))
-        )
-    }
-    
-    // MARK: - Computed Properties
-    private var backgroundColor: Color {
-        if isSelected {
-            return pillarColor.opacity(0.1)
-        } else {
-            return Color(.systemBackground)
-        }
-    }
-    
-    private var borderColor: Color {
-        if isSelected {
-            return pillarColor
-        } else {
-            return Color(.systemGray4)
-        }
-    }
-    
-    private var shadowColor: Color {
-        if isSelected {
-            return pillarColor.opacity(0.3)
-        } else {
-            return .black.opacity(0.1)
-        }
-    }
-    
-    private var iconBackgroundColor: Color {
-        if isSelected {
-            return pillarColor.opacity(0.2)
-        } else {
-            return pillarColor.opacity(0.1)
-        }
-    }
-    
-    private var iconColor: Color {
-        pillarColor
-    }
-    
-    private var iconName: String {
-        switch pillar {
-        case .balance:
-            return "scalemass"
-        case .resilience:
-            return "heart.fill"
-        case .insight:
-            return "lightbulb.fill"
-        case .empathy:
-            return "person.2.fill"
-        }
-    }
-    
-    private var pillarColor: Color {
-        switch pillar {
-        case .balance:
-            return .blue
-        case .resilience:
-            return .orange
-        case .insight:
-            return .purple
-        case .empathy:
-            return .green
-        }
-    }
-    
-    // MARK: - Haptic Feedback
-    private func triggerHaptic() {
-        let impactFeedback = UIImpactFeedbackGenerator(style: .light)
-        impactFeedback.impactOccurred()
+        .accessibilityLabel("Pilar \(pillar.name)")
+        .accessibilityHint("Toca para ver detalles completos del pilar")
+        .accessibilityValue(pillar.definition)
     }
 }
 
@@ -177,15 +122,25 @@ struct PillarCard_Previews: PreviewProvider {
             GridItem(.flexible()),
             GridItem(.flexible())
         ], spacing: 16) {
-            ForEach(YesBrainPillar.allCases, id: \.self) { pillar in
-                PillarCard(
-                    pillar: pillar,
-                    isSelected: pillar == .balance
-                ) {
-                    print("Tapped \(pillar.rawValue)")
-                }
-            }
+            PillarCard(
+                pillar: Capa1Pillar(
+                    name: "Equilibrio",
+                    definition: "Regular emociones y cuerpo",
+                    parentalExample: "\"Respiramos juntos antes de hablar.\"",
+                    brainPathway: "Corteza orbitofrontal ↔ amígdala"
+                )
+            )
+            
+            PillarCard(
+                pillar: Capa1Pillar(
+                    name: "Resiliencia",
+                    definition: "Volver al equilibrio tras el error",
+                    parentalExample: "\"No pasa nada, inténtalo otra vez.\"",
+                    brainPathway: "Cíngulo anterior ↔ dopamina"
+                )
+            )
         }
         .padding()
+        .background(Color(.systemGroupedBackground))
     }
 }
