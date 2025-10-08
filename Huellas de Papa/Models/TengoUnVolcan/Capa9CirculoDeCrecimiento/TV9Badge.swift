@@ -6,7 +6,7 @@ import SwiftData
 final class TV9Badge {
     @Attribute(.unique) var id: UUID
     var title: String
-    var description: String
+    var badgeDescription: String // Cambiado de 'description' (palabra reservada en @Model)
     var requirement: String
     var unlocked: Bool
     var unlockedDate: Date?
@@ -16,7 +16,7 @@ final class TV9Badge {
     
     init(
         title: String,
-        description: String,
+        badgeDescription: String,
         requirement: String,
         unlocked: Bool = false,
         unlockedDate: Date? = nil,
@@ -26,7 +26,7 @@ final class TV9Badge {
     ) {
         self.id = UUID()
         self.title = title
-        self.description = description
+        self.badgeDescription = badgeDescription
         self.requirement = requirement
         self.unlocked = unlocked
         self.unlockedDate = unlockedDate

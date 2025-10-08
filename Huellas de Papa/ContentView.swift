@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @StateObject private var progresoManager = ProgresoManager()
     @State private var moduloSeleccionado: ModuloDisponible? = nil
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         NavigationView {
@@ -37,6 +39,10 @@ struct ContentView: View {
             }
         }
         .environmentObject(progresoManager)
+        .onAppear {
+            // Inicializar datos persistentes del módulo "Tengo un Volcán"
+            TV9DataInitializer.initializeAll(context: modelContext)
+        }
     }
 }
 
