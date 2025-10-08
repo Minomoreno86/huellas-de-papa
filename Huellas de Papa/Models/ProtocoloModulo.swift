@@ -148,8 +148,8 @@ class FactoryModulos {
             print("🔍 DEBUG: Creando TV8View de Tengo un Volcán...")
             return AnyView(TV8View())
         case .gamificacion:
-            print("🔍 DEBUG: Capa 9 de Tengo un Volcán - Próximamente...")
-            return AnyView(Text("Capa 9: Círculo de Crecimiento - Próximamente"))
+            print("🔍 DEBUG: Creando TV9View de Tengo un Volcán...")
+            return AnyView(TV9View())
         }
     }
 }
