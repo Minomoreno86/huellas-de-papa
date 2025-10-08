@@ -43,6 +43,8 @@ class FactoryModulos {
             return crearVistaCapaCerebroDelNino(capa: capa)
         case "yes-brain":
             return crearVistaCapaYesBrain(capa: capa)
+        case "tengo-volcan":
+            return crearVistaCapaTengoUnVolcan(capa: capa)
         // Aquí se agregarán las vistas de los otros módulos
         default:
             return AnyView(Text("Módulo no encontrado: \(moduloId)"))
@@ -114,6 +116,40 @@ class FactoryModulos {
         case .gamificacion:
             print("🔍 DEBUG: Creando Capa9View de The Yes Brain...")
             return AnyView(C9View())
+        }
+    }
+    
+    private static func crearVistaCapaTengoUnVolcan(capa: TipoCapa) -> AnyView {
+        print("🔍 DEBUG: Creando vista Tengo un Volcán para capa: \(capa)")
+        
+        switch capa {
+        case .fundamentos:
+            print("🔍 DEBUG: Creando TV1View de Tengo un Volcán...")
+            return AnyView(TV1View())
+        case .principios:
+            print("🔍 DEBUG: Creando TV2View de Tengo un Volcán...")
+            return AnyView(TV2View())
+        case .herramientas:
+            print("🔍 DEBUG: Capa 3 de Tengo un Volcán - Próximamente...")
+            return AnyView(Text("Capa 3: Herramientas - Próximamente"))
+        case .simulaciones:
+            print("🔍 DEBUG: Capa 4 de Tengo un Volcán - Próximamente...")
+            return AnyView(Text("Capa 4: Simulaciones - Próximamente"))
+        case .aplicacionCasa:
+            print("🔍 DEBUG: Capa 5 de Tengo un Volcán - Próximamente...")
+            return AnyView(Text("Capa 5: Aplicación en Casa - Próximamente"))
+        case .planEntrenamiento:
+            print("🔍 DEBUG: Capa 6 de Tengo un Volcán - Próximamente...")
+            return AnyView(Text("Capa 6: Plan de Entrenamiento - Próximamente"))
+        case .reflexion:
+            print("🔍 DEBUG: Capa 7 de Tengo un Volcán - Próximamente...")
+            return AnyView(Text("Capa 7: Evaluaciones - Próximamente"))
+        case .modoNino:
+            print("🔍 DEBUG: Capa 8 de Tengo un Volcán - Próximamente...")
+            return AnyView(Text("Capa 8: Modo Niño - Próximamente"))
+        case .gamificacion:
+            print("🔍 DEBUG: Capa 9 de Tengo un Volcán - Próximamente...")
+            return AnyView(Text("Capa 9: Círculo de Crecimiento - Próximamente"))
         }
     }
 }
