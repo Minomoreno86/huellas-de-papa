@@ -113,7 +113,7 @@ class FactoryModulos {
             return AnyView(YB8ModoNinoView())
         case .gamificacion:
             print("🔍 DEBUG: Creando Capa9View de The Yes Brain...")
-            return AnyView(Text("Capa 9 - Círculo de Crecimiento (En desarrollo)"))
+            return AnyView(C9View())
         }
     }
 }
