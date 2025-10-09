@@ -204,7 +204,7 @@ class FactoryModulos {
             return AnyView(TA1View())
         case .principios:
             print("🔍 DEBUG: Creando TA2View de Te Amo Cuando Estás Enojado...")
-            return AnyView(Text("Capa 2 - En desarrollo"))
+            return AnyView(TA2View())
         case .herramientas:
             print("🔍 DEBUG: Creando TA3View de Te Amo Cuando Estás Enojado...")
             return AnyView(Text("Capa 3 - En desarrollo"))
