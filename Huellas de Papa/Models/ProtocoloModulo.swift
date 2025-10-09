@@ -31,6 +31,8 @@ class FactoryModulos {
         switch id {
         case "cerebro-nino-explicado-padres":
             return ModuloCerebroDelNino()
+        case "cerebro-nino-siegel":
+            return ModuloElCerebroDeUnNino()
         // Aquí se agregarán los otros 21 módulos
         default:
             return nil
@@ -41,6 +43,8 @@ class FactoryModulos {
         switch moduloId {
         case "cerebro-nino-explicado-padres":
             return crearVistaCapaCerebroDelNino(capa: capa)
+        case "cerebro-nino-siegel":
+            return crearVistaCapaElCerebroDeUnNino(capa: capa)
         case "yes-brain":
             return crearVistaCapaYesBrain(capa: capa)
         case "tengo-volcan":
@@ -151,6 +155,67 @@ class FactoryModulos {
             print("🔍 DEBUG: Creando TV9View de Tengo un Volcán...")
             return AnyView(TV9View())
         }
+    }
+    
+    private static func crearVistaCapaElCerebroDeUnNino(capa: TipoCapa) -> AnyView {
+        print("🔍 DEBUG: Creando vista El Cerebro de Un Niño para capa: \(capa)")
+        
+        switch capa {
+        case .fundamentos:
+            print("🔍 DEBUG: Creando CN1View de El Cerebro de Un Niño...")
+            return AnyView(CN1View())
+        case .principios:
+            print("🔍 DEBUG: Creando CN2View de El Cerebro de Un Niño...")
+            return AnyView(CN2View())
+        case .herramientas:
+            print("🔍 DEBUG: Creando CN3View de El Cerebro de Un Niño...")
+            return AnyView(Text("Capa 3 - Próximamente"))
+        case .simulaciones:
+            print("🔍 DEBUG: Creando CN4View de El Cerebro de Un Niño...")
+            return AnyView(Text("Capa 4 - Próximamente"))
+        case .aplicacionCasa:
+            print("🔍 DEBUG: Creando CN5View de El Cerebro de Un Niño...")
+            return AnyView(Text("Capa 5 - Próximamente"))
+        case .planEntrenamiento:
+            print("🔍 DEBUG: Creando CN6View de El Cerebro de Un Niño...")
+            return AnyView(Text("Capa 6 - Próximamente"))
+        case .reflexion:
+            print("🔍 DEBUG: Creando CN7View de El Cerebro de Un Niño...")
+            return AnyView(Text("Capa 7 - Próximamente"))
+        case .modoNino:
+            print("🔍 DEBUG: Creando CN8View de El Cerebro de Un Niño...")
+            return AnyView(Text("Capa 8 - Próximamente"))
+        case .gamificacion:
+            print("🔍 DEBUG: Creando CN9View de El Cerebro de Un Niño...")
+            return AnyView(Text("Capa 9 - Próximamente"))
+        }
+    }
+}
+
+// MARK: - Módulo Específico: El Cerebro de Un Niño (Daniel Siegel)
+struct ModuloElCerebroDeUnNino: ProtocoloModulo {
+    let id: String
+    let titulo: String
+    let descripcion: String
+    let autor: String
+    let icono: String
+    let color: String
+    let categoria: CategoriaModulo
+    let enfoque: String
+    let publico: String
+    let capas: [TipoCapa]
+    
+    init() {
+        self.id = "cerebro-nino-siegel"
+        self.titulo = "El cerebro del niño"
+        self.autor = "Daniel J. Siegel"
+        self.descripcion = "12 estrategias revolucionarias para cultivar la mente en desarrollo de tu hijo."
+        self.icono = "brain.head.profile"
+        self.color = "007AFF"
+        self.categoria = .neurociencia
+        self.enfoque = "Integración cerebral"
+        self.publico = "Padres de 0-18 años"
+        self.capas = TipoCapa.allCases
     }
 }
 
