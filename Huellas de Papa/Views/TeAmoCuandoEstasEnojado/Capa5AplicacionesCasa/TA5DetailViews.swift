@@ -1,13 +1,11 @@
 import SwiftUI
 
-// MARK: - Activity Detail View
 struct TA5ActivityDetailView: View {
     let activity: TA5Activity
     
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Header
                 VStack(spacing: 16) {
                     Image(systemName: activity.iconName)
                         .font(.system(size: 80))
@@ -19,29 +17,22 @@ struct TA5ActivityDetailView: View {
                         .multilineTextAlignment(.center)
                 }
                 
-                // Info
                 InfoSection(title: "Objetivo", icon: "target", color: .pink, content: activity.objective)
                 InfoSection(title: "Descripción", icon: "text.alignleft", color: .mint, content: activity.description)
                 
-                // Detalles
                 HStack(spacing: 16) {
                     DetailBadge(icon: "clock", text: activity.durationMinutes, color: .pink)
                     DetailBadge(icon: "figure.child", text: activity.ageRange, color: .mint)
                     DetailBadge(icon: "calendar", text: activity.frequency.rawValue, color: .blue)
                 }
                 
-                // Materiales
                 if !activity.materials.isEmpty {
                     ListSection(title: "Materiales", icon: "list.bullet", color: .pink, items: activity.materials)
                 }
                 
-                // Instrucciones
                 StepsSection(title: "Instrucciones", icon: "list.number", color: .mint, steps: activity.instructions)
-                
-                // Del libro
                 QuoteSection(title: "Del libro", quote: activity.bookReference)
                 
-                // Tips
                 if !activity.tips.isEmpty {
                     ListSection(title: "Tips", icon: "lightbulb.fill", color: .orange, items: activity.tips)
                 }
@@ -54,14 +45,12 @@ struct TA5ActivityDetailView: View {
     }
 }
 
-// MARK: - Routine Detail View
 struct TA5RoutineDetailView: View {
     let routine: TA5Routine
     
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Header
                 VStack(spacing: 16) {
                     Image(systemName: routine.iconName)
                         .font(.system(size: 80))
@@ -80,7 +69,6 @@ struct TA5RoutineDetailView: View {
                         .background(Capsule().fill(Color.pink))
                 }
                 
-                // Info
                 InfoSection(title: "Objetivo", icon: "target", color: .mint, content: routine.objective)
                 InfoSection(title: "Descripción", icon: "text.alignleft", color: .pink, content: routine.description)
                 
@@ -88,15 +76,12 @@ struct TA5RoutineDetailView: View {
                     .font(.subheadline)
                     .foregroundColor(.mint)
                 
-                // Pasos
                 StepsSection(title: "Pasos", icon: "list.number", color: .pink, steps: routine.steps)
                 
-                // Emociones
                 if !routine.emotionsValidated.isEmpty {
                     ListSection(title: "Emociones validadas", icon: "heart.fill", color: .mint, items: routine.emotionsValidated)
                 }
                 
-                // Frases del libro
                 if !routine.bookPhrases.isEmpty {
                     VStack(alignment: .leading, spacing: 12) {
                         Label("Frases del libro", systemImage: "quote.bubble.fill")
@@ -117,7 +102,6 @@ struct TA5RoutineDetailView: View {
                     .background(RoundedRectangle(cornerRadius: 12).fill(Color(.systemBackground)))
                 }
                 
-                // Tips
                 if !routine.tips.isEmpty {
                     ListSection(title: "Tips", icon: "lightbulb.fill", color: .orange, items: routine.tips)
                 }
@@ -130,7 +114,6 @@ struct TA5RoutineDetailView: View {
     }
 }
 
-// MARK: - Helper Components
 struct InfoSection: View {
     let title: String
     let icon: String
@@ -268,4 +251,3 @@ struct DetailBadge: View {
         .background(RoundedRectangle(cornerRadius: 8).fill(color.opacity(0.1)))
     }
 }
-

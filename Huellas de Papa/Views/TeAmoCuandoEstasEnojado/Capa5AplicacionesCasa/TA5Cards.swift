@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Activity Card
 struct TA5ActivityCard: View {
     let activity: TA5Activity
     
@@ -45,7 +44,6 @@ struct TA5ActivityCard: View {
     }
 }
 
-// MARK: - Routine Card
 struct TA5RoutineCard: View {
     let routine: TA5Routine
     
@@ -87,7 +85,6 @@ struct TA5RoutineCard: View {
     }
 }
 
-// MARK: - Reminder Card
 struct TA5ReminderCard: View {
     let reminder: TA5Reminder
     
@@ -128,4 +125,3 @@ struct TA5ReminderCard: View {
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.pink.opacity(0.3), lineWidth: 1))
     }
 }
-
