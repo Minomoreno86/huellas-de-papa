@@ -280,43 +280,45 @@ struct GrowthTreeView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                     
-                    // Métricas del Árbol
-                    HStack(spacing: 20) {
-                        VStack {
-                            Text("\(tree.leavesCount)")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(.green)
-                            Text("Hojas")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
+                    // Métricas del Árbol (SuperDesign)
+                    HStack(spacing: 16) {
+                        MetricBadge(
+                            value: "\(tree.leavesCount)",
+                            label: "Hojas",
+                            color: .green,
+                            icon: "leaf.fill"
+                        )
                         
-                        VStack {
-                            Text("\(progress.totalSessions)")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(.blue)
-                            Text("Sesiones")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
+                        MetricBadge(
+                            value: "\(progress.totalSessions)",
+                            label: "Sesiones",
+                            color: .blue,
+                            icon: "calendar.circle.fill"
+                        )
                         
-                        VStack {
-                            Text("\(Int(progress.totalConnectionMinutes / 60))")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(.purple)
-                            Text("Min. Conexión")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
+                        MetricBadge(
+                            value: "\(Int(progress.totalConnectionMinutes / 60))h",
+                            label: "Conexión",
+                            color: .purple,
+                            icon: "heart.fill"
+                        )
                     }
-                    .padding()
+                    .padding(16)
                     .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.white.opacity(0.8))
-                            .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .fill(Color(.secondarySystemBackground).opacity(0.9))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [.green.opacity(0.3), .mint.opacity(0.2)],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ),
+                                        lineWidth: 1
+                                    )
+                            )
+                            .shadow(color: Color.black.opacity(0.08), radius: 10, x: 0, y: 5)
                     )
                 }
             }
@@ -356,14 +358,19 @@ struct StageProgressView: View {
                 // Mapa Circular de Etapas Simplificado
                 CircularStagesView(stages: Capa9CirculoDeCrecimiento.predefinedStages)
                 
-                // Etapa Actual
-                VStack(spacing: 12) {
-                    Text("Etapa Actual")
-                        .font(.headline)
-                        .fontWeight(.semibold)
+                // Etapa Actual (SuperDesign)
+                VStack(spacing: 16) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "map.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(.green)
+                        Text("Etapa Actual")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                    }
                     
                     Text(currentStage)
-                        .font(.title3)
+                        .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.green)
                     
@@ -372,11 +379,15 @@ struct StageProgressView: View {
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
                 }
-                .padding()
+                .padding(20)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.white.opacity(0.8))
-                        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .fill(Color(.secondarySystemBackground).opacity(0.9))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                .stroke(Color.green.opacity(0.3), lineWidth: 1)
+                        )
+                        .shadow(color: Color.black.opacity(0.08), radius: 10, x: 0, y: 5)
                 )
                 .padding(.horizontal)
             }
@@ -559,11 +570,15 @@ struct MissionCardView: View {
                 ))
             }
         }
-        .padding()
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.8))
-                .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.9))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(mission.category.color.opacity(0.3), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
     }
 }
@@ -662,11 +677,23 @@ struct BadgeCardView: View {
                     .lineLimit(2)
             }
         }
-        .padding()
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.8))
-                .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.9))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(
+                            badge.isUnlocked ? badge.category.color.opacity(0.4) : Color.gray.opacity(0.2),
+                            lineWidth: 1
+                        )
+                )
+                .shadow(
+                    color: badge.isUnlocked ? badge.category.color.opacity(0.15) : Color.black.opacity(0.05),
+                    radius: 8,
+                    x: 0,
+                    y: 4
+                )
         )
     }
 }
@@ -777,12 +804,50 @@ struct MetricCardView: View {
             
             Spacer()
         }
-        .padding()
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.8))
-                .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.9))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(color.opacity(0.3), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
+    }
+}
+
+// MARK: - MetricBadge Component (for GrowthTreeView)
+struct MetricBadge: View {
+    let value: String
+    let label: String
+    let color: Color
+    let icon: String
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.15))
+                    .frame(width: 50, height: 50)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(color)
+            }
+            
+            VStack(spacing: 2) {
+                Text(value)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(color)
+                
+                Text(label)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 
