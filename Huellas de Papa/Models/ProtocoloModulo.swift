@@ -175,7 +175,7 @@ class FactoryModulos {
             return AnyView(CN4View())
         case .aplicacionCasa:
             print("🔍 DEBUG: Creando CN5View de El Cerebro de Un Niño...")
-            return AnyView(Text("Capa 5 - Próximamente"))
+            return AnyView(CN5View())
         case .planEntrenamiento:
             print("🔍 DEBUG: Creando CN6View de El Cerebro de Un Niño...")
             return AnyView(Text("Capa 6 - Próximamente"))
