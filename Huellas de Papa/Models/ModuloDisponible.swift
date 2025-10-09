@@ -174,7 +174,7 @@ extension ModuloDisponible {
             ModuloDisponible(
                 id: "te-amo-cuando-enojado",
                 titulo: "Te amo cuando estás enojado",
-                autor: "Mireia Canals",
+                autor: "Erin Winters",
                 tematica: "Amor incondicional, apego seguro",
                 enfoque: "Vínculo emocional",
                 publico: "Padres de 0-6 años",

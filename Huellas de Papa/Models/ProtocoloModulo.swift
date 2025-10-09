@@ -33,6 +33,8 @@ class FactoryModulos {
             return ModuloCerebroDelNino()
         case "cerebro-nino-siegel":
             return ModuloElCerebroDeUnNino()
+        case "te-amo-cuando-enojado":
+            return ModuloTeAmoCuandoEstasEnojado()
         // Aquí se agregarán los otros 21 módulos
         default:
             return nil
@@ -49,6 +51,8 @@ class FactoryModulos {
             return crearVistaCapaYesBrain(capa: capa)
         case "tengo-volcan":
             return crearVistaCapaTengoUnVolcan(capa: capa)
+        case "te-amo-cuando-enojado":
+            return crearVistaCapaTeAmoCuandoEstasEnojado(capa: capa)
         // Aquí se agregarán las vistas de los otros módulos
         default:
             return AnyView(Text("Módulo no encontrado: \(moduloId)"))
@@ -190,6 +194,40 @@ class FactoryModulos {
             return AnyView(CN9View())
         }
     }
+    
+    private static func crearVistaCapaTeAmoCuandoEstasEnojado(capa: TipoCapa) -> AnyView {
+        print("🔍 DEBUG: Creando vista Te Amo Cuando Estás Enojado para capa: \(capa)")
+        
+        switch capa {
+        case .fundamentos:
+            print("🔍 DEBUG: Creando TA1View de Te Amo Cuando Estás Enojado...")
+            return AnyView(TA1View())
+        case .principios:
+            print("🔍 DEBUG: Creando TA2View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 2 - En desarrollo"))
+        case .herramientas:
+            print("🔍 DEBUG: Creando TA3View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 3 - En desarrollo"))
+        case .simulaciones:
+            print("🔍 DEBUG: Creando TA4View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 4 - En desarrollo"))
+        case .aplicacionCasa:
+            print("🔍 DEBUG: Creando TA5View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 5 - En desarrollo"))
+        case .planEntrenamiento:
+            print("🔍 DEBUG: Creando TA6View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 6 - En desarrollo"))
+        case .reflexion:
+            print("🔍 DEBUG: Creando TA7View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 7 - En desarrollo"))
+        case .modoNino:
+            print("🔍 DEBUG: Creando TA8View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 8 - En desarrollo"))
+        case .gamificacion:
+            print("🔍 DEBUG: Creando TA9View de Te Amo Cuando Estás Enojado...")
+            return AnyView(Text("Capa 9 - En desarrollo"))
+        }
+    }
 }
 
 // MARK: - Módulo Específico: El Cerebro de Un Niño (Daniel Siegel)
@@ -242,6 +280,33 @@ struct ModuloCerebroDelNino: ProtocoloModulo {
         self.categoria = .neurociencia
         self.enfoque = "Científico"
         self.publico = "Padres"
+        self.capas = TipoCapa.allCases
+    }
+}
+
+// MARK: - Módulo Específico: Te Amo Cuando Estás Enojado
+struct ModuloTeAmoCuandoEstasEnojado: ProtocoloModulo {
+    let id: String
+    let titulo: String
+    let descripcion: String
+    let autor: String
+    let icono: String
+    let color: String
+    let categoria: CategoriaModulo
+    let enfoque: String
+    let publico: String
+    let capas: [TipoCapa]
+    
+    init() {
+        self.id = "te-amo-cuando-enojado"
+        self.titulo = "Te amo cuando estás enojado"
+        self.descripcion = "Cuento infantil sobre el amor incondicional a través de todas las emociones. Aprende a mantener el vínculo emocional con tu hijo incluso en momentos difíciles."
+        self.autor = "Erin Winters"
+        self.icono = "heart"
+        self.color = "FF69B4"
+        self.categoria = .gestionEmocional
+        self.enfoque = "Vínculo emocional"
+        self.publico = "Padres de 0-6 años"
         self.capas = TipoCapa.allCases
     }
 }
