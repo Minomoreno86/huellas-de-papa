@@ -187,7 +187,7 @@ class FactoryModulos {
             return AnyView(CN8View())
         case .gamificacion:
             print("🔍 DEBUG: Creando CN9View de El Cerebro de Un Niño...")
-            return AnyView(Text("Capa 9 - Próximamente"))
+            return AnyView(CN9View())
         }
     }
 }
