@@ -71,7 +71,7 @@ struct BreathRing: View {
     }
 }
 
-// MARK: - Tarjetas de Progreso
+// MARK: - Tarjetas de Progreso (SuperDesign)
 struct ProgressCard: View {
     let title: String
     let progress: Double
@@ -84,46 +84,92 @@ struct ProgressCard: View {
                 .fontWeight(.semibold)
                 .foregroundColor(.primary)
             
-            ProgressView(value: progress)
-                .progressViewStyle(LinearProgressViewStyle(tint: color))
+            // Barra de progreso mejorada
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 10)
+                    
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [color, color.opacity(0.7)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geometry.size.width * progress, height: 10)
+                }
+            }
+            .frame(height: 10)
             
             Text("\(Int(progress * 100))%")
                 .font(.caption)
+                .fontWeight(.medium)
                 .foregroundColor(.secondary)
         }
-        .padding()
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white.opacity(0.8))
-                .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.9))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(color.opacity(0.3), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 3)
         )
     }
 }
 
-// MARK: - Botón de Acción Principal
+// MARK: - Botón de Acción Principal (SuperDesign)
 struct PrimaryActionButton: View {
     let title: String
     let color: Color
     let action: () -> Void
+    @State private var isPressed = false
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                isPressed = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isPressed = false
+            }
+            action()
+        }) {
             Text(title)
                 .font(.body)
-                .fontWeight(.semibold)
+                .fontWeight(.bold)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding()
+                .padding(.vertical, 16)
+                .padding(.horizontal, 20)
                 .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(color)
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [color, color.opacity(0.8)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .shadow(
+                            color: color.opacity(0.4),
+                            radius: isPressed ? 4 : 10,
+                            x: 0,
+                            y: isPressed ? 2 : 5
+                        )
                 )
         }
         .buttonStyle(PlainButtonStyle())
+        .scaleEffect(isPressed ? 0.95 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
     }
 }
 
-// MARK: - Tarjeta de Información
+// MARK: - Tarjeta de Información (SuperDesign)
 struct InfoCard: View {
     let title: String
     let content: String
@@ -132,14 +178,21 @@ struct InfoCard: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            HStack {
-                Image(systemName: icon)
-                    .foregroundColor(color)
-                    .font(.title2)
+            HStack(spacing: 12) {
+                // Icono con fondo circular
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.15))
+                        .frame(width: 44, height: 44)
+                    
+                    Image(systemName: icon)
+                        .foregroundColor(color)
+                        .font(.system(size: 20, weight: .semibold))
+                }
                 
                 Text(title)
                     .font(.headline)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                     .foregroundColor(.primary)
                 
                 Spacer()
@@ -149,12 +202,17 @@ struct InfoCard: View {
                 .font(.body)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding()
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white.opacity(0.8))
-                .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.9))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(color.opacity(0.2), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
         )
     }
 }

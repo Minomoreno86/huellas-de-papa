@@ -3,31 +3,52 @@ import SwiftUI
 // MARK: - Capa 8: Modo Niño - Herramienta de Conexión Padre-Hijo
 // Hub emocional para fortalecer el vínculo mediante actividades guiadas
 // Basado en los principios de Álvaro Bilbao
+// SuperDesign: Consistente con Capas 2-5
 
 struct Capa8View: View {
     @State private var selectedCategory: Capa8ActivityCategory = .dailyConnection
     @State private var showingActivity = false
     @State private var selectedActivity: Any? = nil
     @State private var showingCategoryDetail = false
+    @State private var animacionEntrada = false
+    
+    // MARK: - Configuración SuperDesign (consistente con otras capas)
+    private let coloresCapa8 = (
+        mintSuave: Color.mint.opacity(0.08),
+        verdeSuave: Color.green.opacity(0.04),
+        azulSuave: Color.blue.opacity(0.02),
+        acentoRosa: Color.pink.opacity(0.8),
+        acentoVerde: Color.green.opacity(0.8)
+    )
     
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 24) {
+                LazyVStack(spacing: 24) {
                     // MARK: - Header Emocional
                     emotionalHeaderView
+                        .opacity(animacionEntrada ? 1 : 0)
+                        .offset(y: animacionEntrada ? 0 : -30)
                     
                     // MARK: - Mensaje de Conexión
                     connectionMessageView
+                        .opacity(animacionEntrada ? 1 : 0)
+                        .offset(y: animacionEntrada ? 0 : -20)
                     
                     // MARK: - Progreso de Conexión
                     connectionProgressView
+                        .opacity(animacionEntrada ? 1 : 0)
+                        .offset(y: animacionEntrada ? 0 : -10)
                     
                     // MARK: - Categorías de Actividades
                     activitiesGridView
+                        .opacity(animacionEntrada ? 1 : 0)
+                        .offset(y: animacionEntrada ? 0 : -10)
                     
                     // MARK: - Actividad del Día
                     dailyActivityView
+                        .opacity(animacionEntrada ? 1 : 0)
+                        .offset(y: animacionEntrada ? 0 : -10)
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 16)
@@ -35,18 +56,24 @@ struct Capa8View: View {
             .background(
                 LinearGradient(
                     gradient: Gradient(colors: [
-                        Color.mint.opacity(0.08),
-                        Color.green.opacity(0.04),
-                        Color.blue.opacity(0.02)
+                        coloresCapa8.mintSuave,
+                        coloresCapa8.verdeSuave,
+                        coloresCapa8.azulSuave
                     ]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
+                .ignoresSafeArea()
             )
             .navigationTitle("Modo Niño")
             #if !os(macOS)
             .navigationBarTitleDisplayMode(.large)
             #endif
+            .onAppear {
+                withAnimation(.spring(response: 0.8, dampingFraction: 0.8)) {
+                    animacionEntrada = true
+                }
+            }
         }
         .sheet(isPresented: $showingActivity) {
             if let activity = selectedActivity {
@@ -102,19 +129,24 @@ struct Capa8View: View {
         }
         .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.8))
-                .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.9))
+                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
     }
     
     // MARK: - Mensaje de Conexión
     private var connectionMessageView: some View {
         VStack(spacing: 12) {
-            Text("💡 ¿Sabías que...?")
-                .font(.headline)
-                .fontWeight(.semibold)
-                .foregroundColor(.primary)
+            HStack {
+                Image(systemName: "lightbulb.fill")
+                    .font(.title3)
+                    .foregroundColor(.yellow)
+                Text("¿Sabías que...?")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+            }
             
             Text("Cada actividad que haces con tu hijo no solo fortalece su cerebro, sino que también crea conexiones neuronales que durarán toda la vida. El amor construye el cerebro.")
                 .font(.body)
@@ -122,10 +154,14 @@ struct Capa8View: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
         }
-        .padding()
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.blue.opacity(0.1))
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.blue.opacity(0.08))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color.blue.opacity(0.2), lineWidth: 1)
+                )
         )
     }
     
@@ -133,9 +169,14 @@ struct Capa8View: View {
     private var connectionProgressView: some View {
         VStack(spacing: 12) {
             HStack {
-                Text("📊 Tu Progreso de Conexión")
-                    .font(.headline)
-                    .fontWeight(.semibold)
+                HStack(spacing: 6) {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                        .font(.title3)
+                        .foregroundColor(.green)
+                    Text("Tu Progreso de Conexión")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
                 
                 Spacer()
                 
@@ -151,18 +192,49 @@ struct Capa8View: View {
                     )
             }
             
-            ProgressView(value: 0.3)
-                .progressViewStyle(LinearProgressViewStyle(tint: .green))
+            // Barra de progreso mejorada
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 12)
+                    
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [.green, .mint],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geometry.size.width * 0.3, height: 12)
+                }
+            }
+            .frame(height: 12)
             
-            Text("3 actividades completadas • Racha: 2 días")
-                .font(.caption)
-                .foregroundColor(.secondary)
+            HStack {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.caption)
+                    .foregroundColor(.green)
+                Text("3 actividades completadas")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Image(systemName: "flame.fill")
+                    .font(.caption)
+                    .foregroundColor(.orange)
+                Text("Racha: 2 días")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
         }
-        .padding()
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white.opacity(0.6))
-                .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.8))
+                .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 3)
         )
     }
     
@@ -255,35 +327,65 @@ struct CategoryCard: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 12) {
+                // Icono con animación
                 Image(systemName: category.icon)
-                    .font(.title2)
+                    .font(.system(size: 28, weight: .semibold))
                     .foregroundColor(isSelected ? .white : category.color)
+                    .scaleEffect(isSelected ? 1.1 : 1.0)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.7), value: isSelected)
                 
-                VStack(spacing: 4) {
+                VStack(spacing: 6) {
                     Text(category.rawValue)
                         .font(.subheadline)
-                        .fontWeight(.semibold)
+                        .fontWeight(.bold)
                         .foregroundColor(isSelected ? .white : .primary)
                         .multilineTextAlignment(.center)
                     
                     Text(category.description)
                         .font(.caption)
-                        .foregroundColor(isSelected ? .white.opacity(0.8) : .secondary)
+                        .foregroundColor(isSelected ? .white.opacity(0.9) : .secondary)
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
                 }
             }
-            .padding()
-            .frame(maxWidth: .infinity, minHeight: 120)
+            .padding(16)
+            .frame(maxWidth: .infinity, minHeight: 130)
             .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected ? category.color : Color.white.opacity(0.8))
-                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(
+                        isSelected ? 
+                        LinearGradient(
+                            colors: [category.color, category.color.opacity(0.8)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ) :
+                        LinearGradient(
+                            colors: [
+                                Color(.secondarySystemBackground),
+                                Color(.secondarySystemBackground).opacity(0.8)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(
+                                isSelected ? category.color : category.color.opacity(0.3),
+                                lineWidth: isSelected ? 2 : 1
+                            )
+                    )
+                    .shadow(
+                        color: isSelected ? category.color.opacity(0.4) : Color.black.opacity(0.05),
+                        radius: isSelected ? 12 : 6,
+                        x: 0,
+                        y: isSelected ? 6 : 3
+                    )
             )
         }
         .buttonStyle(PlainButtonStyle())
-        .scaleEffect(isSelected ? 1.02 : 1.0)
-        .animation(.easeInOut(duration: 0.2), value: isSelected)
+        .scaleEffect(isSelected ? 1.05 : 1.0)
+        .animation(.spring(response: 0.6, dampingFraction: 0.8), value: isSelected)
     }
 }
 
@@ -767,51 +869,91 @@ struct Capa8CategoryDetailView: View {
     }
 }
 
-// MARK: - Componente de Fila de Actividad
+// MARK: - Componente de Fila de Actividad (SuperDesign)
 struct ActivityRowView: View {
     let activity: Any
     let action: () -> Void
+    @State private var isPressed = false
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                isPressed = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isPressed = false
+            }
+            action()
+        }) {
             HStack(spacing: 16) {
+                // Icono con fondo circular
+                ZStack {
+                    Circle()
+                        .fill(activityColor.opacity(0.15))
+                        .frame(width: 50, height: 50)
+                    
+                    Image(systemName: activityIcon)
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundColor(activityColor)
+                }
+                
                 VStack(alignment: .leading, spacing: 8) {
                     Text(activityTitle)
                         .font(.headline)
+                        .fontWeight(.semibold)
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.leading)
                     
                     Text(activityDescription)
-                        .font(.caption)
+                        .font(.subheadline)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
+                        .lineLimit(2)
                     
-                    HStack {
-                        Text(activityDuration)
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
+                    HStack(spacing: 12) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "clock")
+                                .font(.caption2)
+                            Text(activityDuration)
+                                .font(.caption)
+                        }
+                        .foregroundColor(.secondary)
                         
-                        Spacer()
-                        
-                        Text(activityAge)
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
+                        HStack(spacing: 4) {
+                            Image(systemName: "person.2")
+                                .font(.caption2)
+                            Text(activityAge)
+                                .font(.caption)
+                        }
+                        .foregroundColor(.secondary)
                     }
                 }
                 
                 Spacer()
                 
                 Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(activityColor)
             }
-            .padding()
+            .padding(16)
             .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.white.opacity(0.8))
-                    .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(Color(.secondarySystemBackground).opacity(0.9))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(activityColor.opacity(0.3), lineWidth: 1)
+                    )
+                    .shadow(
+                        color: isPressed ? activityColor.opacity(0.2) : Color.black.opacity(0.05),
+                        radius: isPressed ? 4 : 8,
+                        x: 0,
+                        y: isPressed ? 2 : 4
+                    )
             )
         }
+        .buttonStyle(PlainButtonStyle())
+        .scaleEffect(isPressed ? 0.98 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
     }
     
     private var activityTitle: String {
@@ -856,6 +998,32 @@ struct ActivityRowView: View {
             return game.recommendedAge
         }
         return "Todas las edades"
+    }
+    
+    private var activityColor: Color {
+        if activity is Capa8Game {
+            return .blue
+        } else if activity is Capa8Story {
+            return .purple
+        } else if activity is Capa8RolePlay {
+            return .orange
+        } else if activity is Capa8ConnectionCircle {
+            return .pink
+        }
+        return .green
+    }
+    
+    private var activityIcon: String {
+        if activity is Capa8Game {
+            return "gamecontroller.fill"
+        } else if activity is Capa8Story {
+            return "book.fill"
+        } else if activity is Capa8RolePlay {
+            return "theatermasks.fill"
+        } else if activity is Capa8ConnectionCircle {
+            return "heart.circle.fill"
+        }
+        return "star.fill"
     }
 }
 

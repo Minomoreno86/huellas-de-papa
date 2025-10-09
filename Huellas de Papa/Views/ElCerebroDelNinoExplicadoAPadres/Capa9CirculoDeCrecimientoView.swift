@@ -1,17 +1,36 @@
 import SwiftUI
 
+// MARK: - Capa 9: Círculo de Crecimiento - Sistema de Progreso Parental
+// Vista que visualiza el crecimiento del padre/madre en su camino de crianza consciente
+// Basado en los principios de Álvaro Bilbao
+// SuperDesign: Consistente con Capas 2-8
+
 struct Capa9CirculoDeCrecimientoView: View {
     @State private var circuloData = Capa9CirculoDeCrecimiento()
     @State private var selectedTab = 0
+    @State private var animacionEntrada = false
+    
+    // MARK: - Configuración SuperDesign (consistente con otras capas)
+    private let coloresCapa9 = (
+        verdeSuave: Color.green.opacity(0.08),
+        mintSuave: Color.mint.opacity(0.05),
+        azulSuave: Color.blue.opacity(0.02),
+        acentoVerde: Color.green.opacity(0.8),
+        acentoMint: Color.mint.opacity(0.8)
+    )
     
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 // Header Motivacional
                 headerView
+                    .opacity(animacionEntrada ? 1 : 0)
+                    .offset(y: animacionEntrada ? 0 : -20)
                 
                 // Tab Selector
                 tabSelector
+                    .opacity(animacionEntrada ? 1 : 0)
+                    .offset(y: animacionEntrada ? 0 : -10)
                 
                 // Contenido Principal
                 TabView(selection: $selectedTab) {
@@ -36,34 +55,77 @@ struct Capa9CirculoDeCrecimientoView: View {
             .navigationBarTitleDisplayMode(.large)
             .background(
                 LinearGradient(
-                    gradient: Gradient(colors: [Color.green.opacity(0.1), Color.mint.opacity(0.05)]),
+                    gradient: Gradient(colors: [
+                        coloresCapa9.verdeSuave,
+                        coloresCapa9.mintSuave,
+                        coloresCapa9.azulSuave
+                    ]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
+                .ignoresSafeArea()
             )
+            .onAppear {
+                withAnimation(.spring(response: 0.8, dampingFraction: 0.8)) {
+                    animacionEntrada = true
+                }
+            }
         }
     }
     
     private var headerView: some View {
-        VStack(spacing: 12) {
-            Text("Tu viaje de crecimiento continúa")
-                .font(.title2)
-                .fontWeight(.semibold)
-                .foregroundColor(.primary)
+        VStack(spacing: 16) {
+            HStack {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "tree.fill")
+                            .font(.title2)
+                            .foregroundColor(.green)
+                        Text("Tu viaje de crecimiento continúa")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                    }
+                    
+                    Text("Hoy cultivaste una nueva conexión de calma")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+            }
             
-            Text("Hoy cultivaste una nueva conexión de calma")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+            // Mensaje motivacional con icono
+            HStack(spacing: 12) {
+                Image(systemName: "sparkles")
+                    .font(.title3)
+                    .foregroundColor(.yellow)
+                
+                Text("Cada pequeño paso fortalece el vínculo con tu hijo")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+                    .italic()
+                
+                Spacer()
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color.yellow.opacity(0.08))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .stroke(Color.yellow.opacity(0.2), lineWidth: 1)
+                    )
+            )
         }
-        .padding(.vertical, 20)
+        .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.8))
-                .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color(.secondarySystemBackground).opacity(0.9))
+                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
-        .padding(.horizontal)
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
     }
     
     private var tabSelector: some View {
@@ -114,31 +176,48 @@ struct TabButton: View {
     
     var body: some View {
         Button(action: {
-            withAnimation(.easeInOut(duration: 0.3)) {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                 selectedTab = index
             }
         }) {
-            VStack(spacing: 4) {
+            VStack(spacing: 6) {
                 Image(systemName: icon)
-                    .font(.system(size: 20))
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(selectedTab == index ? .white : .secondary)
+                    .scaleEffect(selectedTab == index ? 1.1 : 1.0)
                 
                 Text(title)
                     .font(.caption2)
-                    .fontWeight(.medium)
+                    .fontWeight(selectedTab == index ? .semibold : .medium)
                     .foregroundColor(selectedTab == index ? .white : .secondary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(selectedTab == index ? 
-                          AnyShapeStyle(LinearGradient(colors: [.green, .mint], startPoint: .leading, endPoint: .trailing)) : 
-                          AnyShapeStyle(Color.clear)
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(
+                        selectedTab == index ? 
+                        LinearGradient(
+                            colors: [.green, .mint],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ) : 
+                        LinearGradient(
+                            colors: [Color(.systemGray6), Color(.systemGray6)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .shadow(
+                        color: selectedTab == index ? Color.green.opacity(0.3) : Color.clear,
+                        radius: selectedTab == index ? 8 : 0,
+                        x: 0,
+                        y: selectedTab == index ? 4 : 0
                     )
             )
         }
         .buttonStyle(PlainButtonStyle())
+        .animation(.spring(response: 0.6, dampingFraction: 0.8), value: selectedTab)
     }
 }
 
