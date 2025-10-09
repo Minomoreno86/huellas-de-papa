@@ -184,7 +184,7 @@ class FactoryModulos {
             return AnyView(CN7View())
         case .modoNino:
             print("🔍 DEBUG: Creando CN8View de El Cerebro de Un Niño...")
-            return AnyView(Text("Capa 8 - Próximamente"))
+            return AnyView(CN8View())
         case .gamificacion:
             print("🔍 DEBUG: Creando CN9View de El Cerebro de Un Niño...")
             return AnyView(Text("Capa 9 - Próximamente"))
