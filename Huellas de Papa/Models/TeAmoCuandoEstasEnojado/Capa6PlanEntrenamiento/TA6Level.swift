@@ -8,7 +8,7 @@ final class TA6Level {
     @Attribute(.unique) var id: UUID
     var levelNumber: Int
     var title: String
-    var description: String
+    var levelDescription: String
     var mission: String
     var dailyChallenge: String
     var reflectionQuestion: String
@@ -23,7 +23,7 @@ final class TA6Level {
     init(
         levelNumber: Int,
         title: String,
-        description: String,
+        levelDescription: String,
         mission: String,
         dailyChallenge: String,
         reflectionQuestion: String,
@@ -38,7 +38,7 @@ final class TA6Level {
         self.id = UUID()
         self.levelNumber = levelNumber
         self.title = title
-        self.description = description
+        self.levelDescription = levelDescription
         self.mission = mission
         self.dailyChallenge = dailyChallenge
         self.reflectionQuestion = reflectionQuestion

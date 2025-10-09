@@ -32,7 +32,7 @@ struct TA6LevelDetailView: View {
                     .padding(.top)
                     
                     // Descripción
-                    InfoBox(title: "Descripción", icon: "text.alignleft", color: .pink, content: level.description)
+                    InfoBox(title: "Descripción", icon: "text.alignleft", color: .pink, content: level.levelDescription)
                     
                     // Misión
                     InfoBox(title: "Tu Misión", icon: "target", color: .mint, content: level.mission)

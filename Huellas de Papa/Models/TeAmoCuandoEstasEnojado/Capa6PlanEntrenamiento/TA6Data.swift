@@ -80,7 +80,7 @@ struct TA6LevelData {
         TA6Level(
             levelNumber: 1,
             title: "Aprendiz de Validación",
-            description: "Aprende a usar las frases básicas del libro de forma auténtica",
+            levelDescription: "Aprende a usar las frases básicas del libro de forma auténtica",
             mission: "Dominar las frases de validación emocional del libro en situaciones cotidianas",
             dailyChallenge: "Usa 'Te amo cuando estás [emoción]' al menos 5 veces al día con autenticidad",
             reflectionQuestion: "¿Lo dije automáticamente o realmente lo sentí? ¿Noté cambios en mi hijo?",
@@ -95,7 +95,7 @@ struct TA6LevelData {
         TA6Level(
             levelNumber: 2,
             title: "Guardián de la Permanencia",
-            description: "Mantén el amor visible incluso en TUS momentos difíciles",
+            levelDescription: "Mantén el amor visible incluso en TUS momentos difíciles",
             mission: "Practicar validación cuando TÚ estás enojado, cansado o frustrado",
             dailyChallenge: "Cuando sientas ira/cansancio, pausa, regula, y valida igual. Di: 'Estoy cansado/enfadado Y te amo'",
             reflectionQuestion: "¿Proyecté mi emoción en mi hijo o la regulé primero? ¿Mantuve el amor visible?",
@@ -110,7 +110,7 @@ struct TA6LevelData {
         TA6Level(
             levelNumber: 3,
             title: "Maestro del Espacio",
-            description: "Aprende a respetar la necesidad de soledad y espacio de tu hijo",
+            levelDescription: "Aprende a respetar la necesidad de soledad y espacio de tu hijo",
             mission: "Validar la necesidad de espacio personal sin invadirla ni resentirla",
             dailyChallenge: "Cuando tu hijo necesite espacio, di: 'Te amo cuando necesitas estar solo. Me encanta tu tiempo a solas'",
             reflectionQuestion: "¿Respeté su espacio genuinamente o me sentí rechazado? ¿Forcé interacción?",
@@ -125,7 +125,7 @@ struct TA6LevelData {
         TA6Level(
             levelNumber: 4,
             title: "Sanador de Noches",
-            description: "Domina el ritual de 'palabras dulces' antes de dormir",
+            levelDescription: "Domina el ritual de 'palabras dulces' antes de dormir",
             mission: "Establecer el ritual nocturno de cierre emocional del día",
             dailyChallenge: "Cada noche: repasa emociones del día, valida cada una, ofrece palabras dulces y abrazo",
             reflectionQuestion: "¿Reparé la conexión antes de dormir? ¿Lo hice incluso en días difíciles?",
@@ -140,7 +140,7 @@ struct TA6LevelData {
         TA6Level(
             levelNumber: 5,
             title: "Maestro del Amor Incondicional",
-            description: "Integración total: todas las habilidades en acción simultánea",
+            levelDescription: "Integración total: todas las habilidades en acción simultánea",
             mission: "Aplicar todas las lecciones del libro de forma natural y auténtica",
             dailyChallenge: "Integrar validación en momentos difíciles + ritual nocturno + respeto del espacio + humanidad compartida",
             reflectionQuestion: "¿El amor incondicional se ha vuelto mi respuesta natural? ¿Qué ha cambiado en mi hijo?",
