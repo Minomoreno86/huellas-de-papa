@@ -74,23 +74,23 @@ struct TA5View: View {
     // MARK: - Tab Selector
     private var tabSelectorSection: some View {
         HStack(spacing: 12) {
-            TabButton(title: "Actividades", icon: "figure.play", isSelected: selectedTab == .activities) {
+            TabButton(title: "Actividades", icon: "figure.play", isSelected: selectedTab == .activities, action: {
                 withAnimation(.spring()) {
                     selectedTab = .activities
                 }
-            }
+            })
             
-            TabButton(title: "Rutinas", icon: "clock.fill", isSelected: selectedTab == .routines) {
+            TabButton(title: "Rutinas", icon: "clock.fill", isSelected: selectedTab == .routines, action: {
                 withAnimation(.spring()) {
                     selectedTab = .routines
                 }
-            }
+            })
             
-            TabButton(title: "Recordatorios", icon: "bell.fill", isSelected: selectedTab == .reminders) {
+            TabButton(title: "Recordatorios", icon: "bell.fill", isSelected: selectedTab == .reminders, action: {
                 withAnimation(.spring()) {
                     selectedTab = .reminders
                 }
-            }
+            })
         }
         .padding(.vertical)
     }
