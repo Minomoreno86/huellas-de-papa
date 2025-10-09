@@ -74,23 +74,29 @@ struct TA5View: View {
     // MARK: - Tab Selector
     private var tabSelectorSection: some View {
         HStack(spacing: 12) {
-            TabButton(title: "Actividades", icon: "figure.play", isSelected: selectedTab == .activities, action: {
+            Button(action: {
                 withAnimation(.spring()) {
                     selectedTab = .activities
                 }
-            })
+            }) {
+                TabButtonContent(title: "Actividades", icon: "figure.play", isSelected: selectedTab == .activities)
+            }
             
-            TabButton(title: "Rutinas", icon: "clock.fill", isSelected: selectedTab == .routines, action: {
+            Button(action: {
                 withAnimation(.spring()) {
                     selectedTab = .routines
                 }
-            })
+            }) {
+                TabButtonContent(title: "Rutinas", icon: "clock.fill", isSelected: selectedTab == .routines)
+            }
             
-            TabButton(title: "Recordatorios", icon: "bell.fill", isSelected: selectedTab == .reminders, action: {
+            Button(action: {
                 withAnimation(.spring()) {
                     selectedTab = .reminders
                 }
-            })
+            }) {
+                TabButtonContent(title: "Recordatorios", icon: "bell.fill", isSelected: selectedTab == .reminders)
+            }
         }
         .padding(.vertical)
     }
@@ -207,34 +213,31 @@ struct TA5View: View {
     }
 }
 
-// MARK: - Tab Button
-struct TabButton: View {
+// MARK: - Tab Button Content
+struct TabButtonContent: View {
     let title: String
     let icon: String
     let isSelected: Bool
-    let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            VStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.title3)
-                
-                Text(title)
-                    .font(.caption)
-                    .fontWeight(.semibold)
-            }
-            .foregroundColor(isSelected ? .white : .pink)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected ?
-                          LinearGradient(colors: [.pink, .mint], startPoint: .topLeading, endPoint: .bottomTrailing) :
-                          LinearGradient(colors: [Color.pink.opacity(0.1), Color.mint.opacity(0.05)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    )
-            )
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.title3)
+            
+            Text(title)
+                .font(.caption)
+                .fontWeight(.semibold)
         }
+        .foregroundColor(isSelected ? .white : .pink)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isSelected ?
+                      LinearGradient(colors: [.pink, .mint], startPoint: .topLeading, endPoint: .bottomTrailing) :
+                      LinearGradient(colors: [Color.pink.opacity(0.1), Color.mint.opacity(0.05)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                )
+        )
     }
 }
 
