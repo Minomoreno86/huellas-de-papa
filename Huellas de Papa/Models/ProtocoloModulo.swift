@@ -225,7 +225,7 @@ class FactoryModulos {
             return AnyView(TA8View())
         case .gamificacion:
             print("🔍 DEBUG: Creando TA9View de Te Amo Cuando Estás Enojado...")
-            return AnyView(Text("Capa 9 - En desarrollo"))
+            return AnyView(TA9View())
         }
     }
 }
