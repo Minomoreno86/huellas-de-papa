@@ -315,13 +315,44 @@ struct CN7EvaluationView: View {
     
     private func optionsSection(question: CN7Question) -> some View {
         VStack(spacing: 12) {
-            if let options = question.options {
-                ForEach(options, id: \.self) { option in
-                    CN7OptionButton(
-                        text: option,
-                        isSelected: selectedAnswer == option
-                    ) {
-                        selectedAnswer = option
+            switch question.questionType {
+            case .multipleChoice, .scale:
+                if let options = question.options {
+                    ForEach(options, id: \.self) { option in
+                        CN7OptionButton(
+                            text: option,
+                            isSelected: selectedAnswer == option
+                        ) {
+                            selectedAnswer = option
+                        }
+                    }
+                }
+            case .selfReflection:
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Reflexiona y responde:")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    
+                    TextEditor(text: Binding(
+                        get: { selectedAnswer ?? "" },
+                        set: { selectedAnswer = $0.isEmpty ? nil : $0 }
+                    ))
+                    .frame(minHeight: 120)
+                    .padding(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    )
+                }
+            case .scenario:
+                if let options = question.options {
+                    ForEach(options, id: \.self) { option in
+                        CN7OptionButton(
+                            text: option,
+                            isSelected: selectedAnswer == option
+                        ) {
+                            selectedAnswer = option
+                        }
                     }
                 }
             }
