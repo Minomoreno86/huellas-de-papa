@@ -293,7 +293,17 @@ extension Capa9CirculoDeCrecimiento {
         )
     ]
     
-    // MARK: - Badges Emocionales
+    // MARK: - Badge IDs (constantes para referencia)
+    static let badgeEscuchaActivaId = "badge_escucha_activa"
+    static let badgePausaSerenaId = "badge_pausa_serena"
+    static let badgeValidacionId = "badge_validacion"
+    static let badgeConexionProfundaId = "badge_conexion_profunda"
+    static let badgeSabiduriaId = "badge_sabiduria"
+    static let badgePresenciaId = "badge_presencia"
+    static let badgeCoreguladorId = "badge_coregulador"
+    static let badgeMaestroLimitesId = "badge_maestro_limites"
+    
+    // MARK: - Badges Emocionales (con IDs y criterios de desbloqueo)
     static let predefinedBadges: [Capa9Badge] = [
         Capa9Badge(
             name: "Escucha Activa",
