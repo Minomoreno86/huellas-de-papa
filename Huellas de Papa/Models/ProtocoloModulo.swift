@@ -35,7 +35,9 @@ class FactoryModulos {
             return ModuloElCerebroDeUnNino()
         case "te-amo-cuando-enojado":
             return ModuloTeAmoCuandoEstasEnojado()
-        // Aquí se agregarán los otros 21 módulos
+        case "besame-mucho":
+            return ModuloBesameMucho()
+        // Aquí se agregarán los otros 20 módulos
         default:
             return nil
         }
@@ -53,6 +55,8 @@ class FactoryModulos {
             return crearVistaCapaTengoUnVolcan(capa: capa)
         case "te-amo-cuando-enojado":
             return crearVistaCapaTeAmoCuandoEstasEnojado(capa: capa)
+        case "besame-mucho":
+            return crearVistaCapaBesameMucho(capa: capa)
         // Aquí se agregarán las vistas de los otros módulos
         default:
             return AnyView(Text("Módulo no encontrado: \(moduloId)"))
@@ -226,6 +230,40 @@ class FactoryModulos {
         case .gamificacion:
             print("🔍 DEBUG: Creando TA9View de Te Amo Cuando Estás Enojado...")
             return AnyView(TA9View())
+        }
+    }
+    
+    private static func crearVistaCapaBesameMucho(capa: TipoCapa) -> AnyView {
+        print("🔍 DEBUG: Creando vista Bésame Mucho para capa: \(capa)")
+        
+        switch capa {
+        case .fundamentos:
+            print("🔍 DEBUG: Creando BM1View de Bésame Mucho...")
+            return AnyView(BM1View())
+        case .principios:
+            print("🔍 DEBUG: Creando BM2View de Bésame Mucho...")
+            return AnyView(BM2View())
+        case .herramientas:
+            print("🔍 DEBUG: Creando BM3View de Bésame Mucho...")
+            return AnyView(BM3View())
+        case .simulaciones:
+            print("🔍 DEBUG: Creando BM4View de Bésame Mucho...")
+            return AnyView(BM4View())
+        case .aplicacionCasa:
+            print("🔍 DEBUG: Creando BM5View de Bésame Mucho...")
+            return AnyView(BM5View())
+        case .planEntrenamiento:
+            print("🔍 DEBUG: Creando BM6View de Bésame Mucho...")
+            return AnyView(Text("Capa 6: Plan de Entrenamiento - En desarrollo"))
+        case .reflexion:
+            print("🔍 DEBUG: Creando BM7View de Bésame Mucho...")
+            return AnyView(Text("Capa 7: Evaluaciones - En desarrollo"))
+        case .modoNino:
+            print("🔍 DEBUG: Creando BM8View de Bésame Mucho...")
+            return AnyView(Text("Capa 8: Modo Niño - En desarrollo"))
+        case .gamificacion:
+            print("🔍 DEBUG: Creando BM9View de Bésame Mucho...")
+            return AnyView(Text("Capa 9: Círculo de Crecimiento - En desarrollo"))
         }
     }
 }
