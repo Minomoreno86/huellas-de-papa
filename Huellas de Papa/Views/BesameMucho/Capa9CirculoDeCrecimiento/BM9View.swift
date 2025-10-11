@@ -3,6 +3,11 @@ import SwiftUI
 /// Vista principal de la Capa 9 (Círculo de Crecimiento) del módulo Bésame Mucho
 /// Sistema de gamificación con logros, desafíos y seguimiento
 struct BM9View: View {
+    @AppStorage("BM_UserLevel") private var userLevel: Int = 1
+    @AppStorage("BM_UserPoints") private var userPoints: Int = 0
+    @AppStorage("BM_UserStreak") private var userStreak: Int = 0
+    @AppStorage("BM_UnlockedAchievements") private var unlockedAchievements: Int = 0
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 32) {
@@ -65,12 +70,12 @@ struct BM9View: View {
             // Nivel
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Nivel 1")
+                    Text("Nivel \(userLevel)")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.yellow)
                     
-                    Text("0 puntos")
+                    Text("\(userPoints) puntos")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -87,13 +92,44 @@ struct BM9View: View {
                     .fill(Color.yellow.opacity(0.1))
             )
             
+            // Progreso circular
+            ZStack {
+                Circle()
+                    .stroke(Color.secondary.opacity(0.2), lineWidth: 15)
+                    .frame(width: 150, height: 150)
+                
+                Circle()
+                    .trim(from: 0, to: Double(unlockedAchievements) / 20.0)
+                    .stroke(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.yellow, .orange]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        style: StrokeStyle(lineWidth: 15, lineCap: .round)
+                    )
+                    .frame(width: 150, height: 150)
+                    .rotationEffect(.degrees(-90))
+                
+                VStack {
+                    Text("\(Int((Double(unlockedAchievements) / 20.0) * 100))%")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.primary)
+                    
+                    Text("Completado")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding()
+            
             // Racha
             HStack(spacing: 20) {
                 VStack {
                     Image(systemName: "flame.fill")
                         .font(.largeTitle)
                         .foregroundColor(.orange)
-                    Text("0 días")
+                    Text("\(userStreak) días")
                         .font(.headline)
                         .foregroundColor(.primary)
                     Text("Racha")
@@ -111,7 +147,7 @@ struct BM9View: View {
                     Image(systemName: "trophy.fill")
                         .font(.largeTitle)
                         .foregroundColor(.yellow)
-                    Text("0/20")
+                    Text("\(unlockedAchievements)/20")
                         .font(.headline)
                         .foregroundColor(.primary)
                     Text("Logros")

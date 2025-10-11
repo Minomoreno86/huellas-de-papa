@@ -2,6 +2,13 @@ import SwiftUI
 
 /// Vista de estadísticas y gráficos
 struct BM9StatsView: View {
+    @AppStorage("BM_UserLevel") private var userLevel: Int = 1
+    @AppStorage("BM_UserPoints") private var userPoints: Int = 0
+    @AppStorage("BM_UserStreak") private var userStreak: Int = 0
+    @AppStorage("BM_UnlockedAchievements") private var unlockedAchievements: Int = 0
+    @AppStorage("BM_TotalDaysActive") private var totalDaysActive: Int = 0
+    @AppStorage("BM_JournalEntriesCount") private var journalEntriesCount: Int = 0
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -13,10 +20,12 @@ struct BM9StatsView: View {
                     .fontWeight(.bold)
                 
                 VStack(spacing: 20) {
-                    BM9StatCard(title: "Total de Puntos", value: "0", icon: "star.fill", color: .yellow)
-                    BM9StatCard(title: "Días Activos", value: "0", icon: "calendar.badge.checkmark", color: .blue)
-                    BM9StatCard(title: "Racha Máxima", value: "0", icon: "flame.fill", color: .orange)
-                    BM9StatCard(title: "Logros Desbloqueados", value: "0/20", icon: "trophy.fill", color: .mint)
+                    BM9StatCard(title: "Total de Puntos", value: "\(userPoints)", icon: "star.fill", color: .yellow)
+                    BM9StatCard(title: "Días Activos", value: "\(totalDaysActive)", icon: "calendar.badge.checkmark", color: .blue)
+                    BM9StatCard(title: "Racha Actual", value: "\(userStreak)", icon: "flame.fill", color: .orange)
+                    BM9StatCard(title: "Logros Desbloqueados", value: "\(unlockedAchievements)/20", icon: "trophy.fill", color: .mint)
+                    BM9StatCard(title: "Nivel Actual", value: "Nivel \(userLevel)", icon: "star.circle.fill", color: .purple)
+                    BM9StatCard(title: "Entradas de Diario", value: "\(journalEntriesCount)", icon: "book.closed.fill", color: .pink)
                 }
                 .padding()
             }

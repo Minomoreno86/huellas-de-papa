@@ -3,6 +3,9 @@ import SwiftUI
 /// Vista de seguimiento de hábitos diarios
 struct BM9HabitTrackerView: View {
     @State private var todayHabits = HabitDay()
+    @AppStorage("BM_UserStreak") private var userStreak: Int = 0
+    @AppStorage("BM_TotalDaysActive") private var totalDaysActive: Int = 0
+    @AppStorage("BM_LastSaveDate") private var lastSaveDateString: String = ""
     
     var body: some View {
         ScrollView {
@@ -47,7 +50,7 @@ struct BM9HabitTrackerView: View {
     
     private var saveButtonSection: some View {
         Button(action: {
-            // Guardar hábitos del día
+            saveHabitsForToday()
         }) {
             Text("Guardar Registro del Día")
                 .font(.headline)
@@ -59,6 +62,43 @@ struct BM9HabitTrackerView: View {
                         .fill(LinearGradient(colors: [.blue, .mint], startPoint: .leading, endPoint: .trailing))
                 )
         }
+    }
+    
+    // MARK: - Save Function
+    private func saveHabitsForToday() {
+        let today = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let todayString = dateFormatter.string(from: today)
+        
+        // Update streak
+        if !lastSaveDateString.isEmpty {
+            if let lastDate = dateFormatter.date(from: lastSaveDateString) {
+                let daysDifference = Calendar.current.dateComponents([.day], from: lastDate, to: today).day ?? 0
+                
+                if daysDifference == 1 {
+                    userStreak += 1
+                } else if daysDifference > 1 {
+                    userStreak = 1
+                }
+            }
+        } else {
+            userStreak = 1
+        }
+        
+        // Update total days if new day
+        if lastSaveDateString != todayString {
+            totalDaysActive += 1
+        }
+        
+        // Save date
+        lastSaveDateString = todayString
+        
+        // Haptic feedback
+        #if !os(macOS)
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+        #endif
     }
 }
 

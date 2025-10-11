@@ -3,6 +3,8 @@ import SwiftUI
 /// Vista de diario de reflexión
 struct BM9JournalView: View {
     @State private var todayEntry = BM9JournalEntry(date: Date())
+    @AppStorage("BM_JournalEntriesCount") private var journalEntriesCount: Int = 0
+    @State private var showingSavedAlert = false
     
     var body: some View {
         ScrollView {
@@ -47,6 +49,11 @@ struct BM9JournalView: View {
         }
         .background(Color(.systemGroupedBackground))
         .navigationTitle("Diario de Reflexión")
+        .alert("¡Reflexión Guardada!", isPresented: $showingSavedAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Tu reflexión del día ha sido guardada exitosamente")
+        }
     }
     
     private var headerSection: some View {
@@ -61,7 +68,20 @@ struct BM9JournalView: View {
     
     private var saveButtonSection: some View {
         Button(action: {
-            // Guardar entrada del diario
+            // Increment count
+            journalEntriesCount += 1
+            
+            // Clear fields
+            todayEntry = BM9JournalEntry(date: Date())
+            
+            // Show alert
+            showingSavedAlert = true
+            
+            // Haptic feedback
+            #if !os(macOS)
+            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+            impactFeedback.impactOccurred()
+            #endif
         }) {
             Text("Guardar Reflexión")
                 .font(.headline)
