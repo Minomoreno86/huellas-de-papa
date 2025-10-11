@@ -254,16 +254,16 @@ class FactoryModulos {
             return AnyView(BM5View())
         case .planEntrenamiento:
             print("🔍 DEBUG: Creando BM6View de Bésame Mucho...")
-            return AnyView(Text("Capa 6: Plan de Entrenamiento - En desarrollo"))
+            return AnyView(BM6View())
         case .reflexion:
             print("🔍 DEBUG: Creando BM7View de Bésame Mucho...")
-            return AnyView(Text("Capa 7: Evaluaciones - En desarrollo"))
+            return AnyView(BM7View())
         case .modoNino:
             print("🔍 DEBUG: Creando BM8View de Bésame Mucho...")
-            return AnyView(Text("Capa 8: Modo Niño - En desarrollo"))
+            return AnyView(BM8View())
         case .gamificacion:
             print("🔍 DEBUG: Creando BM9View de Bésame Mucho...")
-            return AnyView(Text("Capa 9: Círculo de Crecimiento - En desarrollo"))
+            return AnyView(BM9View())
         }
     }
 }

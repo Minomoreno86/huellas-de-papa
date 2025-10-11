@@ -10,6 +10,9 @@ struct Capa9CirculoDeCrecimientoView: View {
     @State private var selectedTab = 0
     @State private var animacionEntrada = false
     
+    // Integración con UserProgressManager
+    @ObservedObject private var progressManager = UserProgressManager.shared
+    
     // MARK: - Configuración SuperDesign (consistente con otras capas)
     private let coloresCapa9 = (
         verdeSuave: Color.green.opacity(0.08),
@@ -70,6 +73,10 @@ struct Capa9CirculoDeCrecimientoView: View {
                     animacionEntrada = true
                 }
             }
+            .badgeUnlockOverlay(
+                badge: $progressManager.recentlyUnlockedBadge,
+                isPresented: $progressManager.showBadgeUnlockAnimation
+            )
         }
     }
     
@@ -614,28 +621,55 @@ struct BadgeGalleryView: View {
 struct BadgeCardView: View {
     let badge: Capa9Badge
     @State private var isGlowing = false
+    @ObservedObject private var progressManager = UserProgressManager.shared
+    
+    // Verificar si el badge está desbloqueado
+    private var isUnlocked: Bool {
+        return progressManager.isBadgeUnlocked(badge.id.uuidString)
+    }
+    
+    // Obtener progreso hacia el badge (0.0 - 1.0)
+    private var progress: Double {
+        return progressManager.progressTowards(badge.id.uuidString)
+    }
     
     var body: some View {
         VStack(spacing: 12) {
             ZStack {
+                // Anillo de progreso
+                Circle()
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 4)
+                    .frame(width: 60, height: 60)
+                
+                Circle()
+                    .trim(from: 0, to: isUnlocked ? 1.0 : progress)
+                    .stroke(
+                        badge.category.color.opacity(isUnlocked ? 1.0 : 0.6),
+                        style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                    )
+                    .frame(width: 60, height: 60)
+                    .rotationEffect(.degrees(-90))
+                    .animation(.spring(response: 1.0, dampingFraction: 0.8), value: progress)
+                
+                // Badge principal
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: badge.isUnlocked ? 
+                            colors: isUnlocked ? 
                                 [badge.category.color, badge.category.color.opacity(0.6)] :
                                 [Color.gray.opacity(0.3), Color.gray.opacity(0.1)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
-                    .frame(width: 60, height: 60)
+                    .frame(width: 50, height: 50)
                     .overlay(
                         Image(systemName: badge.symbol)
-                            .font(.system(size: 24, weight: .semibold))
-                            .foregroundColor(badge.isUnlocked ? .white : .gray)
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundColor(isUnlocked ? .white : .gray)
                     )
                     .shadow(
-                        color: badge.isUnlocked ? badge.category.color.opacity(0.3) : .clear,
+                        color: isUnlocked ? badge.category.color.opacity(0.3) : .clear,
                         radius: isGlowing ? 12 : 4,
                         x: 0,
                         y: 4
@@ -646,12 +680,12 @@ struct BadgeCardView: View {
                         value: isGlowing
                     )
                     .onAppear {
-                        if badge.isUnlocked {
+                        if isUnlocked {
                             isGlowing = true
                         }
                     }
                 
-                if badge.isUnlocked {
+                if isUnlocked {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 20))
                         .foregroundColor(.white)
@@ -664,17 +698,37 @@ struct BadgeCardView: View {
                 }
             }
             
-            VStack(spacing: 4) {
+            VStack(spacing: 6) {
                 Text(badge.name)
                     .font(.headline)
                     .fontWeight(.semibold)
-                    .foregroundColor(badge.isUnlocked ? .primary : .secondary)
+                    .foregroundColor(isUnlocked ? .primary : .secondary)
                 
                 Text(badge.meaning)
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
+                
+                // Indicador de progreso para badges no desbloqueados
+                if !isUnlocked {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chart.bar.fill")
+                            .font(.caption2)
+                            .foregroundColor(badge.category.color)
+                        
+                        Text("\(Int(progress * 100))%")
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(badge.category.color)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(
+                        Capsule()
+                            .fill(badge.category.color.opacity(0.15))
+                    )
+                }
             }
         }
         .padding(16)
