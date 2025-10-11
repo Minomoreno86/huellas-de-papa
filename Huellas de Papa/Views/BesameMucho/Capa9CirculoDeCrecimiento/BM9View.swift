@@ -131,40 +131,50 @@ struct BM9View: View {
     // MARK: - Sections Grid
     private var sectionsGridSection: some View {
         VStack(spacing: 20) {
-            GrowthSectionCard2(
-                icon: "trophy.fill",
-                title: "Logros",
-                description: "20 insignias desbloqueables",
-                color: .yellow
-            )
+            NavigationLink(destination: BM9AchievementsView()) {
+                GrowthSectionCard2(
+                    icon: "trophy.fill",
+                    title: "Logros",
+                    description: "20 insignias desbloqueables",
+                    color: .yellow
+                )
+            }
             
-            GrowthSectionCard2(
-                icon: "target",
-                title: "Desafíos",
-                description: "Desafíos semanales renovables",
-                color: .orange
-            )
+            NavigationLink(destination: BM9ChallengesView()) {
+                GrowthSectionCard2(
+                    icon: "target",
+                    title: "Desafíos",
+                    description: "Desafíos semanales renovables",
+                    color: .orange
+                )
+            }
             
-            GrowthSectionCard2(
-                icon: "calendar.badge.checkmark",
-                title: "Seguimiento Diario",
-                description: "Registra tus prácticas diarias",
-                color: .blue
-            )
+            NavigationLink(destination: BM9HabitTrackerView()) {
+                GrowthSectionCard2(
+                    icon: "calendar.badge.checkmark",
+                    title: "Seguimiento Diario",
+                    description: "Registra tus prácticas diarias",
+                    color: .blue
+                )
+            }
             
-            GrowthSectionCard2(
-                icon: "book.closed.fill",
-                title: "Diario de Reflexión",
-                description: "Reflexiona sobre tu progreso",
-                color: .purple
-            )
+            NavigationLink(destination: BM9JournalView()) {
+                GrowthSectionCard2(
+                    icon: "book.closed.fill",
+                    title: "Diario de Reflexión",
+                    description: "Reflexiona sobre tu progreso",
+                    color: .purple
+                )
+            }
             
-            GrowthSectionCard2(
-                icon: "chart.bar.fill",
-                title: "Estadísticas",
-                description: "Visualiza tu evolución",
-                color: .mint
-            )
+            NavigationLink(destination: BM9StatsView()) {
+                GrowthSectionCard2(
+                    icon: "chart.bar.fill",
+                    title: "Estadísticas",
+                    description: "Visualiza tu evolución",
+                    color: .mint
+                )
+            }
         }
     }
 }
